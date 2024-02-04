@@ -1,0 +1,42 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: adguard-ingress
+  namespace: adguard
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`www.dns.z3cyber.pro`)
+      kind: Rule
+      services:
+        - name: adguard-service
+          port: 80
+    - match: Host(`dns.z3cyber.pro`)
+      kind: Rule
+      services:
+        - name: adguard-service
+          port: 80
+      middlewares:
+        - name: default-headers
+  tls:
+    secretName: production-cert-tls
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: default-headers
+  namespace: adguard
+spec:
+  headers:
+    browserXssFilter: true
+    contentTypeNosniff: true
+    forceSTSHeader: true
+    stsIncludeSubdomains: true
+    stsPreload: true
+    stsSeconds: 15552000
+    customFrameOptionsValue: SAMEORIGIN
+    customRequestHeaders:
+      X-Forwarded-Proto: https

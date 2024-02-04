@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: adguard
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: adguard-pvc
+  namespace: adguard
+spec:
+  storageClassName: nfs-csi
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adguard
+  namespace: adguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adguard
+  template:
+    metadata:
+      name: adguard
+      labels:
+        app: adguard
+    spec:
+      initContainers:
+        - name: init-container
+          image: busybox
+          command: ["/bin/sh", "-c", "echo 'adguard' > /name/name.txt"]
+          volumeMounts:
+          - name: adguard-pvc
+            mountPath: /name
+      containers:
+        - name: adguard
+          image: adguard/adguardhome:latest
+          volumeMounts:
+            - name: adguard-pvc
+              mountPath: "/opt/adguardhome/work"
+            - name: adguard-pvc
+              mountPath: "/opt/adguardhome/conf"
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          ports:
+            - containerPort: 3000
+            - containerPort: 53
+            - containerPort: 53
+              protocol: UDP
+            - containerPort: 80
+            - containerPort: 443
+            - containerPort: 443
+              protocol: UDP
+      volumes:
+        - name: adguard-pvc
+          persistentVolumeClaim:
+            claimName: adguard-pvc
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adguard-service
+  namespace: adguard
+spec:
+  selector:
+    app: adguard
+  ports:
+  - port: 3000
+    name: port3000-tcp
+    targetPort: 3000
+  - port: 53
+    name: port53-tcp
+    targetPort: 53
+  - port: 53
+    name: port53-udp
+    targetPort: 53
+    protocol: UDP
+  - port: 80
+    name: port80-tcp
+    targetPort: 80
+  - port: 443
+    name: port443-tcp
+    targetPort: 443
+  - port: 443
+    name: port443-udp
+    targetPort: 443
+    protocol: UDP
+  type: LoadBalancer
+  loadBalancerIP: "192.168.0.2"
