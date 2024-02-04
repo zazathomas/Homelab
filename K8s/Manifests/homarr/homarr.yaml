@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: homarr
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homarr-pvc
+  namespace: homarr
+spec:
+  storageClassName: nfs-csi
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homarr
+  namespace: homarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homarr
+  template:
+    metadata:
+      name: homarr
+      labels:
+        app: homarr
+    spec:
+      initContainers:
+        - name: init-container
+          image: busybox
+          command: ["/bin/sh", "-c", "echo 'Homarr' > /name/name.txt"]
+          volumeMounts:
+          - name: homarr-pvc
+            mountPath: /name
+      containers:
+        - name: homarr
+          image: ghcr.io/ajnart/homarr:latest
+          volumeMounts:
+            - name: homarr-pvc
+              mountPath: "/app/data/configs"
+            - name: homarr-pvc
+              mountPath: "/app/public/icons"
+            - name: homarr-pvc
+              mountPath: "/data"
+          ports:
+            - containerPort: 7575
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+      volumes:
+        - name: homarr-pvc
+          persistentVolumeClaim:
+            claimName: homarr-pvc
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homarr-service
+  namespace: homarr
+spec:
+  selector:
+    app: homarr
+  ports:
+  - port: 80
+    targetPort: 7575
+  type: ClusterIP
