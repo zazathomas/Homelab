@@ -7,6 +7,10 @@
 ```qm importdisk 5000 jammy-server-cloudimg-amd64-disk-kvm.img local-zfs```
 ```qm set 5000 --scsihw virtio-scsi-pci --scsi0 local-zfs:vm-5000-disk-0```
 ```qm set 5000 --ide2 local-zfs:cloudinit```
+```qm set 5000 --boot c --bootdisk scsi0```
+```qm set 5000 --serial0 socket --vga serial0```
 3) Expand the VM disk size to a suitable size (suggested 10 GB)
 4) Create the Cloud-Init template
 5) Deploy new VMs by cloning the template (full clone)
+
+
