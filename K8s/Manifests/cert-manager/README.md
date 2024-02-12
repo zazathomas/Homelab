@@ -17,7 +17,7 @@ Install the operator using:
 ```
 helm repo add emberstack https://emberstack.github.io/helm-charts
 helm repo update
-helm upgrade --install reflector emberstack/reflector --namespace cert-manager
+helm upgrade --install reflector emberstack/reflector --namespace kube-system
 ```
 
 Afterwards add the below to the spec section of the certificate manifest file:

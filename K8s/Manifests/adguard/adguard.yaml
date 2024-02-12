@@ -32,24 +32,19 @@ spec:
       labels:
         app: adguard
     spec:
-      initContainers:
-        - name: init-container
-          image: busybox
-          command: ["/bin/sh", "-c", "echo 'adguard' > /name/name.txt"]
-          volumeMounts:
-          - name: adguard-pvc
-            mountPath: /name
       containers:
         - name: adguard
           image: adguard/adguardhome:latest
           volumeMounts:
             - name: adguard-pvc
               mountPath: "/opt/adguardhome/work"
+              subPath: "adguard_work/"
             - name: adguard-pvc
               mountPath: "/opt/adguardhome/conf"
+              subPath: "config/"
           resources:
             limits:
-              memory: "1Gi"
+              memory: "700Mi"
               cpu: "1000m"
           ports:
             - containerPort: 3000
