@@ -177,8 +177,8 @@ spec:
               mountPath: "/config"
               subPath: "sonarr/config/"
             - name: media-pvc
-              mountPath: "/movies"
-              subPath: "downloads/movies"
+              mountPath: "/tv"
+              subPath: "downloads/tvshows"
             - name: media-pvc
               mountPath: "/downloads"
               subPath: "downloads/"
@@ -234,7 +234,7 @@ spec:
               subPath: "radarr/config/"
             - name: media-pvc
               mountPath: "/movies"
-              subPath: "downloads/tvshows"
+              subPath: "downloads/movies"
             - name: media-pvc
               mountPath: "/downloads"
               subPath: "downloads/"
