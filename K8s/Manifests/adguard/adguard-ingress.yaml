@@ -9,12 +9,12 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`www.dns.z3cyber.pro`)
+    - match: Host(`www.adguard.z3cyber.pro`)
       kind: Rule
       services:
         - name: adguard-service
           port: 80
-    - match: Host(`dns.z3cyber.pro`)
+    - match: Host(`adguard.z3cyber.pro`)
       kind: Rule
       services:
         - name: adguard-service
