@@ -1,0 +1,372 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: media-server
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-pvc
+  namespace: media-server
+spec:
+  storageClassName: nfs-csi
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 450Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deluge
+  namespace: media-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deluge
+  template:
+    metadata:
+      name: deluge
+      labels:
+        app: deluge
+    spec:
+      containers:
+        - name: deluge
+          image: lscr.io/linuxserver/deluge:latest
+          volumeMounts:
+            - name: media-pvc
+              mountPath: "/config"
+              subPath: "deluge/config/"
+            - name: media-pvc
+              mountPath: "/downloads"
+              subPath: "downloads/"
+          ports:
+            - containerPort: 8112
+            - containerPort: 6881
+            - containerPort: 6881
+              protocol: UDP
+          env:                     
+            - name: PGID
+              value: "1000"  
+            - name: PUID
+              value: "1000"
+            - name: TZ
+              value: TZ=Europe/Dublin
+      volumes:
+        - name: media-pvc
+          persistentVolumeClaim:
+            claimName: media-pvc     
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deluge-service
+  namespace: media-server
+spec:
+  selector:
+    app: deluge
+  ports:
+  - port: 8112
+    name: port8112-tcp
+    targetPort: 8112
+  - port: 6881
+    name: port6881-tcp
+    targetPort: 6881
+  - port: 6881
+    name: port6881-udp
+    targetPort: 6881
+    protocol: UDP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+  namespace: media-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      name: jellyfin
+      labels:
+        app: jellyfin
+    spec:
+      containers:
+        - name: jellyfin
+          image: lscr.io/linuxserver/jellyfin:latest
+          volumeMounts:
+            - name: media-pvc
+              mountPath: "/config"
+              subPath: "jellyfin/config/"
+            - name: media-pvc
+              mountPath: "/data/tvshows"
+              subPath: "downloads/tvshows"
+            - name: media-pvc
+              mountPath: "/data/movies"
+              subPath: "downloads/movies"
+          ports:
+            - containerPort: 8096
+            - containerPort: 8920
+            - containerPort: 7359
+              protocol: UDP
+            - containerPort: 1900
+              protocol: UDP
+          env:                     
+            - name: PGID
+              value: "1000"  
+            - name: PUID
+              value: "1000"
+            - name: TZ
+              value: TZ=Europe/Dublin
+            - name: JELLYFIN_PublishedServerUrl
+              value: jellyfin.z3cyber.pro
+      volumes:
+        - name: media-pvc
+          persistentVolumeClaim:
+            claimName: media-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jellyfin-service
+  namespace: media-server
+spec:
+  selector:
+    app: jellyfin
+  ports:
+  - port: 8920
+    name: port8920-tcp
+    targetPort: 8920
+  - port: 8096
+    name: port8096-tcp
+    targetPort: 8096
+  - port: 7359
+    name: port7359-udp
+    targetPort: 7359
+    protocol: UDP
+  - port: 1900
+    name: port1900-udp
+    targetPort: 1900
+    protocol: UDP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+  namespace: media-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      name: sonarr
+      labels:
+        app: sonarr
+    spec:
+      containers:
+        - name: sonarr
+          image: lscr.io/linuxserver/sonarr:latest
+          volumeMounts:
+            - name: media-pvc
+              mountPath: "/config"
+              subPath: "sonarr/config/"
+            - name: media-pvc
+              mountPath: "/movies"
+              subPath: "downloads/movies"
+            - name: media-pvc
+              mountPath: "/downloads"
+              subPath: "downloads/"
+          ports:
+            - containerPort: 8989
+          env:                     
+            - name: PGID
+              value: "1000"  
+            - name: PUID
+              value: "1000"
+            - name: TZ
+              value: TZ=Europe/Dublin
+      volumes:
+        - name: media-pvc
+          persistentVolumeClaim:
+            claimName: media-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarr-service
+  namespace: media-server
+spec:
+  selector:
+    app: sonarr
+  ports:
+  - port: 8989
+    name: port8989-tcp
+    targetPort: 8989
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  namespace: media-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      name: radarr
+      labels:
+        app: radarr
+    spec:
+      containers:
+        - name: radarr
+          image: lscr.io/linuxserver/radarr:latest
+          volumeMounts:
+            - name: media-pvc
+              mountPath: "/config"
+              subPath: "radarr/config/"
+            - name: media-pvc
+              mountPath: "/movies"
+              subPath: "downloads/tvshows"
+            - name: media-pvc
+              mountPath: "/downloads"
+              subPath: "downloads/"
+          ports:
+            - containerPort: 7878
+          env:                     
+            - name: PGID
+              value: "1000"  
+            - name: PUID
+              value: "1000"
+            - name: TZ
+              value: TZ=Europe/Dublin
+      volumes:
+        - name: media-pvc
+          persistentVolumeClaim:
+            claimName: media-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: radarr-service
+  namespace: media-server
+spec:
+  selector:
+    app: radarr
+  ports:
+  - port: 7878
+    name: port8989-tcp
+    targetPort: 7878
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prowlarr
+  namespace: media-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prowlarr
+  template:
+    metadata:
+      name: prowlarr
+      labels:
+        app: prowlarr
+    spec:
+      containers:
+        - name: prowlarr
+          image: lscr.io/linuxserver/prowlarr:latest
+          volumeMounts:
+            - name: media-pvc
+              mountPath: "/config"
+              subPath: "prowlarr/config/"
+          ports:
+            - containerPort: 9696
+          env:                     
+            - name: PGID
+              value: "1000"  
+            - name: PUID
+              value: "1000"
+            - name: TZ
+              value: TZ=Europe/Dublin
+      volumes:
+        - name: media-pvc
+          persistentVolumeClaim:
+            claimName: media-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prowlarr-service
+  namespace: media-server
+spec:
+  selector:
+    app: prowlarr
+  ports:
+  - port: 9696
+    name: port9696-tcp
+    targetPort: 9696
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: readarr
+  namespace: media-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: readarr
+  template:
+    metadata:
+      name: readarr
+      labels:
+        app: readarr
+    spec:
+      containers:
+        - name: readarr
+          image: lscr.io/linuxserver/readarr:develop
+          volumeMounts:
+            - name: media-pvc
+              mountPath: "/config"
+              subPath: "readarr/config/"
+            - name: media-pvc
+              mountPath: "/books"
+              subPath: "downloads/books"
+            - name: media-pvc
+              mountPath: "/downloads"
+              subPath: "downloads/"
+          ports:
+            - containerPort: 8787
+          env:                     
+            - name: PGID
+              value: "1000"  
+            - name: PUID
+              value: "1000"
+            - name: TZ
+              value: TZ=Europe/Dublin
+      volumes:
+        - name: media-pvc
+          persistentVolumeClaim:
+            claimName: media-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: readarr-service
+  namespace: media-server
+spec:
+  selector:
+    app: readarr
+  ports:
+  - port: 8787
+    name: port8787-tcp
+    targetPort: 8787

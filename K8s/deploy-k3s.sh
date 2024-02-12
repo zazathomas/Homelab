@@ -21,10 +21,10 @@ echo -e " \033[32;5m                                                           \
 #############################################
 
 # Version of Kube-VIP to deploy
-KVVERSION="v0.6.3"
+KVVERSION="v0.7.0"
 
 # K3S Version
-k3sVersion="v1.26.10+k3s2"
+k3sVersion="v1.29.1+k3s2"
 
 # Set the IP addresses of the master and work nodes
 master1=192.168.0.149
@@ -169,7 +169,7 @@ for newagent in "${workers[@]}"; do
 done
 
 # Step 7: Install kube-vip as network LoadBalancer - Install the kube-vip Cloud Provider
-kubectl apply -f https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml
+kubectl apply -f https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml --validate=false
 
 # Step 8: Install Metallb
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/namespace.yaml
