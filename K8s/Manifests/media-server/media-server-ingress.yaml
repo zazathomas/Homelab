@@ -1,32 +1,6 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: deluge-ingress
-  namespace: media-server
-  annotations: 
-    kubernetes.io/ingress.class: traefik-external
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`www.deluge.z3cyber.pro`)
-      kind: Rule
-      services:
-        - name: deluge-service
-          port: 8112
-    - match: Host(`deluge.z3cyber.pro`)
-      kind: Rule
-      services:
-        - name: deluge-service
-          port: 8112
-      middlewares:
-        - name: default-headers
-  tls:
-    secretName: production-cert-tls
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
   name: jellyfin-ingress
   namespace: media-server
   annotations: 
