@@ -19,69 +19,6 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deluge
-  namespace: media-server
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: deluge
-  template:
-    metadata:
-      name: deluge
-      labels:
-        app: deluge
-    spec:
-      containers:
-        - name: deluge
-          image: lscr.io/linuxserver/deluge:latest
-          volumeMounts:
-            - name: media-pvc
-              mountPath: "/config"
-              subPath: "deluge/config/"
-            - name: media-pvc
-              mountPath: "/downloads"
-              subPath: "downloads/"
-          ports:
-            - containerPort: 8112
-            - containerPort: 6881
-            - containerPort: 6881
-              protocol: UDP
-          env:                     
-            - name: PGID
-              value: "1000"  
-            - name: PUID
-              value: "1000"
-            - name: TZ
-              value: TZ=Europe/Dublin
-      volumes:
-        - name: media-pvc
-          persistentVolumeClaim:
-            claimName: media-pvc     
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: deluge-service
-  namespace: media-server
-spec:
-  selector:
-    app: deluge
-  ports:
-  - port: 8112
-    name: port8112-tcp
-    targetPort: 8112
-  - port: 6881
-    name: port6881-tcp
-    targetPort: 6881
-  - port: 6881
-    name: port6881-udp
-    targetPort: 6881
-    protocol: UDP
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: jellyfin
   namespace: media-server
 spec:
