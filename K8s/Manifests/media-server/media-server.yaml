@@ -370,3 +370,63 @@ spec:
   - port: 8787
     name: port8787-tcp
     targetPort: 8787
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbittorrent
+  namespace: media-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qbittorrent
+  template:
+    metadata:
+      name: qbittorrent
+      labels:
+        app: qbittorrent
+    spec:
+      containers:
+        - name: qbittorrent
+          image: lscr.io/linuxserver/qbittorrent:latest
+          volumeMounts:
+            - name: media-pvc
+              mountPath: "/config"
+              subPath: "qbittorrent/config/"
+            - name: media-pvc
+              mountPath: "/downloads"
+              subPath: "downloads/"
+          ports:
+            - containerPort: 8080
+            - containerPort: 6881
+            - containerPort: 6881
+              protocol: UDP
+          env:                     
+            - name: PGID
+              value: "1000"  
+            - name: PUID
+              value: "1000"
+            - name: TZ
+              value: TZ=Europe/Dublin
+            - name: WEBUI_PORT
+              value: "8080"
+            - name: TORRENTING_PORT
+              value: "6881"
+      volumes:
+        - name: media-pvc
+          persistentVolumeClaim:
+            claimName: media-pvc    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qbittorrent-service
+  namespace: media-server
+spec:
+  selector:
+    app: qbittorrent
+  ports:
+  - port: 8080
+    name: port8080-tcp
+    targetPort: 8080

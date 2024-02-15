@@ -155,6 +155,32 @@ spec:
     secretName: production-cert-tls
 ---
 apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: qbittorrent-ingress
+  namespace: media-server
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`www.qbittorrent.z3cyber.pro`)
+      kind: Rule
+      services:
+        - name: qbittorrent-service
+          port: 8080
+    - match: Host(`qbittorrent.z3cyber.pro`)
+      kind: Rule
+      services:
+        - name: qbittorrent-service
+          port: 8080
+      middlewares:
+        - name: default-headers
+  tls:
+    secretName: production-cert-tls
+---
+apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: default-headers
