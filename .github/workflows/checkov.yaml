@@ -12,8 +12,11 @@
   jobs:
     checkov-scan:
       runs-on: ubuntu-latest
+      permissions:
+        # required for all workflows
+        security-events: write
       steps:
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@v4
         - name: Set up Python 3.8
           uses: actions/setup-python@v4
           with:
@@ -26,7 +29,8 @@
             framework: kubernetes
           continue-on-error: true
         - name: Upload SARIF file
-          uses: github/codeql-action/upload-sarif@v2
+          uses: github/codeql-action/upload-sarif@v3
           if: success() || failure()
           with:
             sarif_file: results.sarif
+            category: checkov-scan
