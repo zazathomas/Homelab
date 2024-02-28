@@ -258,7 +258,7 @@ metadata:
   name: readarr
   namespace: media-server
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: readarr
