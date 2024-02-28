@@ -27,9 +27,9 @@ KVVERSION="v0.7.0"
 k3sVersion="v1.29.1+k3s2"
 
 # Set the IP addresses of the master and work nodes
-master1=192.168.0.149
-worker1=192.168.0.22
-worker2=192.168.0.191
+master1=192.168.0.127
+worker1=192.168.0.128
+
 
 # User of remote machines
 user=zaza
@@ -38,22 +38,22 @@ user=zaza
 interface=eth0
 
 # Set the virtual IP address (VIP)
-vip=192.168.0.50
+vip=192.168.0.57
 
 # Array of master nodes
 masters=()
 
 # Array of worker nodes
-workers=($worker1 $worker2)
+workers=($worker1)
 
 # Array of all
-all=($master1 $worker1 $worker2)
+all=($master1 $worker1)
 
 # Array of all minus master
-allnomaster1=($worker1 $worker2)
+allnomaster1=($worker1)
 
 #Loadbalancer IP range
-lbrange=192.168.0.2-192.168.0.10
+lbrange=192.168.0.7-192.168.0.9
 
 #ssh certificate name variable
 certName=id_rsa
@@ -115,30 +115,13 @@ k3sup install \
   --tls-san $vip \
   --cluster \
   --k3s-version $k3sVersion \
-  --k3s-extra-args "--disable traefik --disable servicelb --flannel-iface=$interface --node-ip=$master1 --node-taint node-role.kubernetes.io/master=true:NoSchedule --kube-controller-manager-arg bind-address=0.0.0.0 --kube-proxy-arg metrics-bind-address=0.0.0.0 --kube-scheduler-arg bind-address=0.0.0.0 --etcd-expose-metrics true --kubelet-arg containerd=/run/k3s/containerd/containerd.sock" \
+  --k3s-extra-args "--disable traefik --disable servicelb  --flannel-backend=none --no-flannel --disable-network-policy --node-ip=$master1 --kube-controller-manager-arg bind-address=0.0.0.0 --kube-proxy-arg metrics-bind-address=0.0.0.0 --kube-scheduler-arg bind-address=0.0.0.0 --etcd-expose-metrics true --kubelet-arg containerd=/run/k3s/containerd/containerd.sock" \
   --merge \
   --sudo \
   --local-path $HOME/.kube/config \
   --ssh-key $HOME/.ssh/$certName \
   --context k3s-ha
 echo -e " \033[32;5mFirst Node bootstrapped successfully!\033[0m"
-
-# Step 2: Install Kube-VIP for HA
-kubectl apply -f https://kube-vip.io/manifests/rbac.yaml
-
-# Step 3: Download kube-vip
-curl -sO https://raw.githubusercontent.com/JamesTurland/JimsGarage/main/Kubernetes/K3S-Deploy/kube-vip
-cat kube-vip | sed 's/$interface/'$interface'/g; s/$vip/'$vip'/g' > $HOME/kube-vip.yaml
-
-# Step 4: Copy kube-vip.yaml to master1
-scp -i ~/.ssh/$certName $HOME/kube-vip.yaml $user@$master1:~/kube-vip.yaml
-
-
-# Step 5: Connect to Master1 and move kube-vip.yaml
-ssh $user@$master1 -i ~/.ssh/$certName <<- EOF
-  sudo mkdir -p /var/lib/rancher/k3s/server/manifests
-  sudo mv kube-vip.yaml /var/lib/rancher/k3s/server/manifests/kube-vip.yaml
-EOF
 
 # Step 6: Add new master nodes (servers) & workers
 for newnode in "${masters[@]}"; do
@@ -150,10 +133,27 @@ for newnode in "${masters[@]}"; do
     --server \
     --server-ip $master1 \
     --ssh-key $HOME/.ssh/$certName \
-    --k3s-extra-args "--disable traefik --disable servicelb --flannel-iface=$interface --node-ip=$newnode --node-taint node-role.kubernetes.io/master=true:NoSchedule --kube-controller-manager-arg bind-address=0.0.0.0 --kube-proxy-arg metrics-bind-address=0.0.0.0 --kube-scheduler-arg bind-address=0.0.0.0 --etcd-expose-metrics true --kubelet-arg containerd=/run/k3s/containerd/containerd.sock" \
+    --k3s-extra-args "--disable traefik --disable servicelb --no-flannel  --disable-network-policy --flannel-backend=none --node-ip=$newnode --node-taint node-role.kubernetes.io/master=true:NoSchedule --kube-controller-manager-arg bind-address=0.0.0.0 --kube-proxy-arg metrics-bind-address=0.0.0.0 --kube-scheduler-arg bind-address=0.0.0.0 --etcd-expose-metrics true --kubelet-arg containerd=/run/k3s/containerd/containerd.sock" \
     --server-user $user
   echo -e " \033[32;5mMaster node joined successfully!\033[0m"
 done
+
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+helm repo add cilium https://helm.cilium.io/
+helm upgrade --install cilium cilium/cilium \
+  --namespace kube-system \
+  --set kubeProxyReplacement=strict \
+  --set k8sServiceHost=$master1 \
+  --set k8sServicePort=6443 \
+  --set egressGateway.enabled=true \
+  --set bpf.masquerade=true \
+  --set hubble.relay.enabled=true \
+  --set hubble.metrics.enabled="{dns,drop,tcp,flow,icmp,http}" \
+  --set hubble.ui.enabled=true \
+  --set prometheus.enabled=true \
+  --set operator.prometheus.enabled=true \
+  --set hubble.metrics.enabledOpenMetrics=true \
+  --set operator.replicas=1
 
 # add workers
 for newagent in "${workers[@]}"; do
@@ -167,6 +167,20 @@ for newagent in "${workers[@]}"; do
     --k3s-extra-args "--node-label \"longhorn=true\" --node-label \"worker=true\""
   echo -e " \033[32;5mAgent node joined successfully!\033[0m"
 done
+
+
+# Step 2: Install Kube-VIP for HA
+kubectl apply -f https://kube-vip.io/manifests/rbac.yaml
+
+# Step 4: Copy kube-vip.yaml to master1
+scp -i ~/.ssh/$certName $HOME/k.yaml $user@$master1:~/kube-vip.yaml
+
+
+# Step 5: Connect to Master1 and move kube-vip.yaml
+ssh $user@$master1 -i ~/.ssh/$certName <<- EOF
+  sudo mkdir -p /var/lib/rancher/k3s/server/manifests
+  sudo mv kube-vip.yaml /var/lib/rancher/k3s/server/manifests/kube-vip.yaml
+EOF
 
 # Step 7: Install kube-vip as network LoadBalancer - Install the kube-vip Cloud Provider
 kubectl apply -f https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml --validate=false
@@ -199,5 +213,9 @@ kubectl apply -f https://raw.githubusercontent.com/JamesTurland/JimsGarage/main/
 kubectl get nodes
 kubectl get svc
 kubectl get pods --all-namespaces -o wide
+
+helm upgrade --install cilium cilium/cilium \
+    --set operator.replicas=1 \
+    --namespace kube-system 
 
 echo -e " \033[32;5mHappy Kubing! Access Nginx at EXTERNAL-IP above\033[0m"
