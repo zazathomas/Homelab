@@ -1,0 +1,18 @@
+name: tetragon-exec-field-mapping
+# priority: 10
+transformations:
+    - id: field_mapping
+      type: field_name_mapping
+      mapping:
+        Binary: $.process_exec.process.binary
+        ContainerID: $.process_exec.process.pod.container.id
+        ContainerName: $.process_exec.process.pod.container.name
+        Namespace: $.process_exec.process.pod.namespace
+        CommandArguments: $.process_exec.process.arguments
+        NodeName: $.process_exec.node_name
+        Time: $.process_exec.time
+        Pid: $.process_exec.process.pid
+        Uid: $.process_exec.process.uid
+        ParentBinary: $.process_exec.parent.binary
+        ParentPid: $.process_exec.parent.pid
+        ParentUid: $.process_exec.parent.uid

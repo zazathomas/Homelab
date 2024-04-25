@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hack-latest
+  hostNetwork: true
+  # define in namespace that doesn't exist so
+  # workload is invisible to the API server
+  namespace: doesnt-exist
+spec:
+  containers:
+  - name: hack-latest
+    image: sublimino/hack:latest
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do sleep 10;done"]
+    securityContext:
+      privileged: true

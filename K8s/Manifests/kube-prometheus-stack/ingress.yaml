@@ -1,0 +1,68 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana-ingress
+  namespace: monitoring
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`www.grafana.z3cyber.pro`)
+      kind: Rule
+      services:
+        - name: grafana
+          port: 80
+    - match: Host(`grafana.z3cyber.pro`)
+      kind: Rule
+      services:
+        - name: grafana
+          port: 80
+      middlewares:
+        - name: default-headers
+  tls:
+    secretName: production-cert-tls
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prometheus-ingress
+  namespace: monitoring
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`www.prometheus.z3cyber.pro`)
+      kind: Rule
+      services:
+        - name: prometheus-prometheus
+          port: 9090
+    - match: Host(`prometheus.z3cyber.pro`)
+      kind: Rule
+      services:
+        - name: prometheus-prometheus
+          port: 9090
+      middlewares:
+        - name: default-headers
+  tls:
+    secretName: production-cert-tls
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: default-headers
+  namespace: monitoring
+spec:
+  headers:
+    browserXssFilter: true
+    contentTypeNosniff: true
+    forceSTSHeader: true
+    stsIncludeSubdomains: true
+    stsPreload: true
+    stsSeconds: 15552000
+    customFrameOptionsValue: SAMEORIGIN
+    customRequestHeaders:
+      X-Forwarded-Proto: https
