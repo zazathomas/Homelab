@@ -1,0 +1,40 @@
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: "detect-xzlib"
+  annotations:
+    url: "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-3094"
+    description: "Detects if OpenSSH is using vulnerable XZ libraries"
+    author: "Tetragon.io Team"
+spec:
+  kprobes:
+  - call: "security_mmap_file"
+    syscall: false
+    return: true
+    # message: "OpenSSH daemon using vulnerable XZ libraries CVE-2024-3094"
+    # tags: [ "cve", "cve.2024.3094" ]
+    args:
+    - index: 0
+      type: "file"
+    - index: 1
+      type: "uint32"
+    - index: 2
+      type: "nop"
+    returnArg:
+      index: 0
+      type: "int"
+    returnArgAction: "Post"
+    selectors:
+    - matchBinaries:
+      - operator: "In"
+        values:
+        - "/usr/sbin/sshd"
+      matchArgs:
+      - index: 0
+        operator: "Postfix"
+        values:
+        - "liblzma.so.5.6.0"
+        - "liblzma.so.5.6.1"
+      matchActions:
+        - action: Post
+          rateLimit: "1m"
