@@ -1,0 +1,7 @@
+tetragon:
+  exportAllowList: "{\"policy_names\":[\"detect-fim\", \"detect-egress\", \"detect-symlink\", \"detect-xzlib\"]}"
+  exportDenyList: "{\"health_check\":true}"
+  enableProcessCred: true
+  enableProcessNs: true
+tetragonOperator:
+  enabled: true

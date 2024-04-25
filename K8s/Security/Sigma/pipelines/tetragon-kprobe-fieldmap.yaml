@@ -1,0 +1,22 @@
+name: tetragon-field-mapping
+# priority: 10
+transformations:
+    - id: field_mapping
+      type: field_name_mapping
+      mapping:
+        PolicyName: $.process_kprobe.policy_name
+        Binary: $.process_kprobe.binary
+        FilePath: $.process_kprobe.args[0].file_arg.path
+        ContainerID: $.process_kprobe.process.pod.container.id
+        ContainerName: $.process_kprobe.process.pod.container.name
+        CommandArguments: $.process_kprobe.process.arguments
+        DestinationIP: $.process_kprobe.args[0].sock_arg.daddr
+        DestinationPort: $.process_kprobe.args[0].sock_arg.dport
+        FunctionName: $.process_kprobe.function_name
+        NodeName: $.process_kprobe.node_name
+        Time: $.process_kprobe.time
+        Uid: $.process_kprobe.process.uid
+        Namespace: $.process_kprobe.process.pod.namespace
+        ParentBinary: $.process_kprobe.parent.binary
+        ParentPid: $.process_kprobe.parent.pid
+        ParentUid: $.process_kprobe.parent.uid
