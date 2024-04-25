@@ -5,6 +5,7 @@ Welcome to my homelab repository, a well crafted digital ecosystem designed to s
 <img width="1779" alt="Screenshot 2024-04-25 at 01 22 13" src="https://github.com/zazathomas/Homelab/assets/21116259/b58793e2-ed71-4a32-ae9d-44c320043cdb">
 
 
+
 Starting of on this repository, I've implemented a DevSecOps pipeline for secrets and IaC scanning using Trufflehog and Checkov respectively. This ensure the security and reliability of my homelab infrastructure.
 
 I bootstrapped this cluster using a shell script. More details ...
