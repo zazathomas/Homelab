@@ -2,6 +2,9 @@
 
 Welcome to my homelab repository, a well crafted digital ecosystem designed to showcase the convergence of computing and security. Here I've implemented a virtual playground where I get to try out different projects.
 
+<img width="1626" alt="Screenshot 2024-05-02 at 12 48 22" src="https://github.com/zazathomas/Homelab/assets/21116259/1fcd4aff-6001-42df-85ed-8b183087d17b">
+
+
 <img width="1779" alt="Screenshot 2024-04-25 at 01 22 13" src="https://github.com/zazathomas/Homelab/assets/21116259/b58793e2-ed71-4a32-ae9d-44c320043cdb">
 
 
