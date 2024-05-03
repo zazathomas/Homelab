@@ -1,8 +1,9 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/vehagn/homelab/main/docs/assets/kubernetes.svg" width="144px" alt="3s logo"/>
+![image](https://github.com/zazathomas/Homelab/assets/21116259/2f210bf0-33c2-4972-b8da-728c82ce608f)
 
-# 🪨 K3S+Cilium Homelab 🏡
+
+# 🌐 K3S+Cilium Homelab 🏡
 
 </div>
 
