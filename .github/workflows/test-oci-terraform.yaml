@@ -33,7 +33,7 @@ jobs:
       - name: setup Terraform
         uses: hashicorp/setup-terraform@v2
       - name: Terraform Init
-        run: terraform init
+        run: pwd && ls -l && terraform init
       - name: Terraform Validate
         run: terraform validate
       - name: Terraform Format

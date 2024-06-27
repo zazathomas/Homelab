@@ -20,7 +20,8 @@ jobs:
       run:
         working-directory: ./Infrastructure/OracleCloud/Terraform
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out code
+        uses: actions/checkout@v4
       - name: setup Tailscale Authkey
         run: |
           cd $HOME/Infrastructure/OracleCloud/Terraform/scripts
