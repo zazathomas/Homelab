@@ -1,2 +1,3 @@
 Scribbles/
 Infrastructure/OracleCloud/Terraform/.terraform/
+Infrastructure/OracleCloud/Terraform/.terraform.lock.hcl
