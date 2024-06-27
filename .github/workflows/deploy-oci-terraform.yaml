@@ -6,6 +6,7 @@ on:
     paths: [ "Infrastructure/OracleCloud/Terraform/**" ]
   pull_request:
     branches: [ "main" ]
+    paths: [ "Infrastructure/OracleCloud/Terraform/**" ]
 
   workflow_dispatch:
 
@@ -30,8 +31,11 @@ jobs:
       # Sets up Oracle Cloud & S3 backend access for terraform
       - name: Setup Oracle Cloud & S3 Backend
         run: |
+          mkdir -p $HOME/.aws && touch $HOME/.aws/credentials
           echo $TFSTATE > $HOME/.aws/credentials
-          echo $OCI_KEY > $HOME/.oci/oci-private.pem
+          mkdir -p $HOME/.oci && touch $HOME/.oci/oci-private.pem
+          echo $OCI_KEY > $HOME/.oci/oci-private.pem && chmod 600 $HOME/.oci/oci-private.pem
+          touch $HOME/.oci/config
           echo $OCI_PROFILE > $HOME/.oci/config
       - name: setup Terraform
         uses: hashicorp/setup-terraform@v2
