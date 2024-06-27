@@ -1,0 +1,36 @@
+name: Test Oracle Cloud Resources
+
+on:  
+  pull_request:
+    branches: [ "main" ]
+    paths: [ "Infrastructure/OracleCloud/Terraform/**" ]
+
+  workflow_dispatch:
+
+env:
+  TF_VAR_compartment_id: ${{ secrets.OCI_TENANCY_OCID }}
+  TFSTATE: ${{ secrets.TFSTATE }}
+  OCI_KEY: ${{ secrets.OCI_KEY }}
+  OCI_PROFILE: ${{ secrets.OCI_PROFILE }} 
+jobs:
+  deploy-oraclecloud-infra:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Sets up Oracle Cloud & S3 backend access for terraform
+      - name: Setup Oracle Cloud & S3 Backend
+        run: |
+          echo $TFSTATE > $HOME/.aws/credentials
+          echo $OCI_KEY > $HOME/.oci/oci-private.pem
+          echo $OCI_PROFILE > $HOME/.oci/config
+      - name: setup Terraform
+        uses: hashicorp/setup-terraform@v2
+      - name: Terraform Init
+        run: terraform init
+      - name: Terraform Validate
+        run: terraform validate
+      - name: Terraform Format
+        run: terraform fmt
+      - name: Terraform Plan
+        run: terraform plan 
+    

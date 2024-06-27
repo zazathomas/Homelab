@@ -19,19 +19,6 @@ variable "vpc" {
 # Public Subnet, Route Table, and Internet Gateway
 ############################################
 
-variable "edge_subnet" {
-  description = "The details of the subnet"
-  default = {
-    cidr_block : "172.16.1.0/24"
-    display_name : "edge_subnet"
-    prohibit_public_ip_on_vnic : false
-    route_table : {
-      display_name = "edge-route-table"
-      description  = "Route table for public subnet"
-    }
-  }
-}
-
 variable "IGW" {
   description = "The details of the internet gateway"
   default = {
@@ -48,6 +35,19 @@ variable "NATGW" {
   }
 }
 
+variable "edge_subnet" {
+  description = "The details of the subnet"
+  default = {
+    cidr_block : "172.16.1.0/24"
+    display_name : "edge_subnet"
+    prohibit_public_ip_on_vnic : false
+    route_table : {
+      display_name = "edge-route-table"
+      description  = "Route table for public subnet"
+    }
+  }
+}
+
 variable "private_subnet" {
   description = "The details of the subnet"
   default = {
@@ -61,30 +61,87 @@ variable "private_subnet" {
   }
 }
 
+variable "lb_subnet" {
+  description = "The details of the subnet"
+  default = {
+    cidr_block : "172.16.3.0/24"
+    display_name : "lb_subnet"
+    prohibit_public_ip_on_vnic : false
+    route_table : {
+      display_name = "edge-route-table"
+      description  = "Route table for lb subnet"
+    }
+  }
+}
+
+variable "local_subnet" {
+  default = {
+    cidr_block       = "192.168.0.0/24"
+    destination_type = "CIDR_BLOCK"
+    description      = "Route to local home subnet"
+    route_type       = "STATIC"
+  }
+}
+
+
 variable "edge-security-group" {
-  description = "The details of the security group"
+  description = "Security group for public subnet"
   default = {
     display_name : "edge-security-group"
     description : "Security group for edge subnet"
   }
 }
 
+variable "lb-security-group" {
+  description = "Security group for flexible load balancer"
+  default = {
+    display_name : "lb-security-group"
+    description : "Security group for lb subnet"
+  }
+}
+
 variable "ssh-sg-rule" {
   default = {
-    direction      = "INGRESS"
-    protocol       = "all"
-    source_type    = "CIDR_BLOCK"
-    source         = "0.0.0.0/0"
-    local_source   = "172.16.0.0/16"
-    port           = 22
+    direction    = "INGRESS"
+    protocol     = "all"
+    source_type  = "CIDR_BLOCK"
+    source       = "0.0.0.0/0"
+    local_source = "172.16.0.0/16"
+    port         = 22
   }
 }
 variable "outbound-sg-rule" {
   default = {
-    direction      = "EGRESS"
-    protocol       = "all"
-    destination_type    = "CIDR_BLOCK"
-    destination    = "0.0.0.0/0"
+    direction        = "EGRESS"
+    protocol         = "all"
+    destination_type = "CIDR_BLOCK"
+    destination      = "0.0.0.0/0"
+  }
+}
+
+variable "lb-internet-inbound-sg-rule" {
+  default = {
+    direction   = "INGRESS"
+    protocol    = "all"
+    source_type = "CIDR_BLOCK"
+    source      = "0.0.0.0/0"
+  }
+}
+
+variable "lb-private-outbound-sg-rule" {
+  default = {
+    direction        = "EGRESS"
+    protocol         = "all"
+    destination_type = "CIDR_BLOCK"
+    destination      = "0.0.0.0/0"
+  }
+}
+
+variable "lb-private-inbound-sg-rule" {
+  default = {
+    direction   = "INGRESS"
+    protocol    = "all"
+    source_type = "NETWORK_SECURITY_GROUP"
   }
 }
 
@@ -121,7 +178,7 @@ variable "OCI_VGW_Tailscale" {
 variable "Teleport_Instance" {
   description = "The details of the compute instance"
   default = {
-    display_name : "Teleport_IAP"
+    display_name : "Teleport"
     assign_public_ip : false
     assign_private_dns_record : true
     availability_domain : "zjQw:US-ASHBURN-AD-1"
@@ -137,7 +194,7 @@ variable "Teleport_Instance" {
 variable "Wazuh_Instance" {
   description = "The details of the compute instance"
   default = {
-    display_name : "Wazuh_Siem"
+    display_name : "Wazuh"
     assign_public_ip : false
     assign_private_dns_record : true
     availability_domain : "zjQw:US-ASHBURN-AD-1"
@@ -153,7 +210,7 @@ variable "Wazuh_Instance" {
 variable "Docker_Instance" {
   description = "The details of the compute instance"
   default = {
-    display_name : "Docker_Host"
+    display_name : "Docker"
     assign_public_ip : false
     assign_private_dns_record : true
     availability_domain : "zjQw:US-ASHBURN-AD-1"
@@ -166,3 +223,27 @@ variable "Docker_Instance" {
   }
 }
 
+# ############################################
+# # Flexible Load balancer
+# ############################################
+
+variable "load_balancer" {
+  default = {
+    display_name              = "flexible-lb"
+    ip_mode                   = "IPV4"
+    shape                     = "flexible"
+    is_private                = false
+    maximum_bandwidth_in_mbps = 10
+    minimum_bandwidth_in_mbps = 10
+    listener_name             = "teleport-listener"
+    listener_protocol         = "TCP"
+    listener_port             = 443
+    backend_set_name          = "teleport-backend-set"
+    backend_set_protocol      = "TCP"
+    backend_set_port          = 443
+    health_check_protocol     = "HTTP"
+    health_check_port         = 3000
+    health_check_url_path     = "/healthz"
+    backend_set_policy        = "ROUND_ROBIN"
+  }
+}
