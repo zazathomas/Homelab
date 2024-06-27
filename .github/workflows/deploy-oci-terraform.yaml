@@ -4,9 +4,6 @@ on:
   push:
     branches: [ "main" ]
     paths: [ "Infrastructure/OracleCloud/Terraform/**" ]
-  pull_request:
-    branches: [ "main" ]
-    paths: [ "Infrastructure/OracleCloud/Terraform/**" ]
 
   workflow_dispatch:
 
@@ -37,6 +34,7 @@ jobs:
           echo $OCI_KEY > $HOME/.oci/oci-private.pem && chmod 600 $HOME/.oci/oci-private.pem
           touch $HOME/.oci/config
           echo $OCI_PROFILE > $HOME/.oci/config
+          cd Infrastructure/OracleCloud/Terraform
       - name: setup Terraform
         uses: hashicorp/setup-terraform@v2
       - name: Terraform Init
