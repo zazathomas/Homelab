@@ -15,8 +15,12 @@ env:
 jobs:
   test-oraclecloud-infra:
     runs-on: ubuntu-latest
+    defaults:
+     run:
+       working-directory: ./Infrastructure/OracleCloud/Terraform
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out code
+        uses: actions/checkout@v4
       # Sets up Oracle Cloud & S3 backend access for terraform
       - name: Setup Oracle Cloud & S3 Backend
         run: |
@@ -26,7 +30,6 @@ jobs:
           echo $OCI_KEY > $HOME/.oci/oci-private.pem && chmod 600 $HOME/.oci/oci-private.pem
           touch $HOME/.oci/config
           echo $OCI_PROFILE > $HOME/.oci/config
-          cd Infrastructure/OracleCloud/Terraform
       - name: setup Terraform
         uses: hashicorp/setup-terraform@v2
       - name: Terraform Init
@@ -34,7 +37,7 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
       - name: Terraform Format
-        run: terraform fmt
+        run: terraform fmt -check
       - name: Terraform Plan
         run: terraform plan 
     

@@ -16,11 +16,14 @@ env:
 jobs:
   deploy-oraclecloud-infra:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Infrastructure/OracleCloud/Terraform
     steps:
       - uses: actions/checkout@v4
       - name: setup Tailscale Authkey
         run: |
-          cd Infrastructure/OracleCloud/Terraform/scripts
+          cd $HOME/Infrastructure/OracleCloud/Terraform/scripts
           sed -i "s/example-auth-key/${TAILSCALE_AUTHKEY}/g" install-tailscale.sh
           sed -i "s/example-auth-key/${TAILSCALE_AUTHKEY}/g" install-docker.sh
           sed -i "s/example-auth-key/${TAILSCALE_AUTHKEY}/g" install-teleport.sh
