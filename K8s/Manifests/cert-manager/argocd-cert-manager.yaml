@@ -8,9 +8,13 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/zazathomas/Homelab.git
-    targetRevision: HEAD
-    path: K8s/Manifests/cert-manager/main
+    chart: cert-manager
+    repoURL: https://charts.jetstack.io
+    targetRevision: 1.15.1
+    helm:
+      releaseName: cert-manager
+      valueFiles:
+        - values.yaml
   destination:
     server: "https://kubernetes.default.svc"
     namespace: cert-manager

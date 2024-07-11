@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager-deps
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/zazathomas/Homelab.git
+    targetRevision: HEAD
+    path: K8s/Manifests/cert-manager/main
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: cert-manager
