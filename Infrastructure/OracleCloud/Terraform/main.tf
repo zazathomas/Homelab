@@ -32,6 +32,17 @@ resource "oci_core_subnet" "edge_subnet" {
   route_table_id             = oci_core_route_table.edge_route_table.id
 }
 
+resource "oci_core_subnet" "lb_subnet" {
+  #Required
+  compartment_id = var.compartment_id
+  vcn_id         = oci_core_vcn.cloud-vpc.id
+  cidr_block     = var.lb_subnet.cidr_block
+  #Optional
+  display_name               = var.lb_subnet.display_name
+  prohibit_public_ip_on_vnic = var.lb_subnet.prohibit_public_ip_on_vnic
+  route_table_id             = oci_core_route_table.edge_route_table.id
+}
+
 resource "oci_core_subnet" "private_subnet" {
   #Required
   compartment_id = var.compartment_id
@@ -103,18 +114,43 @@ resource "oci_core_network_security_group" "edge-security-group" {
 # Rules for Edge SG
 resource "oci_core_network_security_group_security_rule" "Tailscale-SG-Rule-SSH" {
   network_security_group_id = oci_core_network_security_group.edge-security-group.id
-  direction      = var.ssh-sg-rule.direction
-  protocol       = var.ssh-sg-rule.protocol
-  source_type    = var.ssh-sg-rule.source_type
-  source         = var.ssh-sg-rule.source
+  direction                 = var.ssh-sg-rule.direction
+  protocol                  = var.ssh-sg-rule.protocol
+  source_type               = var.ssh-sg-rule.source_type
+  source                    = var.ssh-sg-rule.source
+}
+
+
+resource "oci_core_network_security_group" "lb-security-group" {
+  #Required
+  compartment_id = var.compartment_id
+  vcn_id         = oci_core_vcn.cloud-vpc.id
+  #Optional
+  display_name = var.lb-security-group.display_name
+}
+# Rules for LB SG
+resource "oci_core_network_security_group_security_rule" "LB-TCP-Private" {
+  network_security_group_id = oci_core_network_security_group.lb-security-group.id
+  direction                 = var.lb-private-outbound-sg-rule.direction
+  protocol                  = var.lb-private-outbound-sg-rule.protocol
+  destination_type          = var.lb-private-outbound-sg-rule.destination_type
+  destination               = var.private_subnet.cidr_block
+}
+
+resource "oci_core_network_security_group_security_rule" "LB-internet-inbound" {
+  network_security_group_id = oci_core_network_security_group.lb-security-group.id
+  direction                 = var.lb-internet-inbound-sg-rule.direction
+  protocol                  = var.lb-internet-inbound-sg-rule.protocol
+  source_type               = var.lb-internet-inbound-sg-rule.source_type
+  source                    = var.lb-internet-inbound-sg-rule.source
 }
 
 resource "oci_core_network_security_group_security_rule" "Tailscale-SG-Rule-outbound" {
   network_security_group_id = oci_core_network_security_group.edge-security-group.id
-  direction      = var.outbound-sg-rule.direction
-  protocol       = var.outbound-sg-rule.protocol
-  destination_type    = var.outbound-sg-rule.destination_type
-  destination         = var.outbound-sg-rule.destination
+  direction                 = var.outbound-sg-rule.direction
+  protocol                  = var.outbound-sg-rule.protocol
+  destination_type          = var.outbound-sg-rule.destination_type
+  destination               = var.outbound-sg-rule.destination
 }
 
 resource "oci_core_network_security_group" "private-security-group" {
@@ -128,18 +164,26 @@ resource "oci_core_network_security_group" "private-security-group" {
 # Rules for Private SG
 resource "oci_core_network_security_group_security_rule" "private-SG-Rule-outbound" {
   network_security_group_id = oci_core_network_security_group.private-security-group.id
-  direction      = var.outbound-sg-rule.direction
-  protocol       = var.outbound-sg-rule.protocol
-  destination_type    = var.outbound-sg-rule.destination_type
-  destination         = var.outbound-sg-rule.destination
+  direction                 = var.outbound-sg-rule.direction
+  protocol                  = var.outbound-sg-rule.protocol
+  destination_type          = var.outbound-sg-rule.destination_type
+  destination               = var.outbound-sg-rule.destination
 }
 
 resource "oci_core_network_security_group_security_rule" "Local-SG-Rule-SSH" {
   network_security_group_id = oci_core_network_security_group.private-security-group.id
-  direction      = var.ssh-sg-rule.direction
-  protocol       = var.ssh-sg-rule.protocol
-  source_type    = var.ssh-sg-rule.source_type
-  source         = var.ssh-sg-rule.local_source
+  direction                 = var.ssh-sg-rule.direction
+  protocol                  = var.ssh-sg-rule.protocol
+  source_type               = var.lb-private-inbound-sg-rule.source_type
+  source                    = oci_core_network_security_group.lb-security-group.id
+}
+
+resource "oci_core_network_security_group_security_rule" "lb-inbound-to-private" {
+  network_security_group_id = oci_core_network_security_group.private-security-group.id
+  direction                 = var.lb-private-inbound-sg-rule.direction
+  protocol                  = var.lb-private-inbound-sg-rule.protocol
+  source_type               = var.ssh-sg-rule.source_type
+  source                    = var.lb_subnet.cidr_block
 }
 
 # ############################################
@@ -167,15 +211,16 @@ resource "oci_core_instance" "OCI_VGW_Tailscale" {
   }
 
   create_vnic_details {
-    subnet_id = oci_core_subnet.edge_subnet.id
-    skip_source_dest_check = var.OCI_VGW_Tailscale.skip_source_dest_check
-    assign_public_ip = var.OCI_VGW_Tailscale.assign_public_ip
+    subnet_id                 = oci_core_subnet.edge_subnet.id
+    skip_source_dest_check    = var.OCI_VGW_Tailscale.skip_source_dest_check
+    assign_public_ip          = var.OCI_VGW_Tailscale.assign_public_ip
     assign_private_dns_record = var.OCI_VGW_Tailscale.assign_private_dns_record
-    nsg_ids = [oci_core_network_security_group.edge-security-group.id]
+    nsg_ids                   = [oci_core_network_security_group.edge-security-group.id]
   }
 
   metadata = {
-    ssh_authorized_keys = join("\n", [for k in var.OCI_VGW_Tailscale.ssh_authorized_keys : chomp(k)])
+    ssh_authorized_keys = join("\n", [for k in var.OCI_VGW_Tailscale.ssh_authorized_keys : chomp(k)]),
+    user_data           = base64encode("${file("scripts/install-vgw.sh")}")
   }
 }
 
@@ -201,14 +246,15 @@ resource "oci_core_instance" "Teleport_Instance" {
   }
 
   create_vnic_details {
-    subnet_id = oci_core_subnet.private_subnet.id
-    assign_public_ip = var.Teleport_Instance.assign_public_ip
+    subnet_id                 = oci_core_subnet.private_subnet.id
+    assign_public_ip          = var.Teleport_Instance.assign_public_ip
     assign_private_dns_record = var.Teleport_Instance.assign_private_dns_record
-    nsg_ids = [oci_core_network_security_group.private-security-group.id]
+    nsg_ids                   = [oci_core_network_security_group.private-security-group.id]
   }
 
   metadata = {
-    ssh_authorized_keys = join("\n", [for k in var.OCI_VGW_Tailscale.ssh_authorized_keys : chomp(k)])
+    ssh_authorized_keys = join("\n", [for k in var.OCI_VGW_Tailscale.ssh_authorized_keys : chomp(k)]),
+    user_data           = base64encode("${file("scripts/install-teleport.sh")}")
   }
 }
 
@@ -233,14 +279,15 @@ resource "oci_core_instance" "Wazuh_Instance" {
   }
 
   create_vnic_details {
-    subnet_id = oci_core_subnet.private_subnet.id
-    assign_public_ip = var.Wazuh_Instance.assign_public_ip
+    subnet_id                 = oci_core_subnet.private_subnet.id
+    assign_public_ip          = var.Wazuh_Instance.assign_public_ip
     assign_private_dns_record = var.Wazuh_Instance.assign_private_dns_record
-    nsg_ids = [oci_core_network_security_group.private-security-group.id]
+    nsg_ids                   = [oci_core_network_security_group.private-security-group.id]
   }
 
   metadata = {
-    ssh_authorized_keys = join("\n", [for k in var.OCI_VGW_Tailscale.ssh_authorized_keys : chomp(k)])
+    ssh_authorized_keys = join("\n", [for k in var.OCI_VGW_Tailscale.ssh_authorized_keys : chomp(k)]),
+    user_data           = base64encode("${file("scripts/install-tailscale.sh")}")
   }
 }
 
@@ -266,13 +313,68 @@ resource "oci_core_instance" "Docker_Instance" {
   }
 
   create_vnic_details {
-    subnet_id = oci_core_subnet.private_subnet.id
-    assign_public_ip = var.Docker_Instance.assign_public_ip
+    subnet_id                 = oci_core_subnet.private_subnet.id
+    assign_public_ip          = var.Docker_Instance.assign_public_ip
     assign_private_dns_record = var.Docker_Instance.assign_private_dns_record
-    nsg_ids = [oci_core_network_security_group.private-security-group.id]
+    nsg_ids                   = [oci_core_network_security_group.private-security-group.id]
   }
 
   metadata = {
-    ssh_authorized_keys = join("\n", [for k in var.OCI_VGW_Tailscale.ssh_authorized_keys : chomp(k)])
+    ssh_authorized_keys = join("\n", [for k in var.OCI_VGW_Tailscale.ssh_authorized_keys : chomp(k)]),
+    user_data           = base64encode("${file("scripts/install-docker.sh")}")
   }
+}
+
+
+# ############################################
+# # Flexible Load balancer
+# ############################################
+
+resource "oci_load_balancer_load_balancer" "flexible_load_balancer" {
+  #Required
+  compartment_id = var.compartment_id
+  display_name   = var.load_balancer.display_name
+  shape          = var.load_balancer.shape
+  subnet_ids     = [oci_core_subnet.lb_subnet.id]
+  is_private     = var.load_balancer.is_private
+
+  #Optional
+  ip_mode                    = var.load_balancer.ip_mode
+  network_security_group_ids = [oci_core_network_security_group.lb-security-group.id]
+  shape_details {
+    #Required
+    maximum_bandwidth_in_mbps = var.load_balancer.maximum_bandwidth_in_mbps
+    minimum_bandwidth_in_mbps = var.load_balancer.minimum_bandwidth_in_mbps
+  }
+}
+
+resource "oci_load_balancer_listener" "teleport_listener" {
+  #Required
+  default_backend_set_name = oci_load_balancer_backend_set.teleport_backend_set.name
+  load_balancer_id         = oci_load_balancer_load_balancer.flexible_load_balancer.id
+  name                     = var.load_balancer.listener_name
+  port                     = var.load_balancer.listener_port
+  protocol                 = var.load_balancer.listener_protocol
+}
+
+
+resource "oci_load_balancer_backend_set" "teleport_backend_set" {
+  #Required
+  health_checker {
+    #Required
+    protocol = var.load_balancer.health_check_protocol
+    port     = var.load_balancer.health_check_port
+    url_path = var.load_balancer.health_check_url_path
+  }
+  load_balancer_id = oci_load_balancer_load_balancer.flexible_load_balancer.id
+  name             = var.load_balancer.backend_set_name
+  policy           = var.load_balancer.backend_set_policy
+}
+
+resource "oci_load_balancer_backend" "teleport_backend" {
+  #Required
+  backendset_name  = oci_load_balancer_backend_set.teleport_backend_set.name
+  ip_address       = oci_core_instance.Teleport_Instance.private_ip
+  load_balancer_id = oci_load_balancer_load_balancer.flexible_load_balancer.id
+  port             = var.load_balancer.backend_set_port
 }
