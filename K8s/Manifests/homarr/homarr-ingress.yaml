@@ -3,6 +3,8 @@ kind: IngressRoute
 metadata:
   name: homarr-ingress
   namespace: homarr
+  labels:
+    argocd.argoproj.io/instance: homarr
   annotations: 
     kubernetes.io/ingress.class: traefik-external
 spec:
@@ -29,6 +31,8 @@ kind: Middleware
 metadata:
   name: default-headers
   namespace: homarr
+  labels:
+    argocd.argoproj.io/instance: homarr
 spec:
   headers:
     browserXssFilter: true

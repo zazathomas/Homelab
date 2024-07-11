@@ -2,12 +2,16 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: homarr
+  labels:
+    argocd.argoproj.io/instance: homarr
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: homarr-pvc
   namespace: homarr
+  labels:
+    argocd.argoproj.io/instance: homarr
 spec:
   storageClassName: nfs-csi
   accessModes:
@@ -21,6 +25,8 @@ kind: Deployment
 metadata:
   name: homarr
   namespace: homarr
+  labels:
+    argocd.argoproj.io/instance: homarr
 spec:
   replicas: 1
   selector:
@@ -62,6 +68,8 @@ kind: Service
 metadata:
   name: homarr-service
   namespace: homarr
+  labels:
+    argocd.argoproj.io/instance: homarr
 spec:
   selector:
     app: homarr
