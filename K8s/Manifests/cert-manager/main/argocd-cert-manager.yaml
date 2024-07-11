@@ -3,16 +3,19 @@ kind: Application
 metadata:
   name: cert-manager
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     chart: cert-manager
     repoURL: https://charts.jetstack.io
-    targetRevision: 1.14.1
+    targetRevision: 1.15.1
     helm:
       releaseName: cert-manager
       valueFiles:
         - values.yaml
+      namespace: cert-manager
   destination:
     server: "https://kubernetes.default.svc"
     namespace: cert-manager

@@ -5,6 +5,8 @@ metadata:
   namespace: adguard
   annotations: 
     kubernetes.io/ingress.class: traefik-external
+  labels:
+    argocd.argoproj.io/instance: adguard
 spec:
   entryPoints:
     - websecure
@@ -29,6 +31,8 @@ kind: Middleware
 metadata:
   name: default-headers
   namespace: adguard
+  labels:
+    argocd.argoproj.io/instance: adguard
 spec:
   headers:
     browserXssFilter: true

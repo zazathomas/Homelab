@@ -1,50 +1,51 @@
-name: Deploy Oracle Cloud Resources
-
-on:
-  push:
-    branches: [ "main" ]
-    paths: [ "Infrastructure/OracleCloud/Terraform/**" ]
-
-  workflow_dispatch:
-
-env:
-  TF_VAR_compartment_id: ${{ secrets.OCI_TENANCY_OCID }}
-  TFSTATE: ${{ secrets.TFSTATE }}
-  OCI_KEY: ${{ secrets.OCI_KEY }}
-  OCI_PROFILE: ${{ secrets.OCI_PROFILE }} 
-  TAILSCALE_AUTHKEY: ${{ secrets.TAILSCALE_AUTHKEY }}
-jobs:
-  deploy-oraclecloud-infra:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./Infrastructure/OracleCloud/Terraform
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: setup Tailscale Authkey
-        run: |
-          cd $HOME/Infrastructure/OracleCloud/Terraform/scripts
-          sed -i "s/example-auth-key/${TAILSCALE_AUTHKEY}/g" install-tailscale.sh
-          sed -i "s/example-auth-key/${TAILSCALE_AUTHKEY}/g" install-docker.sh
-          sed -i "s/example-auth-key/${TAILSCALE_AUTHKEY}/g" install-teleport.sh
-          sed -i "s/example-auth-key/${TAILSCALE_AUTHKEY}/g" install-vgw.sh
-      # Sets up Oracle Cloud & S3 backend access for terraform
-      - name: Setup Oracle Cloud & S3 Backend
-        run: |
-          mkdir -p $HOME/.aws && touch $HOME/.aws/credentials
-          echo $TFSTATE > $HOME/.aws/credentials
-          mkdir -p $HOME/.oci && touch $HOME/.oci/oci-private.pem
-          echo $OCI_KEY > $HOME/.oci/oci-private.pem && chmod 600 $HOME/.oci/oci-private.pem
-          touch $HOME/.oci/config
-          echo $OCI_PROFILE > $HOME/.oci/config
-          cd Infrastructure/OracleCloud/Terraform
-      - name: setup Terraform
-        uses: hashicorp/setup-terraform@v2
-      - name: Terraform Init
-        run: terraform init
-      - name: Terraform Plan
-        run: terraform plan
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
-    
+#name: Deploy Oracle Cloud Resources
+#
+#on:
+#  push:
+#    branches: [ "main" ]
+#    paths: [ "Infrastructure/OracleCloud/Terraform/**" ]
+#
+#  workflow_dispatch:
+#
+#env:
+#  TF_VAR_compartment_id: ${{ secrets.OCI_TENANCY_OCID }}
+#  TFSTATE: ${{ secrets.TFSTATE }}
+#  OCI_KEY: ${{ secrets.OCI_KEY }}
+#  OCI_PROFILE: ${{ secrets.OCI_PROFILE }} 
+#  TAILSCALE_AUTHKEY: ${{ secrets.TAILSCALE_AUTHKEY }}
+#jobs:
+#  deploy-oraclecloud-infra:
+#    runs-on: ubuntu-latest
+#    defaults:
+#      run:
+#        working-directory: ./Infrastructure/OracleCloud/Terraform
+#    steps:
+#      - name: Check out code
+#        uses: actions/checkout@v4
+#      - name: setup Tailscale Authkey
+#        run: |
+#          cd $HOME/Infrastructure/OracleCloud/Terraform/scripts
+#          sed -i "s/example-auth-key/${TAILSCALE_AUTHKEY}/g" install-tailscale.sh
+#          sed -i "s/example-auth-key/${TAILSCALE_AUTHKEY}/g" install-docker.sh
+#          sed -i "s/example-auth-key/${TAILSCALE_AUTHKEY}/g" install-teleport.sh
+#          sed -i "s/example-auth-key/${TAILSCALE_AUTHKEY}/g" install-vgw.sh
+#      # Sets up Oracle Cloud & S3 backend access for terraform
+#      - name: Setup Oracle Cloud & S3 Backend
+#        run: |
+#          mkdir -p $HOME/.aws && touch $HOME/.aws/credentials
+#          echo $TFSTATE > $HOME/.aws/credentials
+#          mkdir -p $HOME/.oci && touch $HOME/.oci/oci-private.pem
+#          echo $OCI_KEY > $HOME/.oci/oci-private.pem && chmod 600 $HOME/.oci/oci-private.pem
+#          touch $HOME/.oci/config
+#          echo $OCI_PROFILE > $HOME/.oci/config
+#          cd Infrastructure/OracleCloud/Terraform
+#      - name: setup Terraform
+#        uses: hashicorp/setup-terraform@v2
+#      - name: Terraform Init
+#        run: terraform init
+#      - name: Terraform Plan
+#        run: terraform plan
+#      - name: Terraform Apply
+#        run: terraform apply -auto-approve
+#    
+#

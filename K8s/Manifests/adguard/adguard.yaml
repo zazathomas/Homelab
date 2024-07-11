@@ -2,11 +2,15 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: adguard
+  labels:
+    argocd.argoproj.io/instance: adguard
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: adguard-pvc
+  labels:
+    argocd.argoproj.io/instance: adguard
   namespace: adguard
 spec:
   storageClassName: nfs-csi
@@ -21,6 +25,8 @@ kind: Deployment
 metadata:
   name: adguard
   namespace: adguard
+  labels:
+    argocd.argoproj.io/instance: adguard
 spec:
   replicas: 1
   selector:
@@ -66,6 +72,8 @@ kind: Service
 metadata:
   name: adguard-service
   namespace: adguard
+  labels:
+    argocd.argoproj.io/instance: adguard
 spec:
   selector:
     app: adguard
