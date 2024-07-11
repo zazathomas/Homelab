@@ -6,3 +6,10 @@ add the below to the argocd configmap:
     jsonPointers:
     - /metadata/labels/app.kubernetes.io~1instance
     - /metadata/labels```
+
+kubectl create namespace argocd
+kubens argocd
+helm repo add argo https://argoproj.github.io/argo-helm
+helm search repo argo
+helm show values argo/argo-cd > values.yaml
+helm install --values values.yaml argocd argo/argo-cd 
