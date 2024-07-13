@@ -4,7 +4,7 @@ metadata:
   name: homarr
   namespace: argocd
   labels:
-    app.kubernetes.io/appmanager: true
+    app.kubernetes.io/managed-app: correct
   #finalizers:
    # - resources-finalizer.argocd.argoproj.io
 spec:

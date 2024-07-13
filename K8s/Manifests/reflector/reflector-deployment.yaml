@@ -1,10 +1,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: reflector
+  name: reflector-deployment
   namespace: argocd
-  labels:
-    app.kubernetes.io/appmanager: true
   #finalizers:
    # - resources-finalizer.argocd.argoproj.io
 spec:
