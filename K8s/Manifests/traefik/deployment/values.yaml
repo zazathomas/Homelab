@@ -22,7 +22,9 @@ ports:
   websecure:
     tls:
       enabled: true
-      
+    http3:
+      enabled: true
+    advertisedPort: 4443 
 ingressRoute:
   dashboard:
     enabled: false
