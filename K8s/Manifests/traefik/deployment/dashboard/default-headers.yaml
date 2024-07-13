@@ -1,34 +1,8 @@
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: loki-ingress
-  namespace: monitoring
-  annotations: 
-    kubernetes.io/ingress.class: traefik-external
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`www.loki.z3cyber.pro`)
-      kind: Rule
-      services:
-        - name: loki
-          port: 3100
-    - match: Host(`loki.z3cyber.pro`)
-      kind: Rule
-      services:
-        - name: loki
-          port: 3100
-      middlewares:
-        - name: default-headers
-  tls:
-    secretName: production-cert-tls
----
-apiVersion: traefik.io/v1alpha1
+apiVersion: traefik.io/v1alpha1 # traefik.containo.us/v1alpha1 depreciated in Traefik v3
 kind: Middleware
 metadata:
   name: default-headers
-  namespace: monitoring
+  namespace: traefik
 spec:
   headers:
     browserXssFilter: true
