@@ -10,7 +10,9 @@ spec:
   source:
     repoURL: https://github.com/zazathomas/Homelab.git
     targetRevision: HEAD
-    path: K8s/Manifests
+    path: K8s/Manifests/cert-manager
+    directory:
+      recurse: true
   destination:
     server: "https://kubernetes.default.svc"
 #  syncPolicy:
