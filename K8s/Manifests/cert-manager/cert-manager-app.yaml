@@ -1,19 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: traefik-deployment
+  name: cert-manager
   namespace: argocd
   #finalizers:
-   # - resources-finalizer.argocd.argoproj.io
+  #  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/zazathomas/Homelab.git
-    targetRevision: HEAD
-    path: K8s/Manifests/traefik/deployment
+    chart: cert-manager
+    repoURL: https://charts.jetstack.io
+    targetRevision: 1.15.1
+    helm:
+      releaseName: cert-manager
+      valueFiles:
+        - values.yaml
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: traefik
+    namespace: cert-manager
 #  syncPolicy:
 #    automated:
 #      prune: true

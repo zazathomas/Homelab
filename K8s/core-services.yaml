@@ -1,25 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: core-services
   namespace: argocd
-  labels:
-    app.kubernetes.io/managed-app: correct
   #finalizers:
-  #  - resources-finalizer.argocd.argoproj.io
+   # - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    chart: cert-manager
-    repoURL: https://charts.jetstack.io
-    targetRevision: 1.15.1
-    helm:
-      releaseName: cert-manager
-      valueFiles:
-        - values.yaml
+    repoURL: https://github.com/zazathomas/Homelab.git
+    targetRevision: HEAD
+    path: K8s/Manifests
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: cert-manager
 #  syncPolicy:
 #    automated:
 #      prune: true

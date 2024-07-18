@@ -1,16 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: reflector-deployment
+  name: reflector
   namespace: argocd
   #finalizers:
-   # - resources-finalizer.argocd.argoproj.io
+  #  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/zazathomas/Homelab.git
-    targetRevision: HEAD
-    path: K8s/Manifests/reflector/deployment
+    chart: reflector
+    repoURL: https://emberstack.github.io/helm-charts
+    targetRevision: 7.1.288
+    helm:
+      releaseName: reflector
+      valueFiles:
+        - values.yaml
   destination:
     server: "https://kubernetes.default.svc"
     namespace: kube-system
