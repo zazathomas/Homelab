@@ -22,5 +22,5 @@ webhook:
     tag: 1.15.1
 cainjector:
   image:
-    repository: zazathomas/cg-cert-cainjector-webhook
+    repository: zazathomas/cg-cert-manager-cainjector
     tag: 1.15.1
