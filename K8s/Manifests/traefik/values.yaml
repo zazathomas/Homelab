@@ -1,10 +1,17 @@
 globalArguments:
-  - "--global.sendanonymoususage=false"
-  - "--global.checknewversion=false"
+- "--global.sendanonymoususage=false"
+- "--global.checknewversion=false"
 
 additionalArguments:
-  - "--serversTransport.insecureSkipVerify=true"
-  - "--log.level=INFO"
+- "--serversTransport.insecureSkipVerify=true"
+- "--log.level=INFO"
+- '--providers.kubernetescrd.ingressClass=traefik-external'	
+- '--providers.kubernetescrd.allowExternalNameServices=true'
+- '--providers.kubernetesingress.allowExternalNameServices=true'	
+- '--entryPoints.web.http.redirections.entryPoint.to=:443'	
+- '--entryPoints.web.http.redirections.entryPoint.scheme=https'	
+- '--entryPoints.web.http.redirections.entryPoint.priority=10'
+- '--entryPoints.websecure.http3'
 
 deployment:
   enabled: true
@@ -52,3 +59,10 @@ service:
     loadBalancerIP: 192.168.0.3
   loadBalancerSourceRanges: []
   externalIPs: []
+
+
+# -- Create a default IngressClass for Traefik
+ingressClass:
+  enabled: true
+  isDefaultClass: true
+  name: traefik-external
