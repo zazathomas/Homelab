@@ -8,3 +8,19 @@ podDnsConfig:
   nameservers:
     - 1.1.1.1
     - 9.9.9.9
+
+image:
+  repository: zazathomas/cg-cert-manager-controller
+  tag: 1.15.1
+acmesolver:
+  image:
+    repository: zazathomas/cg-cert-manager-acmesolver
+    tag: 1.15.1
+webhook:
+  image:
+    repository: zazathomas/cg-cert-manager-webhook
+    tag: 1.15.1
+cainjector:
+  image:
+    repository: zazathomas/cg-cert-cainjector-webhook
+    tag: 1.15.1

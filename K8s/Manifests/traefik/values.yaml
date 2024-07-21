@@ -1,3 +1,13 @@
+image:
+  # -- Traefik image host registry
+  registry: docker.io
+  # -- Traefik image repository
+  repository: zazathomas/cg-traefik
+  # -- defaults to appVersion
+  tag: 3.0.4
+  # -- Traefik image pull policy
+  pullPolicy: IfNotPresent
+
 globalArguments:
 - "--global.sendanonymoususage=false"
 - "--global.checknewversion=false"
