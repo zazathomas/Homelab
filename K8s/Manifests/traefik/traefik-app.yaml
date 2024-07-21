@@ -3,20 +3,21 @@ kind: Application
 metadata:
   name: traefik
   namespace: argocd
-  labels:
-    app.kubernetes.io/managed-app: correct
   #finalizers:
    # - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    chart: traefik
+  sources:
+  - chart: traefik
     repoURL: https://traefik.github.io/charts
     targetRevision: 29.0.1
     helm:
       releaseName: traefik
       valueFiles:
-        - values.yaml
+      - $values/K8s/Manifests/traefik/values.yaml
+  - repoURL: 'https://github.com/zazathomas/Homelab'
+    targetRevision: HEAD
+    ref: values
   destination:
     server: "https://kubernetes.default.svc"
     namespace: traefik

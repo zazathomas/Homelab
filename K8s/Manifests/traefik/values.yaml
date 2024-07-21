@@ -15,15 +15,6 @@ globalArguments:
 additionalArguments:
 - "--serversTransport.insecureSkipVerify=true"
 - "--log.level=INFO"
-- '--providers.kubernetescrd.ingressClass=traefik-external'	
-- '--providers.kubernetescrd.allowExternalNameServices=true'
-- '--providers.kubernetesingress.allowExternalNameServices=true'	
-- '--entryPoints.web.http.redirections.entryPoint.to=:443'	
-- '--entryPoints.web.http.redirections.entryPoint.scheme=https'	
-- '--entryPoints.web.http.redirections.entryPoint.priority=10'
-- '--entryPoints.websecure.http3'
-- "--global.sendanonymoususage=false"
-- "--global.checknewversion=false"
 
 deployment:
   enabled: true

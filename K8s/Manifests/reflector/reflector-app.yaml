@@ -7,14 +7,17 @@ metadata:
   #  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    chart: reflector
+  sources:
+  - chart: reflector
     repoURL: https://emberstack.github.io/helm-charts
     targetRevision: 7.1.288
     helm:
       releaseName: reflector
       valueFiles:
-        - values.yaml
+      - $values/K8s/Manifests/reflector/values.yaml
+  - repoURL: 'https://github.com/zazathomas/Homelab'
+    targetRevision: HEAD
+    ref: values
   destination:
     server: "https://kubernetes.default.svc"
     namespace: kube-system
