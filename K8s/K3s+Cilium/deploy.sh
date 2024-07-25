@@ -143,6 +143,7 @@ kubectl get svc -n whoami
 kubectl get pods --all-namespaces -o wide
 
 # Step 5: Test Cilium
+echo -e " \033[32;5mTesting Cilium Connectivity\033[0m"
 cilium connectivity test
 kubectl delete ns cilium-test
 
