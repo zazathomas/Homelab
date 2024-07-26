@@ -34,6 +34,9 @@ alertmanager:
   enabled: true
   ingress:
     enabled: false
+  image:
+    repository: zazathomas/cg-prometheus-alertmanager
+    tag: 0.27.0
 
 grafana:
   enabled: true
@@ -48,6 +51,9 @@ grafana:
     existingSecret: grafana-admin-credentials
     userKey: admin-user
     passwordKey: admin-password
+  image:
+    repository: zazathomas/cg-grafana
+    tag: 11.1.0
 
 kubeApiServer:
   enabled: true
@@ -144,6 +150,9 @@ prometheus-node-exporter:
       cpu: 250m
     limits:
       memory: 2048Mi
+  image:
+    repository: zazathomas/cg-prometheus-node-exporter
+    tag: 1.8.2
 
 prometheusOperator:
   enabled: true
@@ -169,6 +178,9 @@ prometheus:
     walCompression: true
     scrapeInterval: 30s
     evaluationInterval: 30s
+  image:
+      repository: zazathomas/cg-prometheus
+      tag: 2.53.1
 
 thanosRuler:
   enabled: false
