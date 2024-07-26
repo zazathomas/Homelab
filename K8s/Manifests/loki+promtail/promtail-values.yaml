@@ -6,4 +6,5 @@ config:
 
 promtail:
   image:
-    tag: 2.9.6
+    repository: 'zazathomas/cg-promtail'
+    tag: 3.1.0
