@@ -33,10 +33,12 @@ alertmanager:
   fullnameOverride: alertmanager
   enabled: true
   ingress:
-    enabled: false
-  image:
-    repository: zazathomas/cg-prometheus-alertmanager
-    tag: 0.27.0
+    enabled: 
+  alertmanagerSpec:
+    image:
+      registry: docker.io
+      repository: zazathomas/cg-prometheus-alertmanager
+      tag: 0.27.0
 
 grafana:
   enabled: true
@@ -151,18 +153,28 @@ prometheus-node-exporter:
     limits:
       memory: 2048Mi
   image:
+    registry: docker.io
     repository: zazathomas/cg-prometheus-node-exporter
     tag: 1.8.2
 
 prometheusOperator:
   enabled: true
   prometheusConfigReloader:
+    image:
+      registry: docker.io
+      repository: zazathomas/cg-prometheus-config-reloader
+      tag: "0.75.2"
     resources:
       requests:
         cpu: 200m
         memory: 50Mi
       limits:
         memory: 100Mi
+  image:
+    registry: docker.io
+    repository: zazathomas/cg-prometheus-operator
+    tag: "0.75.2"
+
 
 prometheus:
   enabled: true
@@ -178,9 +190,10 @@ prometheus:
     walCompression: true
     scrapeInterval: 30s
     evaluationInterval: 30s
-  image:
-      repository: zazathomas/cg-prometheus
-      tag: 2.53.1
+    image:
+        registry: docker.io
+        repository: zazathomas/cg-prometheus
+        tag: 2.53.1
 
 thanosRuler:
   enabled: false
