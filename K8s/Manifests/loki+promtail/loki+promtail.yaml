@@ -14,14 +14,14 @@ spec:
     helm:
       releaseName: loki
       valueFiles:
-      - $values/K8s/Manifests/loki-promtail/loki-values.yaml
+      - $values/K8s/Manifests/loki+promtail/loki-values.yaml
   - chart: promtail
     repoURL: https://grafana.github.io/helm-charts
     targetRevision: 6.16.4
     helm:
       releaseName: promtail
       valueFiles:
-      - $values/K8s/Manifests/loki-promtail/promtail-values.yaml
+      - $values/K8s/Manifests/loki+promtail/promtail-values.yaml
   - repoURL: 'https://github.com/zazathomas/Homelab'
     targetRevision: HEAD
     ref: values
