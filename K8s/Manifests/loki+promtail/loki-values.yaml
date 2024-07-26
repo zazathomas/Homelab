@@ -9,9 +9,9 @@ loki:
   storage:
     type: 'filesystem'
   useTestSchema: false
+  storage_config:
+  filesystem:
+    directory: /tmp/loki/
 singleBinary:
   replicas: 1
 deploymentMode: 'SingleBinary<->SimpleScalable' 
-storage_config:
-  filesystem:
-    directory: /tmp/loki/
