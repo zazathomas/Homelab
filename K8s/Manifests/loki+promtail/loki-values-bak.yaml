@@ -1,0 +1,22 @@
+nameOverride: "loki"
+loki:
+  auth_enabled: false
+  image:  
+    tag: 2.9.6
+  commonConfig:
+    replication_factor: 1
+  storage:
+    type: 'filesystem'
+  useTestSchema: true
+  testSchemaConfig:
+    configs:
+      - from: 2024-04-01
+        store: tsdb
+        object_store: filesystem
+        schema: v13
+        index:
+          prefix: index_
+          period: 24h
+singleBinary:
+  replicas: 1
+deploymentMode: 'SingleBinary<->SimpleScalable' 
