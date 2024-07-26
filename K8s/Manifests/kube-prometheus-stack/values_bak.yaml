@@ -65,6 +65,7 @@ kubeControllerManager:
   enabled: true
   endpoints: # ips of servers 
     - 192.168.0.39
+
 coreDns:
   enabled: true
 
@@ -86,7 +87,7 @@ kubeScheduler:
     - 192.168.0.39
 
 kubeProxy:
-  enabled: true
+  enabled: false
   endpoints: # ips of servers
     - 192.168.0.39
 
@@ -167,8 +168,15 @@ prometheus:
     retention: 6h
     enableAdminAPI: true
     walCompression: true
-    scrapeInterval: 30s
-    evaluationInterval: 30s
 
 thanosRuler:
   enabled: false
+
+storageSpec:
+  volumeClaimTemplate:
+    spec:
+      storageClassName: nfs-csi
+      accessModes: ["ReadWriteMany"]
+      resources:
+        requests:
+          storage: 50Gi
