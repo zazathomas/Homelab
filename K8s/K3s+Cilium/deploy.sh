@@ -4,7 +4,9 @@
 #############################################
 
 # Cluster name
-clusterName="Zazas-Homelab"
+clusterName="zazas-homelab"
+# K3S Version
+k3sVersion="v1.30.3+k3s1"
 
 # Set the IP addresses of the master and work nodes
 master1=192.168.0.39
@@ -41,6 +43,10 @@ certName=id_rsa
 # For testing purposes - in case time is wrong due to VM snapshots
 sudo timedatectl set-ntp off
 sudo timedatectl set-ntp on
+
+# Change permissions on SSH key
+chmod 600 $certName $certName.pub
+
 
 # Move SSH certs to ~/.ssh and change permissions
 cp /home/$user/{$certName,$certName.pub} /home/$user/.ssh
@@ -95,7 +101,8 @@ k3sup install \
   --sudo \
   --local-path $HOME/.kube/config \
   --ssh-key $HOME/.ssh/$certName \
-  --context $clusterName
+  --context $clusterName \
+  --k3s-version $k3sVersion
 echo -e " \033[32;5mFirst Node bootstrapped successfully!\033[0m"
 
 
@@ -114,6 +121,7 @@ for newagent in "${workers[@]}"; do
     --user $user \
     --sudo \
     --server-ip $master1 \
+    --k3s-version $k3sVersion \
     --ssh-key $HOME/.ssh/$certName \
     --k3s-extra-args "--node-label \"worker=true\""
   echo -e " \033[32;5mAgent node joined successfully!\033[0m"
@@ -144,7 +152,7 @@ kubectl get pods --all-namespaces -o wide
 
 # Step 5: Test Cilium
 echo -e " \033[32;5mTesting Cilium Connectivity\033[0m"
+
 cilium connectivity test
-kubectl delete ns cilium-test
 
 echo -e " \033[32;5mHappy Kubing! Access whoami at EXTERNAL-IP above\033[0m"

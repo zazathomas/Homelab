@@ -1,6 +1,6 @@
 # Setup an nfs server 
 ```
-sudo apt-get install nfs-kernel-server
+sudo apt-get install nfs-kernel-server -y
 sudo mkdir -p /mnt/nfs_share
 sudo chown nobody:nogroup /mnt/nfs_share
 sudo chmod 0777 /mnt/nfs_share
