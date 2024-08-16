@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
         - name: adguard
-          image: adguard/adguardhome:latest
+          image: adguard/adguardhome:v0.107.52
           volumeMounts:
             - name: adguard-pvc
               mountPath: "/opt/adguardhome/work"
