@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
         - name: homarr
-          image: ghcr.io/ajnart/homarr:latest
+          image: ghcr.io/ajnart/homarr:v0.15.3
           volumeMounts:
             - name: homarr-pvc
               mountPath: "/app/data/configs"
