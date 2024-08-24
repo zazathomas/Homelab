@@ -6,17 +6,20 @@ ipam:
   operator:
     clusterPoolIPv4PodCIDRList: "10.244.0.0/16"
 
-k8sServiceHost: "10.0.0.4" # This IP should be the IP of the master node
+k8sServiceHost: "10.0.0.4" # This IP should be the IP of the control plane node
 k8sServicePort: "6443"
+
+# Enable Gateway API
+gatewayAPI:
+  enabled: true
+# Enable envoy
+envoy:
+  enabled: true
 
 # Increase rate limit when doing L2 announcements
 k8sClientRateLimit:
   qps: 50
   burst: 200
-
-# Disable envoy
-envoy:
-  enabled: false
   
 operator:
   replicas: 1  # Uncomment this if you only have one node

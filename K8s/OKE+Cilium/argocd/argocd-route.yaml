@@ -1,0 +1,16 @@
+# ArgoCD UI
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: argocd-route
+  namespace: argocd
+spec:
+  parentRefs:
+  - name: cilium-gw
+    namespace: cilium
+  hostnames:
+  - "argocd-prod.z3cyber.pro"
+  rules:
+  - backendRefs:
+    - name: argocd-server
+      port: 80
