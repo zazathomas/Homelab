@@ -1,0 +1,56 @@
+# Keycloak
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: keycloak
+  namespace: keycloak
+spec:
+  parentRefs:
+  - name: cilium-gateway # gateway name
+    namespace: kube-system
+    sectionName: https
+  hostnames:
+  - "sso.example.link"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /auth
+    backendRefs:
+    - name: keycloak
+      port: 80
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /js
+    backendRefs:
+    - name: keycloak
+      port: 80
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /realms
+    backendRefs:
+    - name: keycloak
+      port: 80
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /resources
+    backendRefs:
+    - name: keycloak
+      port: 80
+  - matches:
+    - path:
+        type: Exact
+        value: /robots.txt
+    backendRefs:
+    - name: keycloak
+      port: 80
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /admin
+    backendRefs:
+    - name: keycloak
+      port: 80

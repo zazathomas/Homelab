@@ -12,9 +12,10 @@ spec:
   dnsNames:
   - "z3cyber.pro"
   - "*.z3cyber.pro"
+  - "*.teleport.z3cyber.pro"
   secretTemplate:
     annotations:
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
-      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "traefik,adguard,homarr,argocd,media-server,monitoring,logging,kube-system"  
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "cilium"  
       reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true" 
-      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "traefik,adguard,homarr,argocd,media-server,monitoring,logging,kube-system"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "cilium"

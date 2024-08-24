@@ -1,20 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sealed-secrets-app
+  name: reflector
   namespace: argocd
   #finalizers:
-   # - resources-finalizer.argocd.argoproj.io
+  #  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    repoURL: https://github.com/zazathomas/Homelab.git
-    targetRevision: HEAD
-    path: K8s/OKE+Cilium/sealed-secrets
-    directory:
-      recurse: true
+  sources:
+  - chart: reflector
+    repoURL: https://emberstack.github.io/helm-charts
+    targetRevision: 7.1.288
+    helm:
+      releaseName: reflector
   destination:
     server: "https://kubernetes.default.svc"
+    namespace: kube-system
 #  syncPolicy:
 #    automated:
 #      prune: true

@@ -20,9 +20,12 @@ k8sClientRateLimit:
   qps: 50
   burst: 200
 
-# Disable envoy
+# Enable Gateway API
+gatewayAPI:
+  enabled: true
+# Enable envoy
 envoy:
-  enabled: false
+  enabled: true
   
 operator:
   # replicas: 1  # Uncomment this if you only have one node
