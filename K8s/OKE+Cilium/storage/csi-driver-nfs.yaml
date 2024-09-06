@@ -8,11 +8,11 @@ metadata:
 spec:
   project: default
   source:
-   -  chart: csi-driver-nfs
-      repoURL: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
-      targetRevision: 4.7.0
-      helm:
-        releaseName: csi-driver-nfs
+    chart: csi-driver-nfs
+    repoURL: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
+    targetRevision: 4.7.0
+    helm:
+      releaseName: csi-driver-nfs
   destination:
     server: "https://kubernetes.default.svc"
     namespace: kube-system
