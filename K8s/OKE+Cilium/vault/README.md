@@ -72,7 +72,7 @@ To do this, create a JSON file group.json that will contain the entities of the 
 
 example_group_id=$(vault read -format=json identity/group/name/group-name | jq -r ".data.id")
 curl \
-    --header "X-Vault-Token: hvs.PjCYLqBpCKfxOjqHrRKXc0Eq" \
+    --header "X-Vault-Token: sample-token" \
     --request POST \
     --data @group.json \
     https://servername:8200/v1/identity/group/id/${example_group_id}
