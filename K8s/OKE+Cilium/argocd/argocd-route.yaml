@@ -11,6 +11,15 @@ spec:
   hostnames:
   - "argocd-prod.z3cyber.pro"
   rules:
-  - backendRefs:
-    - name: argocd-server
-      port: 80
+  #- matches:
+  #    - headers:
+  #        - type: Exact
+  #          name: allow-access
+  #          value: zazilo
+   - backendRefs:
+      - name: argocd-server
+        port: 80
+
+
+
+      

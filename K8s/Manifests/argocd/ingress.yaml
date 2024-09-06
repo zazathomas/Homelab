@@ -13,12 +13,12 @@ spec:
       kind: Rule
       services:
         - name: argocd-server
-          port: 443
+          port: 80
     - match: Host(`argocd.z3cyber.pro`)
       kind: Rule
       services:
         - name: argocd-server
-          port: 443
+          port: 80
       middlewares:
         - name: default-headers
   tls:
