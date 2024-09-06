@@ -1,0 +1,11 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-csi-storageclass
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 10.0.10.39
+  share: /mnt/nfs_share
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+allowVolumeExpansion: true

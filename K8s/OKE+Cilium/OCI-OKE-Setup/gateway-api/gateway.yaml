@@ -8,7 +8,6 @@ spec:
   listeners:
     - name: http
       protocol: HTTP
-      hostname: "*.z3cyber.pro"
       port: 80
       allowedRoutes:
         namespaces:
@@ -27,8 +26,18 @@ spec:
             group: ""
             name: production-cert-tls
             namespace: cilium
-    - name: tls
+    - name: tls-teleport
       protocol: TLS
+      hostname: "teleport.z3cyber.pro"
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Passthrough
+    - name: tls-teleport-wildcard
+      protocol: TLS
+      hostname: "*.teleport.z3cyber.pro"
       port: 443
       allowedRoutes:
         namespaces:

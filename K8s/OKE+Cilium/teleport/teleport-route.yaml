@@ -1,9 +1,9 @@
-# ArgoCD UI
+# Teleport UI
 apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: TLSRoute
 metadata:
   name: teleport-route
-  namespace: argocd
+  namespace: teleport
 spec:
   parentRefs:
   - name: cilium-gw
@@ -13,6 +13,5 @@ spec:
   - "*.teleport.z3cyber.pro"
   rules:
    - backendRefs:
-      - name: argocd-server
-        kind: ExternalName
-        port: 443
+      - name: teleport
+        port: 80

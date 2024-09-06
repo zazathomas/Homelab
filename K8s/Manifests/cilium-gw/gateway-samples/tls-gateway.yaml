@@ -1,0 +1,16 @@
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: Gateway
+metadata:
+  name: cilium-tls-gateway
+spec:
+  gatewayClassName: cilium
+  listeners:
+    - name: https
+      hostname: "nginx.cilium.rocks"
+      port: 443
+      protocol: TLS
+      tls:
+        mode: Passthrough
+      allowedRoutes:
+        namespaces:
+          from: All

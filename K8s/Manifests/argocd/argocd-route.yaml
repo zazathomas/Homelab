@@ -9,7 +9,7 @@ spec:
   - name: cilium-gw
     namespace: cilium
   hostnames:
-  - "argocd.z3cyber.pro"
+  - "argocd-dev.z3cyber.pro"
   rules:
   - matches:
     - path:

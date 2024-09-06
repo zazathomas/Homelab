@@ -7,7 +7,7 @@ To use this script, copy over all files in this directory to your local machine,
 Modify the Ip addresses in the deploy.sh script to match your master and worker nodes.
 
 Copy over your private key for the master and worker nodes to this directory and rename to id_rsa if not already named that. 
-Modify the clustername variable as required. 
+Modify the cluster name variable as required. 
 Modify the user as required for the master and worker nodes.
 Modify the network interface if it is different from eth0
 

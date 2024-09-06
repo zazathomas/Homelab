@@ -1,6 +1,6 @@
 #!/bin/bash
 TELEPORT_EDITION="oss"
-TELEPORT_VERSION="16.0.0"
+TELEPORT_VERSION="16.2.0"
 curl https://goteleport.com/static/install.sh | bash -s ${TELEPORT_VERSION?} ${TELEPORT_EDITION?}
 
 # Configure Teleport by copying the teleport.yaml file to /etc/teleport.yaml. Generate https keypair & copy to /etc/teleport/privkey.pem and /etc/teleport/fullchain.pem

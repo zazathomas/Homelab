@@ -29,7 +29,7 @@ spec:
             namespace: cilium
     - name: tls
       protocol: TLS
-      hostname: "teleport.z3cyber.pro"
+      hostname: "proxmox.local"
       port: 443
       allowedRoutes:
         namespaces:
