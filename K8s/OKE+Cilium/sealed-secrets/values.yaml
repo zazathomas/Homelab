@@ -1,2 +1,3 @@
 fullnameOverride: "sealed-secrets-controller"
-keyrenewperiod: "7200h30m"
+keyrenewperiod: "0"
+# keyrenewperiod: "7200h30m"
