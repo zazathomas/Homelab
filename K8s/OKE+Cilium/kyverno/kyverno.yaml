@@ -1,26 +1,26 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sealed-secrets
+  name: kyverno
   namespace: argocd
   #finalizers:
   #  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
-  - chart: sealed-secrets
-    repoURL: https://bitnami-labs.github.io/sealed-secrets
-    targetRevision: 2.16.1
+  - chart: kyverno
+    repoURL: https://kyverno.github.io/kyverno
+    targetRevision: 3.2.6
     helm:
-      releaseName: sealed-secrets
+      releaseName: kyverno
       valueFiles:
-      - $values/K8s/OKE+Cilium/sealed-secrets/values.yaml
+      - $values/K8s/OKE+Cilium/kyverno/values.yaml
   - repoURL: 'https://github.com/zazathomas/Homelab'
     targetRevision: HEAD
     ref: values
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: kube-system
+    namespace: kyverno
   syncPolicy:
 #    automated:
 #      prune: true
