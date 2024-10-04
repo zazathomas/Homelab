@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: keycloak
+  name: keycloak-service
+  labels:
+    app: keycloak
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  selector:
+    app: keycloak
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: keycloak
+  labels:
+    app: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:25.0.6
+          args: ["start-dev"]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 498Mi
+            limits:
+              cpu: 500m
+              memory: 600Mi
+          env:
+            - name: KEYCLOAK_ADMIN
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: user
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: password
+            - name: KC_DB
+              value: dev-file
+            - name: KC_PROXY_HEADERS
+              value: "xforwarded"
+            - name: KC_HOSTNAME
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: hostname
+            - name: KC_HTTP_ENABLED
+              value: "true"
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /realms/master
+              port: 8080
+          volumeMounts:
+          - name: keycloak-pvc
+            mountPath: /opt/keycloak/data/h2
+      volumes:
+          - name: keycloak-pvc
+            persistentVolumeClaim:
+              claimName: keycloak-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: keycloak-pvc
+  namespace: keycloak
+  labels:
+    app: keycloak
+spec:
+  storageClassName: nfs-csi
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi

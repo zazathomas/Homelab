@@ -7,10 +7,10 @@ metadata:
 spec:
   parentRefs:
   - name: cilium-gw
-    namespace: cilium
+    namespace: gateway
   hostnames:
-  - "teleport.z3cyber.pro"
-  - "*.teleport.z3cyber.pro"
+  - "access.z3cyber.pro"
+  - "*.access.z3cyber.pro"
   rules:
    - backendRefs:
       - name: teleport

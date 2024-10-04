@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: teleport
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: teleport
+  namespace: teleport
+spec:
+  ports:
+  - name: app
+    port: 80
+    protocol: TCP
+    targetPort: 443
+  clusterIP: None
+  type: ClusterIP
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: teleport
+  namespace: teleport
+  labels:
+    kubernetes.io/service-name: teleport
+    endpointslice.kubernetes.io/managed-by: cluster-admins
+addressType: IPv4
+endpoints:
+  - addresses:
+      - 10.0.10.39
+    # https://github.com/argoproj/argo-cd/issues/15554
+    conditions:
+      ready: true
+ports:
+  - name: app
+    port: 443
+    protocol: TCP

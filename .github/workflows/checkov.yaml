@@ -25,7 +25,7 @@
           id: checkov
           uses: bridgecrewio/checkov-action@master
           with:
-            directory: K8s/Manifests
+            directory: K8s/OKE+Cilium
             framework: kubernetes
           continue-on-error: true
         - name: Upload SARIF file

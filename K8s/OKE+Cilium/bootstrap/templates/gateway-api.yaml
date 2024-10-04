@@ -1,26 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kyverno
+  name: gateway-api
   namespace: argocd
   #finalizers:
-  #  - resources-finalizer.argocd.argoproj.io
+   # - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  sources:
-  - chart: kyverno
-    repoURL: https://kyverno.github.io/kyverno
-    targetRevision: 3.2.7
-    helm:
-      releaseName: kyverno
-      valueFiles:
-      - $values/K8s/OKE+Cilium/kyverno/values.yaml
-  - repoURL: 'https://github.com/zazathomas/Homelab'
+  source:
+    repoURL: https://github.com/zazathomas/Homelab.git
     targetRevision: HEAD
-    ref: values
+    path: K8s/OKE+Cilium/gateway-api
+    directory:
+      recurse: true
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: kyverno
   syncPolicy:
 #    automated:
 #      prune: true
@@ -31,4 +25,3 @@ spec:
 #      - Validate=true
 #      - PrunePropagationPolicy=foreground
 #      - PruneLast=true
-

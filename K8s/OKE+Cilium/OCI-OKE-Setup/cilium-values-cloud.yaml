@@ -6,15 +6,39 @@ ipam:
   operator:
     clusterPoolIPv4PodCIDRList: "10.244.0.0/16"
 
-k8sServiceHost: "10.0.0.4" # This IP should be the IP of the control plane node
+k8sServiceHost: "10.0.0.13" # This IP should be the IP of the control plane node
 k8sServicePort: "6443"
 
 # Enable Gateway API
 gatewayAPI:
   enabled: true
+  externalTrafficPolicy: Local
+  #xffNumTrustedHops: 1
+  
 # Enable envoy
 envoy:
   enabled: true
+  rollOutPods: true
+  securityContext:
+    capabilities:
+      keepCapNetBindService: true
+      envoy:
+      - NET_BIND_SERVICE
+      - CAP_NET_ADMIN
+      - CAP_BPF
+
+# Setup mutual authentication
+authentication:
+  mutual:
+    spire:
+      enabled: true
+      install:
+        enabled: true
+
+encryption:
+  enabled: true
+  type: wireguard
+
 
 # Increase rate limit when doing L2 announcements
 k8sClientRateLimit:
