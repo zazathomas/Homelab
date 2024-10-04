@@ -12,8 +12,8 @@ spec:
   - "neuvector.z3cyber.pro"
   rules:
    - backendRefs:
-      - name: argocd-server
-        port: 80
+      - name: neuvector-service-webui
+        port: 8443
 
 
 
