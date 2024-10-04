@@ -1,0 +1,33 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: block-flannel-kube-proxy-pods
+spec:
+  rules:
+    - name: block-flannel-pods
+      match:
+        resources:
+          kinds:
+            - DaemonSet
+      preconditions:
+        all:
+          - key: "{{ request.object.metadata.labels.app }}"
+            operator: Equals
+            value: "flannel"
+      validate:
+        message: "Pods with label 'app=flannel' are not allowed."
+        deny: {}
+
+    - name: block-kube-proxy-pods
+      match:
+        resources:
+          kinds:
+            - DaemonSet
+      preconditions:
+        all:
+          - key: "{{ request.object.metadata.labels.k8s-app }}"
+            operator: Equals
+            value: "kube-proxy"
+      validate:
+        message: "Pods with label 'k8s-app=kube-proxy' are not allowed."
+        deny: {}

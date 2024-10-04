@@ -1,4 +1,3 @@
 Scribbles/
-*.terraform*
-*.terraform.lock.hcl*
-K8s/OKE+Cilium/OCI-OKE-Setup/deploy-vms
+Infra/
+K8s/OKE+Cilium/echoserver

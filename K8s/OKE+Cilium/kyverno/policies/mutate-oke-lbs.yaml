@@ -10,7 +10,7 @@ spec:
         kinds:
         - Service
         namespaces:
-        - cilium
+        - gateway
     preconditions:
       all:
       - key: "{{ request.object.spec.type }}"

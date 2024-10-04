@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager-app
+  name: cert-manager-bundle
   namespace: argocd
   #finalizers:
    # - resources-finalizer.argocd.argoproj.io
@@ -15,13 +15,13 @@ spec:
       recurse: true
   destination:
     server: "https://kubernetes.default.svc"
-#  syncPolicy:
+  syncPolicy:
 #    automated:
 #      prune: true
 #      selfHeal: true
 #      allowEmpty: false
-#    syncOptions:
-#      - CreateNamespace=false
+    syncOptions:
+      - CreateNamespace=true
 #      - Validate=true
 #      - PrunePropagationPolicy=foreground
 #      - PruneLast=true
