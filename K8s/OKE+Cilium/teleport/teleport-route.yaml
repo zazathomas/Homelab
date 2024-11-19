@@ -9,8 +9,8 @@ spec:
   - name: cilium-gw
     namespace: gateway
   hostnames:
-  - "access.z3cyber.pro"
-  - "*.access.z3cyber.pro"
+  - "access.z3cyber.tech"
+  - "*.access.z3cyber.tech"
   rules:
    - backendRefs:
       - name: teleport

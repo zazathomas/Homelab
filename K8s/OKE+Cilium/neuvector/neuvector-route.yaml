@@ -9,7 +9,7 @@ spec:
   - name: cilium-gw
     namespace: gateway
   hostnames:
-  - "neuvector.z3cyber.pro"
+  - "neuvector.z3cyber.tech"
   rules:
    - backendRefs:
       - name: neuvector-service-webui

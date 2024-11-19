@@ -47,7 +47,7 @@ spec:
   - name: cilium-gw
     namespace: gateway
   hostnames:
-  - "minio.z3cyber.pro"
+  - "minio.z3cyber.tech"
   rules:
    - backendRefs:
       - name: minio

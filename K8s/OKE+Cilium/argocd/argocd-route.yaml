@@ -9,7 +9,7 @@ spec:
   - name: cilium-gw
     namespace: gateway
   hostnames:
-  - "argocd.z3cyber.pro"
+  - "argocd.z3cyber.tech"
   rules:
   #- matches:
   #    - headers:
