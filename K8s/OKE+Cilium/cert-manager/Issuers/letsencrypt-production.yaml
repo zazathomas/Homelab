@@ -18,3 +18,4 @@ spec:
         selector:
           dnsZones:
             - "z3cyber.pro"
+            - "z3cyber.tech"

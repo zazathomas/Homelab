@@ -14,7 +14,7 @@ spec:
           from: All
     - name: https
       protocol: HTTPS
-      hostname: "*.z3cyber.pro"
+      hostname: "*.z3cyber.tech"
       port: 443
       allowedRoutes:
         namespaces:
@@ -24,11 +24,11 @@ spec:
         certificateRefs:
           - kind: Secret
             group: ""
-            name: production-cert-tls
+            name: z3cyber-tech-cert-tls
             namespace: gateway
     - name: tls-teleport
       protocol: TLS
-      hostname: "access.z3cyber.pro"
+      hostname: "access.z3cyber.tech"
       port: 443
       allowedRoutes:
         namespaces:
@@ -37,7 +37,7 @@ spec:
         mode: Passthrough
     - name: tls-teleport-wildcard
       protocol: TLS
-      hostname: "*.access.z3cyber.pro"
+      hostname: "*.access.z3cyber.tech"
       port: 443
       allowedRoutes:
         namespaces:

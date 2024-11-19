@@ -1,0 +1,9 @@
+roles: kube,app
+authToken: "auth-token"
+proxyAddr: "hostname:443"
+kubeClusterName: oke-cluster
+labels:
+    teleport.internal/resource-id: "id..."
+appResources:
+   - labels:
+       "teleport-expose": "true"
