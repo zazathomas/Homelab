@@ -28,7 +28,7 @@ metadata:
 addressType: IPv4
 endpoints:
   - addresses:
-      - 10.0.10.39
+      - 10.0.20.243
     # https://github.com/argoproj/argo-cd/issues/15554
     conditions:
       ready: true
