@@ -11,4 +11,11 @@
       type: ExternalName
       ports:
       - port: 22
+        name: ssh
+        protocol: TCP
+      - port: 3100
+        name: loki
+        protocol: TCP
+      - port: 9090
+        name: prometheus
         protocol: TCP
