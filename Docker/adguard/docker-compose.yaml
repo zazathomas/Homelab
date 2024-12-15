@@ -1,0 +1,39 @@
+services:
+  adguard:
+    container_name: adguard
+    image: adguard/adguardhome:v0.107.52
+    networks:
+      adguard_macvlan:
+        ipv4_address: 192.168.0.2
+    ports:
+      - 3000:3000/tcp
+      - 53:53/tcp
+      - 53:53/udp
+      - 67:67/udp
+      - 68:68/udp
+      - 80:80/tcp 
+      - 443:443/tcp
+      - 443:443/udp
+      - 853:853/tcp
+      - 784:784/udp
+      - 853:853/udp
+      - 8853:8853/udp
+      - 5443:5443/tcp
+      - 5443:5443/udp
+    volumes:
+      - ./work:/opt/adguardhome/work
+      - ./config:/opt/adguardhome/conf
+    restart: unless-stopped
+    dns:
+      - 192.168.0.1
+
+networks:
+  adguard_macvlan:
+    external: true
+  proxy:
+    external: true
+# docker network create -d macvlan --subnet=192.168.0.0/24 --gateway=192.168.0.1 -o parent=eth0 adguard_macvlan
+#sudo ip link add macvlan0 link eth0 type macvlan mode bridge
+#sudo ip addr add 192.168.0.9/24 dev macvlan0
+#sudo ip link set macvlan0 up
+#sudo ip route add 192.168.0.2/32 dev macvlan0

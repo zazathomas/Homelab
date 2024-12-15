@@ -1,0 +1,175 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+
+- Management:
+    - Proxmox:
+        href: https://proxmox.local.z3cyber.tech
+        description: Hypervisor
+        icon: proxmox.png
+        widget:
+            type: proxmox
+            url: https://192.168.0.189:8006
+            username: {{HOMEPAGE_VAR_PROXMOX_USERNAME}}
+            password: {{HOMEPAGE_VAR_PROXMOX_PASSWORD}}
+    - Portainer:
+        href: https://portainer.local.z3cyber.tech
+        description: Container Management
+        icon: portainer.png
+        widget:
+            type: portainer
+            url: http://portainer:9000
+            env: 2
+            key: {{HOMEPAGE_VAR_PORTAINER_KEY}}
+    - Teleport:
+        href: https://access.z3cyber.tech
+        description: Identity Aware Proxy
+        icon: teleport.png
+
+- Automation:
+    - Jenkins:
+        href: https://jenkins.z3cyber.tech
+        description: Automation Server
+        icon: jenkins.png
+    - Argocd:
+        href: https://argocd.z3cyber.tech
+        description: Continuous Deployment
+        icon: argocd.png
+    - N8n:
+        href: https://n8n.local.z3cyber.tech
+        description: Workflow Automation
+        icon: n8n.png
+
+- Networking:
+    - Adguard-01:
+        href: https://dns.local.z3cyber.tech
+        description: DNS Provider
+        icon: adguard-home.png
+        widget:
+          type: adguard
+          url: http://192.168.0.2
+          username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
+          password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
+    - Adguard-02:
+        href: https://adguard.local.z3cyber.tech
+        description: DNS Provider
+        icon: adguard-home.png
+        widget:
+          type: adguard
+          url: http://192.168.0.3
+          username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
+          password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
+    - Traefik:
+        href: https://traefik.local.z3cyber.tech
+        description: Reverse Proxy
+        icon: traefik.png
+        widget:
+            type: traefik
+            url: https://traefik.local.z3cyber.tech
+            username: {{HOMEPAGE_VAR_TRAEFIK_USERNAME}} # optional
+            password: {{HOMEPAGE_VAR_TRAEFIK_PASSWORD}} # optional
+    - HubbleUI:
+        href: https://hubble.access.z3cyber.tech
+        description: Network Observability
+        icon: cilium.png
+
+- Utility:
+    - Paperless-ngx:
+        href: https://paperless.local.z3cyber.tech
+        description: Document Archive
+        icon: paperless-ngx.png
+    - Stirling-pdf:
+        href: https://pdf.local.z3cyber.tech
+        description: PDF Operations
+        icon: stirling-pdf.png
+    - Firefox:
+        href: https://ff.local.z3cyber.tech
+        description: Local browser
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/firefox.png
+    - Gotify:
+        href: https://gotify.local.z3cyber.tech
+        description: Notifications Server
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/gotify.png
+    - Json-Crack:
+        href: https://json.local.z3cyber.tech
+        description: JSON Visualizer
+        icon: https://jsoncrack.com/assets/logo.svg
+    - searXNG:
+        href: https://search.local.z3cyber.tech
+        description: Search engine
+        icon: searxng.png
+
+- Monitoring:
+    - Grafana:
+        href: https://grafana.local.z3cyber.tech
+        description: Dashboard Visualizer
+        icon: grafana.png
+    - Prometheus:
+        href: https://prometheus.local.z3cyber.tech
+        description: Metrics Store
+        icon: prometheus.png
+    - Uptime-kuma:
+        href: https://uptime.local.z3cyber.tech
+        description: Service Monitor
+        icon: uptime-kuma.png
+        widget:
+            type: uptimekuma
+            url: http://uptime-kuma:3001
+            slug: statuspageslug
+    - Upptime-Github:
+        href: https://zazathomas.github.io/upptime-monitor/
+        description: Service Monitor
+        icon: https://avatars.githubusercontent.com/u/73812536?v=4
+    - Speedtest:
+        href: https://speedtest.local.z3cyber.tech
+        description: Latency tests
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/speedtest-tracker.png
+        widget:  
+            type: speedtest  
+            url: http://speedtest-tracker
+            bitratePrecision: 3 #%20optional,%20default%20is%200
+
+- Security:
+    - Keycloak:
+        href: https://sso.z3cyber.tech
+        description: Identity Provider
+        icon: keycloak.png
+    - Neuvector:
+        href: https://neuvector.z3cyber.tech
+        description: Runtime Security
+        icon: https://avatars.githubusercontent.com/u/19367275?s=200&v=4
+    - WebCheck:
+        href: https://webcheck.local.z3cyber.tech
+        description: OSINT
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/web-check.png
+    - JuiceShop:
+        href: https://juiceshop.local.z3cyber.tech
+        description: Security Testing
+        icon: https://juice-shop.herokuapp.com/assets/public/images/JuiceShop_Logo.png
+
+
+- Media:
+    - Jellyfin:
+        href: https://jellyfin.local.z3cyber.tech
+        description: Media Server
+        icon: jellyfin.png
+    - Radarr:
+        href: https://radarr.local.z3cyber.tech
+        description: Movies
+        icon: radarr.png
+    - Sonarr:
+        href: https://sonarr.local.z3cyber.tech
+        description: TV Shows
+        icon: sonarr.png
+    - Prowlarr:
+        href: https://prowlarr.local.z3cyber.tech
+        description: Torrent Indexer
+        icon: prowlarr.png
+    - Qbit:
+        href: https://qbit.local.z3cyber.tech
+        description: Torrent Downloader
+        icon: qbittorrent.png
+
+
+
+

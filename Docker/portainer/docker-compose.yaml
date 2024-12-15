@@ -1,0 +1,25 @@
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:2.21.4
+    volumes:
+      - ./data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    networks:
+       - proxy
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.routers.portainer.rule=Host(`portainer.local.z3cyber.tech`)"
+     - "traefik.http.routers.portainer.entrypoints=https"
+     - "traefik.http.routers.portainer.tls=true"
+     - "traefik.http.services.portainer.loadbalancer.server.scheme=https" # for services with self signed certs
+     - "traefik.http.services.portainer.loadbalancer.server.port=9443"
+    ports:
+      - '9443:9443'
+      - '9000:9000'
+
+networks:
+  proxy:
+    name: proxy
+    external: true

@@ -1,0 +1,218 @@
+http:
+ #region routers 
+  routers:
+    proxmox:
+      entryPoints:
+        - "https"
+      rule: "Host(`proxmox.local.z3cyber.tech`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls:
+        certResolver: cloudflare
+      service: proxmox
+    adguard:
+      entryPoints:
+        - "https"
+      rule: "Host(`dns.local.z3cyber.tech`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls:
+        certResolver: cloudflare
+      service: adguard
+    adguard-02:
+      entryPoints:
+        - "https"
+      rule: "Host(`adguard.local.z3cyber.tech`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls:
+        certResolver: cloudflare
+      service: adguard-02
+    sync-dns:
+      entryPoints:
+        - "https"
+      rule: "Host(`sync-dns.local.z3cyber.tech`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls:
+        certResolver: cloudflare
+      service: sync-dns
+    json-crack:
+      entryPoints:
+        - "https"
+      rule: "Host(`json.local.z3cyber.tech`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls:
+        certResolver: cloudflare
+      service: json-crack
+    grafana:
+      entryPoints:
+        - "https"
+      rule: "Host(`grafana.local.z3cyber.tech`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls:
+        certResolver: cloudflare
+      service: grafana
+    prometheus:
+      entryPoints:
+        - "https"
+      rule: "Host(`prometheus.local.z3cyber.tech`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls:
+        certResolver: cloudflare
+      service: prometheus
+    radarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`radarr.local.z3cyber.tech`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls:
+        certResolver: cloudflare
+      service: radarr
+    sonarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`sonarr.local.z3cyber.tech`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls:
+        certResolver: cloudflare
+      service: sonarr
+    qbit:
+      entryPoints:
+        - "https"
+      rule: "Host(`qbit.local.z3cyber.tech`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls:
+        certResolver: cloudflare
+      service: qbit
+    jellyfin:
+      entryPoints:
+        - "https"
+      rule: "Host(`jellyfin.local.z3cyber.tech`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls:
+        certResolver: cloudflare
+      service: jellyfin
+    prowlarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`prowlarr.local.z3cyber.tech`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls:
+        certResolver: cloudflare
+      service: prowlarr
+  
+#endregion
+#region services
+  services:
+    proxmox:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.0.189:8006"
+        passHostHeader: true
+    adguard:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.0.2:80"
+        passHostHeader: true
+    adguard-02:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.0.3:80"
+        passHostHeader: true
+    sync-dns:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.0.59:8076"
+        passHostHeader: true
+    json-crack:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.0.59:8097"
+        passHostHeader: true
+    grafana:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.0.59:3000"
+        passHostHeader: true
+    prometheus:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.0.59:9090"
+        passHostHeader: true
+    radarr:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.0.59:7878"
+        passHostHeader: true
+    sonarr:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.0.59:8989"
+        passHostHeader: true
+    prowlarr:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.0.59:9696"
+        passHostHeader: true
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.0.59:8096"
+        passHostHeader: true
+    qbit:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.0.59:8072"
+        passHostHeader: true
+#endregion
+  middlewares:
+    https-redirectscheme:
+      redirectScheme:
+        scheme: https
+        permanent: true
+    default-headers:
+      headers:
+        frameDeny: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+
+    default-whitelist:
+      ipAllowList:
+        sourceRange:
+        - "10.0.0.0/8"
+        - "192.168.0.0/16"
+        - "172.16.0.0/12"
+
+    secured:
+      chain:
+        middlewares:
+        - default-whitelist
+        - default-headers
