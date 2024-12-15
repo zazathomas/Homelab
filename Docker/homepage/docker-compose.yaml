@@ -1,0 +1,37 @@
+services:
+  homepage:
+    container_name: homepage
+    image: ghcr.io/gethomepage/homepage:latest
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homepage.rule=Host(`homepage.local.z3cyber.tech`)"
+      - "traefik.http.routers.homepage.entrypoints=https"
+      - "traefik.http.routers.homepage.tls=true"
+      - "traefik.http.services.homepage.loadbalancer.server.port=3000"
+    networks:
+      - proxy
+    ports:
+      - 3000:3000
+    volumes:
+      - ./config:/app/config # Make sure your local config directory exists
+      - ./images:/app/public/images
+      - ./icons:/app/public/icons
+    env_file: .env
+    environment:
+      - HOMEPAGE_VAR_PROXMOX_USERNAME=${HOMEPAGE_VAR_PROXMOX_USERNAME}
+      - HOMEPAGE_VAR_PROXMOX_PASSWORD=${HOMEPAGE_VAR_PROXMOX_PASSWORD}
+      - HOMEPAGE_VAR_TRAEFIK_USERNAME=${HOMEPAGE_VAR_TRAEFIK_USERNAME}
+      - HOMEPAGE_VAR_TRAEFIK_PASSWORD=${HOMEPAGE_VAR_TRAEFIK_PASSWORD}
+      - HOMEPAGE_VAR_PORTAINER_KEY=${HOMEPAGE_VAR_PORTAINER_KEY}
+      - HOMEPAGE_VAR_ADGUARD_USERNAME=${HOMEPAGE_VAR_ADGUARD_USERNAME}
+      - HOMEPAGE_VAR_ADGUARD_PASSWORD=${HOMEPAGE_VAR_ADGUARD_PASSWORD}
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=Europe/Dublin
+    dns:
+      - 192.168.0.1
+
+networks:
+  proxy:
+    external: true

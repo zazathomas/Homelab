@@ -1,0 +1,45 @@
+---
+services:
+  prometheus:
+    image: prom/prometheus:v3.0.1
+    container_name: prometheus
+    user: "1000"
+    environment:
+      - TZ=Europe/Dublin
+    command:
+      - '--web.enable-remote-write-receiver'
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.enable-lifecycle'
+      - '--storage.tsdb.retention.time=7d'
+    volumes:
+      - ./prometheus/:/etc/prometheus
+      - ./prom_data/:/prometheus
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    networks:
+       - proxy
+  
+  node-exporter:
+    image: prom/node-exporter:v1.8.2
+    container_name: node-exporter
+    networks:
+      - proxy
+    ports:
+      - 9100:9100
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - --path.procfs=/host/proc
+      - --path.sysfs=/host/sys
+      - --collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($|/)"
+
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+

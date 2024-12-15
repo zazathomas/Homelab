@@ -1,0 +1,45 @@
+---
+services:
+  adguardhome-sync:
+    image: ghcr.io/bakito/adguardhome-sync:v0.6.13
+    container_name: adguardhome-sync
+    command: run
+    env_file: .env
+    environment:
+      LOG_LEVEL: "info"
+      ORIGIN_URL: "http://192.168.0.2"
+      ORIGIN_USERNAME: ${ADGUARD_USERNAME}
+      ORIGIN_PASSWORD: ${ADGUARD_PASSWORD}
+      REPLICA1_URL: "http://192.168.0.3"
+      REPLICA1_USERNAME: ${ADGUARD_USERNAME}
+      REPLICA1_PASSWORD: ${ADGUARD_PASSWORD}
+      CRON: "* * * * *" # run every minute
+      RUN_ON_START: "true"
+      CONTINUE_ON_ERROR: false # If enabled, the synchronisation task will not fail on single errors, but will log the errors and continue
+
+      # Configure the sync API server, disabled if api port is 0
+      API_PORT: 8080
+
+      # Configure sync features; by default all features are enabled.
+      # FEATURES_GENERAL_SETTINGS: "true"
+      # FEATURES_QUERY_LOG_CONFIG: "true"
+      # FEATURES_STATS_CONFIG: "true"
+      # FEATURES_CLIENT_SETTINGS: "true"
+      # FEATURES_SERVICES: "true"
+      # FEATURES_FILTERS: "true"
+      # FEATURES_DHCP_SERVER_CONFIG: "true"
+      # FEATURES_DHCP_STATIC_LEASES: "true"
+      # FEATURES_DNS_SERVER_CONFIG: "true"
+      # FEATURES_DNS_ACCESS_LISTS: "true"
+      # FEATURES_DNS_REWRITES: "true"
+      # FEATURES_THEME: "true" # if false the UI theme is not synced
+    ports:
+      - 8076:8080
+    restart: unless-stopped
+    networks:
+      - proxy
+
+
+networks:
+  proxy:
+    external: true

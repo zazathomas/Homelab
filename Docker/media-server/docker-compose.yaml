@@ -1,0 +1,93 @@
+---
+services:
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Dublin
+    volumes:
+      - ./radarr_config:/config
+      - ./movies:/movies #optional
+      - ./downloads:/downloads #optional
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+    networks:
+       - proxy
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Dublin
+    volumes:
+      - ./sonarr_config:/config
+      - ./shows:/tv #optional
+      - ./downloads:/downloads #optional
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+    networks:
+       - proxy
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Dublin
+    volumes:
+      - ./prowlarr_config:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+    networks:
+       - proxy
+  
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Dublin
+    volumes:
+      - ./jellyfin_config:/config
+      - ./shows:/data/tvshows
+      - ./movies:/data/movies
+    ports:
+      - 8096:8096
+    restart: unless-stopped
+    networks:
+      - proxy
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Dublin
+      - WEBUI_PORT=8072
+      - TORRENTING_PORT=6881
+    volumes:
+      - ./qbit_config:/config
+      - ./downloads:/downloads
+    ports:
+      - 8072:8072
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+
+
+
+
