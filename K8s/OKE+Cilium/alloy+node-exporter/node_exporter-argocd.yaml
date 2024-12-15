@@ -8,6 +8,7 @@ spec:
   sources:
   - repoURL: 'https://prometheus-community.github.io/helm-charts'
     chart: prometheus-node-exporter
+    targetRevision: 4.43.0 
     helm:
       releaseName: node-exporter
   destination:
