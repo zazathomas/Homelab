@@ -56,7 +56,7 @@ containers: [
                 container('terraform'){
                     echo "${terraform_action}ing Terraform config..."
                     sh """
-                      #  terraform $terraform_action -auto-approve
+                      #  terraform $terraform_action --auto-approve
                     """
                 }
             }
