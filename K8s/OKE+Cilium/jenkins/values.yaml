@@ -30,7 +30,7 @@ controller:
     repository: "jenkins/jenkins"
 
     # -- Controller image tag override; i.e., tag: "2.440.1-jdk17"
-    tag: "2.491"
+    tag:
 
     # -- Controller image tag label
     tagLabel: jdk17
@@ -69,7 +69,7 @@ controller:
     username: "admin"
     # -- Admin password created as a secret if `controller.admin.createSecret` is true
     # @default -- <random password>
-    password: ""
+    password:
 
     # -- The key in the existing admin secret containing the username
     userKey: jenkins-admin-user
@@ -559,7 +559,7 @@ controller:
         # -- Repository of the image that triggers the reload
         repository: kiwigrid/k8s-sidecar
         # -- Tag for the image that triggers the reload
-        tag: 1.28.0
+        tag: 1.28.4
       imagePullPolicy: IfNotPresent
       resources: {}
         #   limits:
@@ -1357,4 +1357,5 @@ helmtest:
       # -- Repository of the image used to test the framework
       repository: "bats/bats"
       # -- Tag of the image to test the framework
-      tag: "1.11.0"
+      tag: "1.11.1"
+

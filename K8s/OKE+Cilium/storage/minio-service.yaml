@@ -44,7 +44,7 @@ metadata:
   namespace: minio
 spec:
   parentRefs:
-  - name: cilium-gw
+  - name: nlb-cilium-gw
     namespace: gateway
   hostnames:
   - "minio.z3cyber.tech"
