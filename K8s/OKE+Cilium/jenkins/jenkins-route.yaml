@@ -6,7 +6,7 @@ metadata:
   namespace: jenkins
 spec:
   parentRefs:
-  - name: cilium-gw # gateway name
+  - name: nlb-cilium-gw # gateway name
     namespace: gateway
   hostnames:
   - "jenkins.z3cyber.tech"
