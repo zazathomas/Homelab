@@ -6,7 +6,7 @@ metadata:
   namespace: argocd
 spec:
   parentRefs:
-  - name: cilium-gw
+  - name: nlb-cilium-gw
     namespace: gateway
   hostnames:
   - "argocd.z3cyber.tech"
