@@ -1,9 +1,9 @@
 apiVersion: v1
 data:
   alloy-config.alloy: |+
-    // ###################################
-    // ## Kubernetes Logs Configuration ##
-    // ###################################
+    // #######################################
+    // ## Kubernetes Pod Logs Configuration ##
+    // #######################################
 
     // discovery.kubernetes allows you to find scrape targets from Kubernetes resources.
     // It watches cluster state and ensures targets are continually synced with what is currently running in your cluster.
@@ -86,6 +86,7 @@ data:
       stage.static_labels {
           values = {
             cluster = "OKE-Cluster",
+            log_type = "pod_logs",
           }
       }
 
@@ -139,6 +140,43 @@ data:
             job_name   = "alloy_metrics"
     }
 
+    // ######################################
+    // ## Cilium metrics Configuration ######
+    // ######################################
+
+    prometheus.scrape "cilium_envoy" {
+      targets    = [{
+        __address__ = "cilium-envoy.kube-system.svc.cluster.local:9964",
+      }]
+      forward_to = [ prometheus.remote_write.local_prometheus.receiver ]
+      job_name = "cilium_envoy"
+      scrape_interval = "10s"
+      metrics_path    = "/metrics"
+    }
+
+    prometheus.scrape "cilium_hubble" {
+      targets    = [{
+        __address__ = "hubble-metrics.kube-system.svc.cluster.local:9966",
+      }]
+      forward_to = [ prometheus.remote_write.local_prometheus.receiver ]
+      job_name = "cilium_hubble"
+      scrape_interval = "10s"
+      metrics_path    = "/metrics"
+    }
+
+    prometheus.scrape "cilium_agents" {
+      targets    = [{
+        __address__ = "10.0.10.72:9965",
+      },
+      {
+        __address__ = "10.0.10.212:9965",
+      },
+      ]
+      forward_to = [ prometheus.remote_write.local_prometheus.receiver ]
+      job_name = "cilium_agents"
+      scrape_interval = "10s"
+      metrics_path    = "/metrics"
+    }
 
 
     // ###############################

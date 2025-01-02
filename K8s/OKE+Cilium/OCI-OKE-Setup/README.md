@@ -55,7 +55,7 @@ To ensure Cilium handles networking exclusively, remove the existing Flannel and
 To ensure proper communication with the control plane, follow these steps:
 - Copy the control plane's private IP address from the OKE console.
 - Add the private IP to the Cilium values file.
-- `cilium upgrade -f values-cloud.yaml`
+- `cilium upgrade -f /Users/zaza/Desktop/Projects/Homelab/K8s/OKE+Cilium/OCI-OKE-Setup/cilium-values-cloud.yaml -f /Users/zaza/Desktop/Projects/Homelab/K8s/OKE+Cilium/oci-oke-setup/cilium-values-monitoring.yaml --version 1.16.5 --namespace kube-system`
 
 ## 7. Test Cilium Connectivity
 Run the Cilium connectivity test to ensure that Cilium is functioning correctly:
