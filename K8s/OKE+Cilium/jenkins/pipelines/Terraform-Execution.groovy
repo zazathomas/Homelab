@@ -2,6 +2,7 @@ properties([
     parameters([
         string(name: 'SOURCE_REPOSITORY', defaultValue: '', description: 'Terraform configuration source repository'),
         choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Terraform action to run i.e. apply | destroy'),
+        string(name: 'SOURCE_REPOSITORY_PATH', defaultValue: '', description: 'Terraform source repository path'),
     ])
 ])
 
@@ -9,6 +10,7 @@ properties([
 def credentialsId_backend = 'tf-backend-creds'
 def credentialsId_oci = 'tf-infra-creds'
 def terraform_giturl = params.SOURCE_REPOSITORY
+def terraform_git_path = params.SOURCE_REPOSITORY_PATH
 def terraform_action = params.ACTION
 
 podTemplate(
