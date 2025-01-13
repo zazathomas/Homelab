@@ -1,0 +1,15 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: jellyseerr-route
+  namespace: local-services
+spec:
+  parentRefs:
+  - name: nlb-cilium-gw
+    namespace: gateway
+  hostnames:
+  - "jellyseerr.z3cyber.tech"
+  rules:
+   - backendRefs:
+      - name: intel-node.tailscale.svc.cluster.local
+        port: 5055
