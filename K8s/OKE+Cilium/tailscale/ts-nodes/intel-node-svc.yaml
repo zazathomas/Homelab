@@ -19,3 +19,9 @@
       - port: 9090
         name: prometheus
         protocol: TCP
+      - port: 5055
+        name: jellyseerr
+        protocol: TCP
+      - port: 8096
+        name: jellyfin
+        protocol: TCP
