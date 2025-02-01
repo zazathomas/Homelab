@@ -60,3 +60,7 @@ hubble:
   ui:
     enabled: true
     rollOutPods: true
+
+# Pod annotations for tailing hubble flow logs
+podAnnotations:
+  tailing-sidecar: hubble-logs:/var/run/cilium/hubble/dropped-flows.log;hubble-logs:/var/run/cilium/hubble/coredns.log;hubble-logs:/var/run/cilium/hubble/ingress-access.log
