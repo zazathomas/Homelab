@@ -11,5 +11,5 @@ spec:
   - "jellyfin.z3cyber.tech"
   rules:
    - backendRefs:
-      - name: intel-node.tailscale.svc.cluster.local
+      - name: ts-intel-node-br8x2.tailscale.svc.cluster.local
         port: 8096
