@@ -47,8 +47,7 @@ cilium status --wait
 ## 5. Remove Flannel and Kube-Proxy DaemonSets
 To ensure Cilium handles networking exclusively, remove the existing Flannel and Kube-Proxy components:
 
-- Delete the Flannel DaemonSet: `kubectl delete -n kube-system daemonset kube-flannel-ds
-`
+- Delete the Flannel DaemonSet: `kubectl delete -n kube-system daemonset kube-flannel-ds`
 - Delete the Kube-Proxy DaemonSet: `kubectl delete -n kube-system daemonset kube-proxy`
 
 ## 6. Upgrade Cilium with Control Plane Private IP
@@ -60,6 +59,17 @@ To ensure proper communication with the control plane, follow these steps:
 ## 7. Test Cilium Connectivity
 Run the Cilium connectivity test to ensure that Cilium is functioning correctly:
 `cilium connectivity test`
+
+## 8. Setup Storage
+Setup an nfs server first.
+
+To set up nfs storage, execute the following commands:
+
+```bash
+helm repo add csi-driver-nfs https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
+helm install csi-driver-nfs csi-driver-nfs/csi-driver-nfs --namespace kube-system --version v4.5.0
+kubectl apply -f storageclass.yaml
+```
 
 ## Conclusion
 By following this guide, you've successfully set up an OKE cluster with Flannel as the initial network overlay and transitioned to Cilium for enhanced networking and security. Cilium provides advanced features such as network policies, load balancing, and observability, making it a powerful choice for Kubernetes networking.

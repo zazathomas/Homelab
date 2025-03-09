@@ -1,0 +1,3 @@
+machine:
+  certSANs:
+    - home.cluster.local
