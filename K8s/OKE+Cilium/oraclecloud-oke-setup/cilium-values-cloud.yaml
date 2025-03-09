@@ -63,4 +63,4 @@ hubble:
 
 # Pod annotations for tailing hubble flow logs
 podAnnotations:
-  tailing-sidecar: hubble-logs:/var/run/cilium/hubble/dropped-flows.log;hubble-logs:/var/run/cilium/hubble/coredns.log;hubble-logs:/var/run/cilium/hubble/ingress-access.log
+  tailing-sidecar: dropped-flows:cilium-run:/var/run/cilium/hubble/dropped-flows.log;hubble-dns:cilium-run:/var/run/cilium/hubble/coredns.log;ingress-access:cilium-run:/var/run/cilium/hubble/ingress-access.log

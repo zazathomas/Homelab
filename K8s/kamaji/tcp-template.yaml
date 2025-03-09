@@ -1,0 +1,32 @@
+---
+apiVersion: kamaji.clastix.io/v1alpha1
+kind: TenantControlPlane
+metadata:
+  name: homelab-hosted-cp
+spec:
+  dataStore: default
+  controlPlane:
+    deployment:
+      replicas: 1
+    service:
+      serviceType: LoadBalancer
+      additionalMetadata:
+        annotations:
+          oci.oraclecloud.com/load-balancer-type: "nlb"
+  kubernetes:
+    version: "v1.31.4"
+    kubelet:
+      cgroupfs: systemd
+      preferredAddressTypes:
+        - InternalIP # This ensures correct api server to kubelet communication via konnectivity
+  networkProfile:
+    port: 6443
+    #certSANs:
+     # - 81.91.32.119
+    #address: 18.194.235.159
+  addons:
+    coreDNS: {}
+    kubeProxy: {}
+    konnectivity:
+      server:
+        port: 8132
