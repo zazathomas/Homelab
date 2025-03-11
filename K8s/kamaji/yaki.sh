@@ -34,6 +34,8 @@ Usage:
   You must be sudo to run this script.
 
 Commands:
+  bootstrap: Deploy all the components required for a Kubernetes cluster
+    - This command installs kubeadm, kubelet, containerd, crictl and kubectl.
 
   init: Deploy the first control-plane node of the Kubernetes cluster
     - This command initializes the Kubernetes control-plane on the first node.
