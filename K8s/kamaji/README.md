@@ -156,6 +156,8 @@ Once worker nodes are joined, install essential Kubernetes components:
 - **Container Network Interface (CNI)**
 - **Storage Configuration**
 - **Metrics Server**
+- **Modify the metrics server deployment args to include `kubelet-insecure-tls=true`**
+- **Add ipaddresspool & L2 annoucement YAMLs for LoadBalancer service types**
 
 These components ensure proper networking, persistent storage, and resource monitoring in the cluster.  
 

@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homelab-applications
+  namespace: argocd
+  #finalizers:
+   # - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/zazathomas/Homelab.git
+    targetRevision: HEAD
+    path: K8s/homelab/applications
+    directory:
+      recurse: true
+  destination:
+    server: "https://141.148.61.125:6443"
