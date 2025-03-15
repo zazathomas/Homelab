@@ -14,4 +14,4 @@ spec:
     directory:
       recurse: true
   destination:
-    server: "https://141.148.61.125:6443"
+    server: "https://kubernetes.default.svc"
