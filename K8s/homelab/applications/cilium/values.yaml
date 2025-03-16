@@ -1,6 +1,6 @@
 
 #values.yaml
-k8sServiceHost: "141.148.61.125" # This IP should be the IP of the master node
+k8sServiceHost: "1.2.3.4" # This IP should be the IP of the master node
 k8sServicePort: "6443"
 #values.yaml
 kubeProxyReplacement: true
