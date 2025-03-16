@@ -11,6 +11,7 @@ spec:
   commonName: "*.z3cyber.tech"
   dnsNames:
   - "z3cyber.tech"
+  - "*.k8s.z3cyber.tech"
   - "*.z3cyber.tech"
   secretTemplate:
     annotations:
