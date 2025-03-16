@@ -1,0 +1,34 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/service-widgets
+
+- kubernetes:
+    cluster:
+      show: true
+      cpu: true
+      memory: true
+      showLabel: true
+      label: "cluster"
+    nodes:
+      show: true
+      cpu: true
+      memory: true
+      showLabel: true
+
+- resources:
+    backend: resources
+    expanded: true
+    cpu: true
+    memory: true
+    network: default
+
+- openmeteo:
+    label: Current
+    latitude: 36.66
+    longitude: -117.51
+    cache: 5
+
+- datetime:
+    text_size: xl
+    format:
+      timeStyle: short
