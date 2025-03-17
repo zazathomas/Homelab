@@ -91,7 +91,7 @@
         description: Document Archive
         icon: paperless-ngx.png
     - Stirling-pdf:
-        href: https://pdf.local.z3cyber.tech
+        href: https://pdf.k8s.z3cyber.tech
         description: PDF Operations
         icon: stirling-pdf.png
     - Firefox:
@@ -184,7 +184,7 @@
         description: OSINT
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/web-check.png
     - JuiceShop:
-        href: https://juiceshop.local.z3cyber.tech
+        href: https://juiceshop.k8s.z3cyber.tech
         description: Security Testing
         icon: https://juice-shop.herokuapp.com/assets/public/images/JuiceShop_Logo.png
 

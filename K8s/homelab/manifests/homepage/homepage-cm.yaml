@@ -60,7 +60,7 @@ data:
     \       description: Router\n        icon: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQEbyJymhxFmY_oPOmHOu3LW7dcCqhzmjVIQ&s\n\n-
     Utility:\n    - Paperless-ngx:\n        href: https://paperless.local.z3cyber.tech\n
     \       description: Document Archive\n        icon: paperless-ngx.png\n    -
-    Stirling-pdf:\n        href: https://pdf.local.z3cyber.tech\n        description:
+    Stirling-pdf:\n        href: https://pdf.k8s.z3cyber.tech\n        description:
     PDF Operations\n        icon: stirling-pdf.png\n    - Firefox:\n        href:
     https://ff.local.z3cyber.tech\n        description: Local browser\n        icon:
     https://cdn.jsdelivr.net/gh/selfhst/icons/png/firefox.png\n    - Gotify:\n        href:
@@ -98,7 +98,7 @@ data:
     Runtime Security\n        icon: https://avatars.githubusercontent.com/u/19367275?s=200&v=4\n
     \   - WebCheck:\n        href: https://webcheck.k8s.z3cyber.tech\n        description:
     OSINT\n        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/web-check.png\n
-    \   - JuiceShop:\n        href: https://juiceshop.local.z3cyber.tech\n        description:
+    \   - JuiceShop:\n        href: https://juiceshop.k8s.z3cyber.tech\n        description:
     Security Testing\n        icon: https://juice-shop.herokuapp.com/assets/public/images/JuiceShop_Logo.png\n\n-
     Data:\n    - Kopia-1:\n        href: https://kopia-1.local.z3cyber.tech\n        description:
     Disaster Recovery\n        icon: kopia.png\n        widget:\n            type:
