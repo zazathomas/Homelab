@@ -14,7 +14,7 @@ spec:
     helm:
       releaseName: external-dns
       valueFiles:
-      - $values/K8s/homelab/applications/external/values.yaml
+      - $values/K8s/homelab/applications/external-dns/values.yaml
   - repoURL: 'https://github.com/zazathomas/Homelab'
     targetRevision: HEAD
     ref: values
