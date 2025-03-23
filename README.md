@@ -90,4 +90,3 @@ In this repository, I have also implemented a robust DevSecOps pipeline to enhan
 1. **Redeploy Keycloak:** Migrate Keycloak to leverage an external PostgreSQL database for enhanced scalability and reliability.  
 2. **Integrate Object Storage:** Add an object storage-backed storage class to Kubernetes to enable dynamic Persistent Volume (PV) provisioning.  
 3. **Deploy Pi-hole:** Configure Pi-hole as a backup DNS server to enhance network resilience and redundancy.  
-
