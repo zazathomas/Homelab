@@ -1,0 +1,16 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: whoami-scaledobject
+  namespace: whoami
+spec:
+  scaleTargetRef:
+    name: whoami
+  minReplicaCount: 1
+  maxReplicaCount: 30
+  cooldownPeriod: 3
+  triggers:
+  - type: cpu
+    metricType: Utilization # Allowed types are 'Utilization' or 'AverageValue'
+    metadata:
+      value: "90"

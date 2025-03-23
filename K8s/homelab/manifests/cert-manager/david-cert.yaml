@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: david-cert
+  namespace: cert-manager
+spec:
+  secretName: david-cert
+  issuerRef:
+    name: david-production
+    kind: ClusterIssuer
+  commonName: "*.warp.d4rkcyber.xyz"
+  dnsNames:
+  - "warp.d4rkcyber.xyz"
+  - "*.warp.d4rkcyber.xyz"
