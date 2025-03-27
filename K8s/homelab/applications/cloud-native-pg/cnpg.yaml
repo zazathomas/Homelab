@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cnpg-homelab
+  namespace: argocd
+  #finalizers:
+  #  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - repoURL: 'https://cloudnative-pg.github.io/charts'
+    chart: cloudnative-pg
+    targetRevision: 0.23.2
+    helm:
+      releaseName: cnpg
+  destination:
+    server: "https://141.148.61.125:6443"
+    namespace: cnpg-system
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+#      - Validate=true
+#      - PrunePropagationPolicy=foreground
+#      - PruneLast=true
