@@ -10,12 +10,12 @@ spec:
   sources:
   - repoURL: 'https://charts.redpanda.com'
     chart: operator
-    targetRevision: 0.4.40
+    targetRevision: v2.4.1
     helm:
       releaseName: redpanda-operator
   destination:
     server: "https://141.148.61.125:6443"
-    namespace: redpanda-operator
+    namespace: redpanda
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
