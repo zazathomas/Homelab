@@ -1,0 +1,13 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: security-alerts
+  namespace: kafka-tenants
+  labels:
+    strimzi.io/cluster: homelab-kafka-cluster
+spec:
+  partitions: 5
+  replicas: 3
+  config:
+    retention.ms: 604800000
+    segment.bytes: 1073741824
