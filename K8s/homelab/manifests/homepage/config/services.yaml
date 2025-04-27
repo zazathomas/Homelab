@@ -41,7 +41,7 @@
 
 - Automation:
     - SemaphoreUI:
-        href: https://Semaphore.k8s.z3cyber.tech
+        href: https://semaphore.k8s.z3cyber.tech
         description: Automation Server
         icon: semaphore.png
     - Argocd:
@@ -139,21 +139,21 @@
 
 - Monitoring:
     - Grafana:
-        href: https://grafana.local.z3cyber.tech
+        href: https://grafana.k8s.z3cyber.tech
         description: Dashboard Visualizer
         icon: grafana.png
         widget:
             type: grafana
-            url: http://192.168.0.59:3000
+            url: https://grafana.k8s.z3cyber.tech
             username: {{HOMEPAGE_VAR_GRAFANA_USER}}
             password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}
     - Prometheus:
-        href: https://prometheus.local.z3cyber.tech
+        href: https://prometheus.k8s.z3cyber.tech
         description: Metrics Store
         icon: prometheus.png
         widget:
             type: prometheus
-            url: http://192.168.0.59:9090
+            url: https://prometheus.k8s.z3cyber.tech
     - Uptime-kuma:
         href: https://uptime.local.z3cyber.tech
         description: Service Monitor

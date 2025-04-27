@@ -42,7 +42,7 @@ data:
     Identity Aware Proxy\n        icon: teleport.png\n    - Kamaji-Console:\n        href:
     https://console.z3cyber.tech/ui\n        description: Hosted Control Plane\n        icon:
     https://kamaji.clastix.io/images/logo.png\n\n- Automation:\n    - SemaphoreUI:\n
-    \       href: https://Semaphore.k8s.z3cyber.tech\n        description: Automation
+    \       href: https://semaphore.k8s.z3cyber.tech\n        description: Automation
     Server\n        icon: semaphore.png\n    - Argocd:\n        href: https://argocd.z3cyber.tech\n
     \       description: GitOps for Continuous Deployment\n        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png\n
     \   - N8n:\n        href: https://n8n.local.z3cyber.tech\n        description:
@@ -80,16 +80,17 @@ data:
     to false\n    - Hoarder:\n        href: https://hoarder.local.z3cyber.tech\n        description:
     Link Repository\n        icon: hoarder.png\n    - PasteBin:\n        href: https://lesma.eu\n
     \       description: Paste bin\n        icon: pastebin.png\n\n- Monitoring:\n
-    \   - Grafana:\n        href: https://grafana.local.z3cyber.tech\n        description:
+    \   - Grafana:\n        href: https://grafana.k8s.z3cyber.tech\n        description:
     Dashboard Visualizer\n        icon: grafana.png\n        widget:\n            type:
-    grafana\n            url: http://192.168.0.59:3000\n            username: {{HOMEPAGE_VAR_GRAFANA_USER}}\n
-    \           password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}\n    - Prometheus:\n        href:
-    https://prometheus.local.z3cyber.tech\n        description: Metrics Store\n        icon:
-    prometheus.png\n        widget:\n            type: prometheus\n            url:
-    http://192.168.0.59:9090\n    - Uptime-kuma:\n        href: https://uptime.local.z3cyber.tech\n
-    \       description: Service Monitor\n        icon: uptime-kuma.png\n        widget:\n
-    \           type: uptimekuma\n            url: http://192.168.0.32:3010\n            slug:
-    statuspageslug\n   # - Upptime-Github:\n    #    href: https://zazathomas.github.io/upptime-monitor/\n
+    grafana\n            url: https://grafana.k8s.z3cyber.tech\n            username:
+    {{HOMEPAGE_VAR_GRAFANA_USER}}\n            password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}\n
+    \   - Prometheus:\n        href: https://prometheus.k8s.z3cyber.tech\n        description:
+    Metrics Store\n        icon: prometheus.png\n        widget:\n            type:
+    prometheus\n            url: https://prometheus.k8s.z3cyber.tech\n    - Uptime-kuma:\n
+    \       href: https://uptime.local.z3cyber.tech\n        description: Service
+    Monitor\n        icon: uptime-kuma.png\n        widget:\n            type: uptimekuma\n
+    \           url: http://192.168.0.32:3010\n            slug: statuspageslug\n
+    \  # - Upptime-Github:\n    #    href: https://zazathomas.github.io/upptime-monitor/\n
     \   #    description: Service Monitor\n     #   icon: https://avatars.githubusercontent.com/u/73812536?v=4\n
     \   - Speedtest:\n        href: https://speedtest.local.z3cyber.tech\n        description:
     Latency tests\n        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/speedtest-tracker.png\n
