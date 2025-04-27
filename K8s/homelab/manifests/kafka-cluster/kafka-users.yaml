@@ -1,0 +1,51 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: zaza
+  namespace: kafka-tenants
+  labels:
+    strimzi.io/cluster: homelab-kafka-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: "security-alerts"
+          patternType: literal
+        operations:
+          - Read
+          - Describe
+        host: "*"
+      - resource:
+          type: group
+          name: security-cg
+          patternType: literal
+        operations:
+          - Read
+        host: "*"
+      - resource:
+          type: topic
+          name: "security-alerts"
+          patternType: literal
+        operations:
+          - Create
+          - Describe
+          - Write
+        host: "*"
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: admin
+  namespace: kafka-tenants
+  labels:
+    strimzi.io/cluster: homelab-kafka-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls: []

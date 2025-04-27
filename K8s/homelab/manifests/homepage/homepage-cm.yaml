@@ -27,19 +27,23 @@ data:
     # sample kubernetes config
     mode: cluster
   services.yaml: "---\n# For configuration options and examples, please see:\n# https://gethomepage.dev/latest/configs/services\n\n-
-    Management:\n    - Proxmox:\n        href: https://proxmox.local.z3cyber.tech\n
+    Management:\n    - Proxmox-PVE1:\n        href: https://pve-1.local.z3cyber.tech\n
     \       description: Hypervisor\n        icon: proxmox.png\n        widget:\n
-    \           type: proxmox\n            url: https://192.168.0.189:8006\n            username:
+    \           type: proxmox\n            url: https://192.168.0.190:8006\n            username:
     {{HOMEPAGE_VAR_PROXMOX_USERNAME}}\n            password: {{HOMEPAGE_VAR_PROXMOX_PASSWORD}}\n
-    \   - Portainer:\n        href: https://portainer.local.z3cyber.tech\n        description:
-    Container Management\n        icon: portainer.png\n        widget:\n            type:
-    portainer\n            url: http://192.168.0.32:9000\n            env: 2\n            key:
-    {{HOMEPAGE_VAR_PORTAINER_KEY}}\n    - Teleport:\n        href: https://access.z3cyber.tech\n
-    \       description: Identity Aware Proxy\n        icon: teleport.png\n    - Kamaji-Console:\n
-    \       href: https://console.z3cyber.tech/ui\n        description: Hosted Control
-    Plane\n        icon: https://kamaji.clastix.io/images/logo.png\n\n- Automation:\n
-    \   - Jenkins:\n        href: https://jenkins.z3cyber.tech\n        description:
-    Automation Server\n        icon: jenkins.png\n    - Argocd:\n        href: https://argocd.z3cyber.tech\n
+    \   - Proxmox-PVE2:\n        href: https://pve-2.local.z3cyber.tech\n        description:
+    Hypervisor\n        icon: proxmox.png\n        widget:\n            type: proxmox\n
+    \           url: https://192.168.0.189:8006\n            username: {{HOMEPAGE_VAR_PROXMOX_USERNAME}}\n
+    \           password: {{HOMEPAGE_VAR_PROXMOX2_PASSWORD}}\n    - Portainer:\n        href:
+    https://portainer.local.z3cyber.tech\n        description: Container Management\n
+    \       icon: portainer.png\n        widget:\n            type: portainer\n            url:
+    http://192.168.0.32:9000\n            env: 2\n            key: {{HOMEPAGE_VAR_PORTAINER_KEY}}\n
+    \   - Teleport:\n        href: https://access.z3cyber.tech\n        description:
+    Identity Aware Proxy\n        icon: teleport.png\n    - Kamaji-Console:\n        href:
+    https://console.z3cyber.tech/ui\n        description: Hosted Control Plane\n        icon:
+    https://kamaji.clastix.io/images/logo.png\n\n- Automation:\n    - SemaphoreUI:\n
+    \       href: https://Semaphore.k8s.z3cyber.tech\n        description: Automation
+    Server\n        icon: semaphore.png\n    - Argocd:\n        href: https://argocd.z3cyber.tech\n
     \       description: GitOps for Continuous Deployment\n        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png\n
     \   - N8n:\n        href: https://n8n.local.z3cyber.tech\n        description:
     Workflow Automation\n        icon: n8n.png\n    - Codeserver:\n        href: https://code.local.z3cyber.tech\n
@@ -100,13 +104,17 @@ data:
     OSINT\n        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/web-check.png\n
     \   - JuiceShop:\n        href: https://juiceshop.k8s.z3cyber.tech\n        description:
     Security Testing\n        icon: https://juice-shop.herokuapp.com/assets/public/images/JuiceShop_Logo.png\n\n-
-    Data:\n    - Kopia-1:\n        href: https://kopia-1.local.z3cyber.tech\n        description:
+    Data & AI:\n    - OpenWebUI:\n        href: https://webui.k8s.z3cyber.tech\n        description:
+    AI Inference\n        icon: https://avatars.githubusercontent.com/u/158137808?s=48&v=4\n
+    \   \n    - Kopia-1:\n        href: https://kopia-1.local.z3cyber.tech\n        description:
     Disaster Recovery\n        icon: kopia.png\n        widget:\n            type:
     kopia\n            url: http://192.168.0.32:51515\n            username: {{HOMEPAGE_VAR_KOPIA_USER}}\n
-    \           password: {{HOMEPAGE_VAR_KOPIA_PASSWORD}}\n\n    - Minio:\n        href:
-    https://minio.z3cyber.tech\n        description: Object Storage\n        icon:
-    minio.png\n    - Redpanda:\n        href: https://redpanda.local.z3cyber.tech\n
-    \       description: Message Broker\n        icon: https://cdn.prod.website-files.com/6632a83042773c5a1a5f4443/6647694a827e35299ffead7f_redpanda-logo-red.svg\n
+    \           password: {{HOMEPAGE_VAR_KOPIA_PASSWORD}}\n\n    - Cockpit:\n        href:
+    https://cockpit.k8s.z3cyber.tech\n        description: Network Attached Storage\n
+    \       icon: cockpit.png\n\n    - Minio:\n        href: https://minio.z3cyber.tech\n
+    \       description: Object Storage\n        icon: minio.png\n    - Redpanda:\n
+    \       href: https://redpanda.local.z3cyber.tech\n        description: Message
+    Broker\n        icon: https://cdn.prod.website-files.com/6632a83042773c5a1a5f4443/6647694a827e35299ffead7f_redpanda-logo-red.svg\n
     \   - Pgadmin:\n        href: https://pgadmin.local.z3cyber.tech\n        description:
     Database Management\n        icon: pgadmin.png\n\n\n- Media:\n    - Media-Calendar:\n
     \       widget:\n            type: calendar\n            firstDayInWeek: sunday
@@ -122,24 +130,24 @@ data:
     Media # group name where widget exists\n                  service_name: Sonarr
     # service name for that widget\n    - Jellyfin:\n        href: https://jellyfin.local.z3cyber.tech\n
     \       description: Media Server\n        icon: jellyfin.png\n        widget:\n
-    \           type: jellyfin\n            url: http://192.168.0.59:8096\n            key:
+    \           type: jellyfin\n            url: http://192.168.0.7:8096\n            key:
     {{HOMEPAGE_VAR_JELLYFIN_APIKEY}}\n            enableBlocks: true # optional, defaults
     to false\n            enableNowPlaying: true # optional, defaults to true\n            enableUser:
     true # optional, defaults to false\n            showEpisodeNumber: true # optional,
     defaults to false\n            expandOneStreamToTwoRows: false # optional, defaults
     to true\n    - Jellyseerr:\n        href: https://jellyseerr.local.z3cyber.tech\n
     \       description: Media Requester\n        icon: jellyseerr.png\n        widget:\n
-    \           type: jellyseerr\n            url: http://192.168.0.59:5055\n            key:
+    \           type: jellyseerr\n            url: http://192.168.0.7:5055\n            key:
     {{HOMEPAGE_VAR_JELLYSEERR_APIKEY}}\n    - Radarr:\n        href: https://radarr.local.z3cyber.tech\n
     \       description: Movies\n        icon: radarr.png\n        widget:\n            type:
-    radarr\n            url: http://192.168.0.59:7878\n            key:  {{HOMEPAGE_VAR_RADARR_APIKEY}}\n
+    radarr\n            url: http://192.168.0.7:7878\n            key:  {{HOMEPAGE_VAR_RADARR_APIKEY}}\n
     \           enableQueue: true # optional, defaults to false\n    - Sonarr:\n        href:
     https://sonarr.local.z3cyber.tech\n        description: TV Shows\n        icon:
-    sonarr.png\n        widget:\n            type: sonarr\n            url: http://192.168.0.59:8989\n
+    sonarr.png\n        widget:\n            type: sonarr\n            url: http://192.168.0.7:8989\n
     \           key: {{HOMEPAGE_VAR_SONARR_APIKEY}}\n            enableQueue: true
     # optional, defaults to false\n    - Audiobookshelf:\n        href: https://audiobooks.local.z3cyber.tech\n
     \       description: Audio Books\n        icon: audiobookshelf.png\n        widget:\n
-    \           type: audiobookshelf\n            url: http://192.168.0.59:13378\n
+    \           type: audiobookshelf\n            url: http://192.168.0.7:13378\n
     \           key: {{HOMEPAGE_VAR_AUDIOBOOKSHELF_APIKEY}}\n    - Readerr:\n        href:
     https://readarr.local.z3cyber.tech\n        description: Books\n        icon:
     readarr.png\n    - Prowlarr:\n        href: https://prowlarr.local.z3cyber.tech\n

@@ -3,15 +3,24 @@
 # https://gethomepage.dev/latest/configs/services
 
 - Management:
-    - Proxmox:
-        href: https://proxmox.local.z3cyber.tech
+    - Proxmox-PVE1:
+        href: https://pve-1.local.z3cyber.tech
+        description: Hypervisor
+        icon: proxmox.png
+        widget:
+            type: proxmox
+            url: https://192.168.0.190:8006
+            username: {{HOMEPAGE_VAR_PROXMOX_USERNAME}}
+            password: {{HOMEPAGE_VAR_PROXMOX_PASSWORD}}
+    - Proxmox-PVE2:
+        href: https://pve-2.local.z3cyber.tech
         description: Hypervisor
         icon: proxmox.png
         widget:
             type: proxmox
             url: https://192.168.0.189:8006
             username: {{HOMEPAGE_VAR_PROXMOX_USERNAME}}
-            password: {{HOMEPAGE_VAR_PROXMOX_PASSWORD}}
+            password: {{HOMEPAGE_VAR_PROXMOX2_PASSWORD}}
     - Portainer:
         href: https://portainer.local.z3cyber.tech
         description: Container Management
@@ -31,10 +40,10 @@
         icon: https://kamaji.clastix.io/images/logo.png
 
 - Automation:
-    - Jenkins:
-        href: https://jenkins.z3cyber.tech
+    - SemaphoreUI:
+        href: https://Semaphore.k8s.z3cyber.tech
         description: Automation Server
-        icon: jenkins.png
+        icon: semaphore.png
     - Argocd:
         href: https://argocd.z3cyber.tech
         description: GitOps for Continuous Deployment
@@ -188,7 +197,12 @@
         description: Security Testing
         icon: https://juice-shop.herokuapp.com/assets/public/images/JuiceShop_Logo.png
 
-- Data:
+- Data & AI:
+    - OpenWebUI:
+        href: https://webui.k8s.z3cyber.tech
+        description: AI Inference
+        icon: https://avatars.githubusercontent.com/u/158137808?s=48&v=4
+    
     - Kopia-1:
         href: https://kopia-1.local.z3cyber.tech
         description: Disaster Recovery
@@ -198,6 +212,11 @@
             url: http://192.168.0.32:51515
             username: {{HOMEPAGE_VAR_KOPIA_USER}}
             password: {{HOMEPAGE_VAR_KOPIA_PASSWORD}}
+
+    - Cockpit:
+        href: https://cockpit.k8s.z3cyber.tech
+        description: Network Attached Storage
+        icon: cockpit.png
 
     - Minio:
         href: https://minio.z3cyber.tech
@@ -232,7 +251,7 @@
         icon: jellyfin.png
         widget:
             type: jellyfin
-            url: http://192.168.0.59:8096
+            url: http://192.168.0.7:8096
             key: {{HOMEPAGE_VAR_JELLYFIN_APIKEY}}
             enableBlocks: true # optional, defaults to false
             enableNowPlaying: true # optional, defaults to true
@@ -245,7 +264,7 @@
         icon: jellyseerr.png
         widget:
             type: jellyseerr
-            url: http://192.168.0.59:5055
+            url: http://192.168.0.7:5055
             key: {{HOMEPAGE_VAR_JELLYSEERR_APIKEY}}
     - Radarr:
         href: https://radarr.local.z3cyber.tech
@@ -253,7 +272,7 @@
         icon: radarr.png
         widget:
             type: radarr
-            url: http://192.168.0.59:7878
+            url: http://192.168.0.7:7878
             key:  {{HOMEPAGE_VAR_RADARR_APIKEY}}
             enableQueue: true # optional, defaults to false
     - Sonarr:
@@ -262,7 +281,7 @@
         icon: sonarr.png
         widget:
             type: sonarr
-            url: http://192.168.0.59:8989
+            url: http://192.168.0.7:8989
             key: {{HOMEPAGE_VAR_SONARR_APIKEY}}
             enableQueue: true # optional, defaults to false
     - Audiobookshelf:
@@ -271,7 +290,7 @@
         icon: audiobookshelf.png
         widget:
             type: audiobookshelf
-            url: http://192.168.0.59:13378
+            url: http://192.168.0.7:13378
             key: {{HOMEPAGE_VAR_AUDIOBOOKSHELF_APIKEY}}
     - Readerr:
         href: https://readarr.local.z3cyber.tech
