@@ -82,15 +82,16 @@ data:
     \       description: Paste bin\n        icon: pastebin.png\n\n- Monitoring:\n
     \   - Grafana:\n        href: https://grafana.k8s.z3cyber.tech\n        description:
     Dashboard Visualizer\n        icon: grafana.png\n        widget:\n            type:
-    grafana\n            url: https://grafana.k8s.z3cyber.tech\n            username:
-    {{HOMEPAGE_VAR_GRAFANA_USER}}\n            password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}\n
+    grafana\n            url: http://prometheus-grafana.monitoring.svc.cluster.local:80\n
+    \           username: {{HOMEPAGE_VAR_GRAFANA_USER}}\n            password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}\n
     \   - Prometheus:\n        href: https://prometheus.k8s.z3cyber.tech\n        description:
     Metrics Store\n        icon: prometheus.png\n        widget:\n            type:
-    prometheus\n            url: https://prometheus.k8s.z3cyber.tech\n    - Uptime-kuma:\n
-    \       href: https://uptime.local.z3cyber.tech\n        description: Service
-    Monitor\n        icon: uptime-kuma.png\n        widget:\n            type: uptimekuma\n
-    \           url: http://192.168.0.32:3010\n            slug: statuspageslug\n
-    \  # - Upptime-Github:\n    #    href: https://zazathomas.github.io/upptime-monitor/\n
+    prometheus\n            url: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090\n
+    \   - Loki:\n        href: https://loki.k8s.z3cyber.tech\n        description:
+    Central logging\n        icon: loki.png\n    - Uptime-kuma:\n        href: https://uptime.local.z3cyber.tech\n
+    \       description: Service Monitor\n        icon: uptime-kuma.png\n        widget:\n
+    \           type: uptimekuma\n            url: http://192.168.0.32:3010\n            slug:
+    statuspageslug\n   # - Upptime-Github:\n    #    href: https://zazathomas.github.io/upptime-monitor/\n
     \   #    description: Service Monitor\n     #   icon: https://avatars.githubusercontent.com/u/73812536?v=4\n
     \   - Speedtest:\n        href: https://speedtest.local.z3cyber.tech\n        description:
     Latency tests\n        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/speedtest-tracker.png\n

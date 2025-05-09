@@ -25,7 +25,7 @@ test:
 
 # All loki settings combined under one key
 loki:
-  auth_enabled: true
+  auth_enabled: false
   commonConfig:
     replication_factor: 1
   storage:

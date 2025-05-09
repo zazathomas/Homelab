@@ -144,7 +144,7 @@
         icon: grafana.png
         widget:
             type: grafana
-            url: https://grafana.k8s.z3cyber.tech
+            url: http://prometheus-grafana.monitoring.svc.cluster.local:80
             username: {{HOMEPAGE_VAR_GRAFANA_USER}}
             password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}
     - Prometheus:
@@ -153,7 +153,11 @@
         icon: prometheus.png
         widget:
             type: prometheus
-            url: https://prometheus.k8s.z3cyber.tech
+            url: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+    - Loki:
+        href: https://loki.k8s.z3cyber.tech
+        description: Central logging
+        icon: loki.png
     - Uptime-kuma:
         href: https://uptime.local.z3cyber.tech
         description: Service Monitor
