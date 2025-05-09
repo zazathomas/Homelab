@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kube-prometheus-stack
+  name: loki
   namespace: argocd
   #finalizers:
   #  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
-  - repoURL: 'https://prometheus-community.github.io/helm-charts'
-    chart: kube-prometheus-stack
-    targetRevision: 70.8.0
+  - repoURL: 'https://grafana.github.io/helm-charts/'
+    chart: loki
+    targetRevision: 6.29.0
     helm:
-      releaseName: prometheus
+      releaseName: loki
       valueFiles:
-      - $values/K8s/homelab/applications/monitoring/prom_values.yaml
+      - $values/K8s/homelab/applications/monitoring/loki_values.yaml
   - repoURL: 'https://github.com/zazathomas/Homelab'
     targetRevision: HEAD
     ref: values
