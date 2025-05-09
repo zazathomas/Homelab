@@ -1,0 +1,32 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: grafana-route
+  namespace: monitoring
+spec:
+  parentRefs:
+  - name: cilium-gw
+    namespace: gateway
+  hostnames:
+  - "grafana.k8s.z3cyber.tech"
+  rules:
+   - backendRefs:
+      - name: prometheus-grafana 
+        port: 80
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: prometheus-route
+  namespace: monitoring
+spec:
+  parentRefs:
+  - name: cilium-gw
+    namespace: gateway
+  hostnames:
+  - "prometheus.k8s.z3cyber.tech"
+  rules:
+   - backendRefs:
+      - name: prometheus-kube-prometheus-prometheus
+        port: 9090

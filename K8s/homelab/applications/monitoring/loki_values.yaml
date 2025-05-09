@@ -1,0 +1,35 @@
+# Deployment mode: SingleBinary (simple), SimpleScalable (medium), Distributed (large)
+deploymentMode: SingleBinary
+
+# Number of replicas
+singleBinary:
+  replicas: 1
+
+# Component replicas
+write:
+  replicas: 0
+read:
+  replicas: 0
+backend:
+  replicas: 0
+
+# Caching
+chunksCache:
+  enabled: false
+resultsCache:
+  enabled: false
+
+# Helm test
+test:
+  enabled: false
+
+# All loki settings combined under one key
+loki:
+  auth_enabled: true
+  commonConfig:
+    replication_factor: 1
+  storage:
+    type: filesystem
+    filesystem:
+      directory: /var/loki/chunks
+  useTestSchema: true
