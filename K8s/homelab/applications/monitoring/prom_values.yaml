@@ -1,5 +1,9 @@
 prometheus:
   prometheusSpec:
+    podMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
     additionalScrapeConfigs:
     - job_name: 'pve-1'
       static_configs:
