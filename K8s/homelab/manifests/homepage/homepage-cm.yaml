@@ -87,11 +87,10 @@ data:
     \   - Prometheus:\n        href: https://prometheus.k8s.z3cyber.tech\n        description:
     Metrics Store\n        icon: prometheus.png\n        widget:\n            type:
     prometheus\n            url: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090\n
-    \   - Loki:\n        href: https://loki.k8s.z3cyber.tech\n        description:
-    Central logging\n        icon: loki.png\n    - Uptime-kuma:\n        href: https://uptime.local.z3cyber.tech\n
-    \       description: Service Monitor\n        icon: uptime-kuma.png\n        widget:\n
-    \           type: uptimekuma\n            url: http://192.168.0.32:3010\n            slug:
-    statuspageslug\n   # - Upptime-Github:\n    #    href: https://zazathomas.github.io/upptime-monitor/\n
+    \   - Uptime-kuma:\n        href: https://uptime.local.z3cyber.tech\n        description:
+    Service Monitor\n        icon: uptime-kuma.png\n        widget:\n            type:
+    uptimekuma\n            url: http://192.168.0.32:3010\n            slug: statuspageslug\n
+    \  # - Upptime-Github:\n    #    href: https://zazathomas.github.io/upptime-monitor/\n
     \   #    description: Service Monitor\n     #   icon: https://avatars.githubusercontent.com/u/73812536?v=4\n
     \   - Speedtest:\n        href: https://speedtest.local.z3cyber.tech\n        description:
     Latency tests\n        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/speedtest-tracker.png\n
@@ -113,7 +112,10 @@ data:
     kopia\n            url: http://192.168.0.32:51515\n            username: {{HOMEPAGE_VAR_KOPIA_USER}}\n
     \           password: {{HOMEPAGE_VAR_KOPIA_PASSWORD}}\n\n    - Cockpit:\n        href:
     https://cockpit.k8s.z3cyber.tech\n        description: Network Attached Storage\n
-    \       icon: cockpit.png\n\n    - Minio:\n        href: https://minio.z3cyber.tech\n
+    \       icon: cockpit.png\n    \n    - Conduktor:\n        href: https://conduktor.local.z3cyber.tech\n
+    \       description: Kafka UI\n        icon: https://avatars.githubusercontent.com/u/60062294?s=200&v=4\n\n
+    \   - Ghost:\n        href: https://ghost.local.z3cyber.tech\n        description:
+    Blogging Platform\n        icon: ghost.png\n\n    - Minio:\n        href: https://minio.z3cyber.tech\n
     \       description: Object Storage\n        icon: minio.png\n    - Redpanda:\n
     \       href: https://redpanda.local.z3cyber.tech\n        description: Message
     Broker\n        icon: https://cdn.prod.website-files.com/6632a83042773c5a1a5f4443/6647694a827e35299ffead7f_redpanda-logo-red.svg\n

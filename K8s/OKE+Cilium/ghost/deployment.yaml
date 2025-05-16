@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ghost
+  namespace: ghost
+  labels:
+    app: ghost
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ghost
+  template:
+    metadata:
+      labels:
+        app: ghost
+    spec:
+      containers:
+      - name: ghost
+        image: ghost:latest
+        ports:
+        - containerPort: 2368
+        env:
+        - name: database__client
+          value: sqlite3
+        - name: database__connection__filename
+          value: "/var/lib/ghost/content/data/ghost.db"
+        - name: url
+          value: https://ghost.local.z3cyber.tech
+        volumeMounts:
+        - name: ghost-data
+          mountPath: /var/lib/ghost/content
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      volumes:
+      - name: ghost-data
+        persistentVolumeClaim:
+          claimName: ghost-pvc

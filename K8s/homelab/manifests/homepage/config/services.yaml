@@ -154,10 +154,6 @@
         widget:
             type: prometheus
             url: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
-    - Loki:
-        href: https://loki.k8s.z3cyber.tech
-        description: Central logging
-        icon: loki.png
     - Uptime-kuma:
         href: https://uptime.local.z3cyber.tech
         description: Service Monitor
@@ -221,6 +217,16 @@
         href: https://cockpit.k8s.z3cyber.tech
         description: Network Attached Storage
         icon: cockpit.png
+    
+    - Conduktor:
+        href: https://conduktor.local.z3cyber.tech
+        description: Kafka UI
+        icon: https://avatars.githubusercontent.com/u/60062294?s=200&v=4
+
+    - Ghost:
+        href: https://ghost.local.z3cyber.tech
+        description: Blogging Platform
+        icon: ghost.png
 
     - Minio:
         href: https://minio.z3cyber.tech
