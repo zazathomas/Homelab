@@ -1,0 +1,16 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: semaphore-config
+  namespace: utilities
+data:
+  SEMAPHORE_WEB_ROOT: https://semaphore.k8s.z3cyber.tech
+  SEMAPHORE_ADMIN: zazathomas
+  SEMAPHORE_ADMIN_NAME: zazathomas
+  SEMAPHORE_DB_DIALECT: postgres
+  SEMAPHORE_DB_HOST: semaphore-db-rw.databases.svc.cluster.local
+  SEMAPHORE_DB_PORT: "5432"
+  SEMAPHORE_DB: app
+  SEMAPHORE_DB_USER: app
+  SEMAPHORE_LDAP_ACTIVATED: 'no'
+  TZ: "Europe/Dublin"
