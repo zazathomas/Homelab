@@ -10,7 +10,7 @@ spec:
   sources:
   - repoURL: 'https://prometheus-community.github.io/helm-charts'
     chart: kube-prometheus-stack
-    targetRevision: 70.8.0
+    targetRevision: 75.3.5
     helm:
       releaseName: prometheus
       valueFiles:
@@ -19,7 +19,7 @@ spec:
     targetRevision: HEAD
     ref: values
   destination:
-    server: "https://141.148.61.125:6443"
+    server: "https://kubernetes.default.svc"
     namespace: monitoring
   syncPolicy:
 #    automated:

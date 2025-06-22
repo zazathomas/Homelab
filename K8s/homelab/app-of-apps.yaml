@@ -11,7 +11,5 @@ spec:
     repoURL: https://github.com/zazathomas/Homelab.git
     targetRevision: HEAD
     path: K8s/homelab/applications
-    directory:
-      recurse: true
   destination:
     server: "https://kubernetes.default.svc"

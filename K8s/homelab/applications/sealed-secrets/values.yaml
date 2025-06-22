@@ -1,9 +1,0 @@
-fullnameOverride: "sealed-secrets-controller"
-keyrenewperiod: "0"
-resources:
-  requests:
-    cpu: 50m
-    memory: 50Mi
-  limits:
-    cpu: 100m
-    memory: 150Mi

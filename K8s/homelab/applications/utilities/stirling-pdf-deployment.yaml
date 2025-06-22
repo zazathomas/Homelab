@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  stirling-pdf
+  namespace: utilities
+  labels:
+    app:  stirling-pdf
+spec:
+  selector:
+    matchLabels:
+      app: stirling-pdf
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app:  stirling-pdf
+    spec:
+      containers:
+      - name: stirling-pdf
+        image: stirlingtools/stirling-pdf:0.44.2
+        resources:
+          requests:
+            cpu: 50m
+            memory: 70Mi
+          limits:
+            cpu: 1000m
+            memory: 3000Mi
+        ports:
+        - containerPort:  8080
+          name:  http
+        env:
+        - name: TZ
+          value: Europe/Dublin
+      restartPolicy: Always

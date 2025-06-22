@@ -19,11 +19,9 @@ spec:
     targetRevision: HEAD
     ref: values
   destination:
-    server: "https://141.148.61.125:6443"
+    server: "https://kubernetes.default.svc"
     namespace: strimzi-operator
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
-      - Validate=true
-      - PrunePropagationPolicy=foreground
       - PruneLast=true
