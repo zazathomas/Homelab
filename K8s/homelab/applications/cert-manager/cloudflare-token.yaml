@@ -15,4 +15,7 @@ spec:
   data:
     - secretKey: cloudflare-token
       remoteRef:
+        conversionStrategy: Default	
+        decodingStrategy: None
         key: cloudflare-token 
+        metadataPolicy: None

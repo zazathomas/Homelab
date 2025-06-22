@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns-homelab
+  name: external-dns
   namespace: argocd
   #finalizers:
   #  - resources-finalizer.argocd.argoproj.io
@@ -28,6 +28,5 @@ spec:
 #      allowEmpty: false
     syncOptions:
       - CreateNamespace=true
-#      - Validate=true
-#      - PrunePropagationPolicy=foreground
-#      - PruneLast=true
+      - ServerSideApply=true
+      - PruneLast=true
