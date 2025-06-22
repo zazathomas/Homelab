@@ -16,3 +16,10 @@ spec:
    - backendRefs:
       - name: stirling-pdf
         port: 8080
+        group: ''	
+        kind: Service
+        weight: 1	
+     matches:	
+        - path:	
+            type: PathPrefix	
+            value: /

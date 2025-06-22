@@ -45,3 +45,10 @@ spec:
    - backendRefs:
       - name: openwebui
         port: 8282
+        group: ''	
+        kind: Service
+        weight: 1	
+     matches:	
+        - path:	
+            type: PathPrefix	
+            value: /
