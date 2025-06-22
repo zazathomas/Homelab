@@ -16,6 +16,13 @@ spec:
    - backendRefs:
       - name: argocd-server
         port: 80
+        group: ''	
+        kind: Service
+        weight: 1	
+     matches:	
+        - path:	
+            type: PathPrefix	
+            value: /
 
 
 

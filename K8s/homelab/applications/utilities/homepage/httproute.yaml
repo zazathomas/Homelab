@@ -13,3 +13,10 @@ spec:
    - backendRefs:
       - name: homepage
         port: 3000
+        group: ''	
+        kind: Service
+        weight: 1	
+     matches:	
+        - path:	
+            type: PathPrefix	
+            value: /
