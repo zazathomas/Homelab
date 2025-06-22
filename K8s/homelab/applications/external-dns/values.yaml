@@ -14,7 +14,7 @@ sources:
   - gateway-tlsroute
 
 serviceMonitor:
-  enabled: true
+  enabled: false
 
 txtOwnerId: external-dns
 
