@@ -13,6 +13,11 @@ spec:
     targetRevision: 8.1.1
     helm:
       releaseName: argocd
+      valueFiles:
+      - $values/K8s/homelab/applications/argocd/values.yaml
+  - repoURL: 'https://github.com/zazathomas/Homelab'
+    targetRevision: HEAD
+    ref: values
   destination:
     server: "https://kubernetes.default.svc"
     namespace: argocd
