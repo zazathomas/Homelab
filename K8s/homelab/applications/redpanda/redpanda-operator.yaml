@@ -1,24 +1,24 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: redpanda-operator
-  namespace: argocd
-  #finalizers:
-  #  - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  sources:
-  - repoURL: 'https://charts.redpanda.com'
-    chart: operator
-    targetRevision: v2.4.1
-    helm:
-      releaseName: redpanda-operator
-  destination:
-    server: "https://141.148.61.125:6443"
-    namespace: redpanda
-  syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
-      - Validate=true
-      - PrunePropagationPolicy=foreground
-      - PruneLast=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: redpanda-operator
+#   namespace: argocd
+#   #finalizers:
+#   #  - resources-finalizer.argocd.argoproj.io
+# spec:
+#   project: default
+#   sources:
+#   - repoURL: 'https://charts.redpanda.com'
+#     chart: operator
+#     targetRevision: v2.4.1
+#     helm:
+#       releaseName: redpanda-operator
+#   destination:
+#     server: "https://kubernetes.default.svc"
+#     namespace: redpanda
+#   syncPolicy:
+#     syncOptions:
+#       - CreateNamespace=true
+#       - Validate=true
+#       - PrunePropagationPolicy=foreground
+#       - PruneLast=true

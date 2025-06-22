@@ -5,6 +5,12 @@ metadata:
   namespace: gateway
 spec:
   gatewayClassName: cilium
+  infrastructure:
+    annotations:
+      service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "10"
+      service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+      service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+      oci.oraclecloud.com/load-balancer-type: "lb"
   listeners:
     - name: http
       protocol: HTTP

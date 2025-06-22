@@ -1,20 +1,26 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cilium-manifests
+  name: cilium
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
+  #finalizers:
+  #  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    repoURL: 'https://github.com/zazathomas/Homelab.git'
+  sources:
+  - repoURL: 'https://helm.cilium.io/'
+    chart: cilium
+    targetRevision: 1.17.4
+    helm:
+      releaseName: cilium
+      valueFiles:
+      - $values/K8s/homelab/applications/cilium/cilium-values.yaml
+  - repoURL: 'https://github.com/zazathomas/Homelab'
     targetRevision: HEAD
-    path: K8s/homelab/manifests/cilium
-    directory:
-      recurse: true
+    ref: values
   destination:
-    server: 'https://141.148.61.125:6443' 
+    server: "https://kubernetes.default.svc"
+    namespace: kube-system
   syncPolicy:
 #    automated:
 #      prune: true

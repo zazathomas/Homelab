@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster-apps
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/zazathomas/Homelab.git
+      revision: HEAD
+      directories:
+      - path: K8s/homelab/applications/*
+  template:
+    metadata:
+      name: 'app-{{ path.basename }}'
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/zazathomas/Homelab.git
+        targetRevision: HEAD
+        path: '{{ path }}'
+        kustomize: {}
+      destination:
+        server: "https://kubernetes.default.svc"
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
+          - PruneLast=true
+          - ApplyOutOfSyncOnly=true
+          - ServerSideApply=true
+          - RespectIgnoreDifferences=true

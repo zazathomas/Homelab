@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: z3cyber-tech-cert
+  namespace: gateway
+spec:
+  secretName: z3cyber-tech-cert-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: "*.z3cyber.tech"
+  dnsNames:
+  - "z3cyber.tech"
+  - "*.k8s.z3cyber.tech"
+  - "*.z3cyber.tech"
