@@ -42,7 +42,7 @@ crds:
 global:
   # -- Default domain used by all components
   ## Used for ingresses, certificates, SSO, notifications, etc.
-  domain: argocd-home.k8s.z3cyber.tech
+  domain: argocd-home.z3cyber.tech
 
   # -- Runtime class name for all components
   runtimeClassName: ""
