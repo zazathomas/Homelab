@@ -8,6 +8,8 @@ spec:
   parentRefs:
   - name: cilium-gw
     namespace: gateway
+    group: gateway.networking.k8s.io	
+    kind: Gateway
   hostnames:
   - "pdf.k8s.z3cyber.tech"
   rules:
