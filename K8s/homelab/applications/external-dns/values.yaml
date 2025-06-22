@@ -5,13 +5,18 @@ extraArgs:
   - --webhook-provider-url=http://localhost:8888 
 # -- _Kubernetes_ resources to monitor for DNS entries.
 
+namespaced: false
+
 sources:
   - ingress
   - gateway-httproute
   - gateway-grpcroute
   - gateway-tlsroute
-  # - gateway-tcproute
-  # - gateway-udproute
+
+serviceMonitor:
+  enabled: true
+
+txtOwnerId: external-dns
 
 policy: sync
 
