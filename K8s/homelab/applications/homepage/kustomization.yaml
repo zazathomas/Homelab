@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ns.yaml
+  - crb.yaml
+  - deployment.yaml
+  - service.yaml
+  - serviceaccount.yaml
+  - httproute.yaml
+  - secret.yaml
+  - homepage-cm.yaml
+  - homepage-secrets.yaml

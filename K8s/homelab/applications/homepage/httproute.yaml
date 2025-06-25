@@ -1,3 +1,4 @@
+---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -7,12 +8,14 @@ spec:
   parentRefs:
   - name: cilium-gw
     namespace: gateway
+    group: gateway.networking.k8s.io	
+    kind: Gateway
   hostnames:
   - "homepage.k8s.z3cyber.tech"
   rules:
    - backendRefs:
       - name: homepage
-        port: 3000
+        port: 80
         group: ''	
         kind: Service
         weight: 1	

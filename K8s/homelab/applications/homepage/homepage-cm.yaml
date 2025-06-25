@@ -45,6 +45,8 @@ data:
     \       href: https://semaphore.k8s.z3cyber.tech\n        description: Automation
     Server\n        icon: semaphore.png\n    - Argocd:\n        href: https://argocd.z3cyber.tech\n
     \       description: GitOps for Continuous Deployment\n        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png\n
+    \   - Argocd-home:\n        href: https://argocd-home.z3cyber.tech\n        description:
+    GitOps for Continuous Deployment\n        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png\n
     \   - N8n:\n        href: https://n8n.local.z3cyber.tech\n        description:
     Workflow Automation\n        icon: n8n.png\n    - Codeserver:\n        href: https://code.local.z3cyber.tech\n
     \       description: VScode in Browser\n        icon: vscode.png\n\n- Networking:\n
@@ -59,6 +61,8 @@ data:
     Reverse Proxy\n        icon: traefik.png\n        widget:\n            type: traefik\n
     \           url: https://traefik.local.z3cyber.tech\n            username: {{HOMEPAGE_VAR_TRAEFIK_USERNAME}}
     # optional\n            password: {{HOMEPAGE_VAR_TRAEFIK_PASSWORD}} # optional\n
+    \   - HobbleUI:\n        href: https://hubble.k8s.z3cyber.tech\n        description:
+    Network Observability\n        icon: https://cdn.jsdelivr.net/gh/cilium/hubble@main/Documentation/images/hubble_logo.png\n
     \   - Adguard-Sync:\n        href: https://sync-dns.local.z3cyber.tech\n        description:
     DNS Provider\n        icon: adguard-home.png\n    - TPLink:\n        href: https://tplink.local.z3cyber.tech\n
     \       description: Router\n        icon: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQEbyJymhxFmY_oPOmHOu3LW7dcCqhzmjVIQ&s\n\n-
@@ -90,8 +94,6 @@ data:
     \   - Uptime-kuma:\n        href: https://uptime.local.z3cyber.tech\n        description:
     Service Monitor\n        icon: uptime-kuma.png\n        widget:\n            type:
     uptimekuma\n            url: http://192.168.0.32:3010\n            slug: statuspageslug\n
-    \  # - Upptime-Github:\n    #    href: https://zazathomas.github.io/upptime-monitor/\n
-    \   #    description: Service Monitor\n     #   icon: https://avatars.githubusercontent.com/u/73812536?v=4\n
     \   - Speedtest:\n        href: https://speedtest.local.z3cyber.tech\n        description:
     Latency tests\n        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/speedtest-tracker.png\n
     \       widget:  \n            type: speedtest  \n            url: http://192.168.0.32:8045\n
