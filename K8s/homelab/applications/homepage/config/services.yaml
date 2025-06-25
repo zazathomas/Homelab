@@ -48,6 +48,10 @@
         href: https://argocd.z3cyber.tech
         description: GitOps for Continuous Deployment
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png
+    - Argocd-home:
+        href: https://argocd-home.z3cyber.tech
+        description: GitOps for Continuous Deployment
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png
     - N8n:
         href: https://n8n.local.z3cyber.tech
         description: Workflow Automation
@@ -85,6 +89,10 @@
             url: https://traefik.local.z3cyber.tech
             username: {{HOMEPAGE_VAR_TRAEFIK_USERNAME}} # optional
             password: {{HOMEPAGE_VAR_TRAEFIK_PASSWORD}} # optional
+    - HobbleUI:
+        href: https://hubble.k8s.z3cyber.tech
+        description: Network Observability
+        icon: https://cdn.jsdelivr.net/gh/cilium/hubble@main/Documentation/images/hubble_logo.png
     - Adguard-Sync:
         href: https://sync-dns.local.z3cyber.tech
         description: DNS Provider
@@ -162,10 +170,6 @@
             type: uptimekuma
             url: http://192.168.0.32:3010
             slug: statuspageslug
-   # - Upptime-Github:
-    #    href: https://zazathomas.github.io/upptime-monitor/
-    #    description: Service Monitor
-     #   icon: https://avatars.githubusercontent.com/u/73812536?v=4
     - Speedtest:
         href: https://speedtest.local.z3cyber.tech
         description: Latency tests
