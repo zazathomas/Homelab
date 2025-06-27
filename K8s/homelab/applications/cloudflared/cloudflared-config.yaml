@@ -8,7 +8,7 @@ warp-routing:
 
 ingress:
   - hostname: "*.z3cyber.tech"
-    service: https://cilium-gateway-cf-gateway.gateway.svc.cluster.local:443
+    service: https://envoy-gateway-envoy-gw-9560eec6.envoy-gateway-system.svc.cluster.local:443
     originRequest:
       originServerName: "*.z3cyber.tech"
   - service: http_status:404
