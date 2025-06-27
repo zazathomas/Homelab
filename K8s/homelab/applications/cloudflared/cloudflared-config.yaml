@@ -1,0 +1,14 @@
+tunnel: homelab-k8s
+credentials-file: /etc/cloudflared/creds/credentials.json
+metrics: 0.0.0.0:2000
+no-autoupdate: true
+
+warp-routing:
+  enabled: true
+
+ingress:
+  - hostname: "*.z3cyber.tech"
+    service: https://cilium-gateway-cf-gateway.gateway.svc.cluster.local:443
+    originRequest:
+      originServerName: "*.z3cyber.tech"
+  - service: http_status:404
