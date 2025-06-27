@@ -5,7 +5,7 @@ metadata:
   name: echo-route-cf
 spec:
   parentRefs:
-  - name: cf-gateway
+  - name: envoy-gw
     namespace: gateway
     group: gateway.networking.k8s.io	
     kind: Gateway

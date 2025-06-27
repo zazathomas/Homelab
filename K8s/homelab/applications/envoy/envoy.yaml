@@ -13,6 +13,11 @@ spec:
     targetRevision: v1.4.1
     helm:
       releaseName: envoy-gateway
+      valueFiles:
+      - $values/K8s/homelab/applications/envoy/values.yaml
+  - repoURL: 'https://github.com/zazathomas/Homelab'
+    targetRevision: HEAD
+    ref: values
   destination:
     server: "https://kubernetes.default.svc"
     namespace: envoy-gateway-system

@@ -8,7 +8,6 @@ configMapGenerator:
       - cloudflared-config.yaml
 
 resources:
-  - cf-gateway.yaml
   - ns.yaml
   - tunnel-credentials.yaml
   - deployment.yaml
