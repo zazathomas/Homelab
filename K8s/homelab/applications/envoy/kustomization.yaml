@@ -8,4 +8,4 @@ resources:
   - envoy-gateway.yaml
   - http-redirect.yaml
   - client-traffic-policy.yaml
-  - backend-traffic-policy
+  - backend-traffic-policy.yaml
