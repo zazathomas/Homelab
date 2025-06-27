@@ -1,0 +1,21 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: cf-gateway
+  namespace: gateway
+spec:
+  gatewayClassName: cilium
+  listeners:
+    - protocol: HTTPS
+      port: 443
+      name: https
+      hostname: "*.z3cyber.tech"
+      tls:
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: z3cyber-tech-cert-tls
+            namespace: gateway
+      allowedRoutes:
+        namespaces:
+          from: All
