@@ -8,9 +8,15 @@ spec:
   - name: envoy-gw
     namespace: gateway
     sectionName: http
+    group: gateway.networking.k8s.io	
+    kind: Gateway
   rules:
   - filters:
     - type: RequestRedirect
       requestRedirect:
         scheme: https
         statusCode: 301
+    matches:	
+        - path:	
+            type: PathPrefix	
+            value: /

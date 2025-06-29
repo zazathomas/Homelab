@@ -7,5 +7,7 @@ resources:
   - gatewayclass.yaml
   - envoy-gateway.yaml
   - http-redirect.yaml
-  - client-traffic-policy.yaml
-  - backend-traffic-policy.yaml
+  - detect-ip-policy.yaml
+  - global-ratelimit-policy.yaml
+  - gw-auth-policy.yaml
+  - gw-client-secret.yaml
