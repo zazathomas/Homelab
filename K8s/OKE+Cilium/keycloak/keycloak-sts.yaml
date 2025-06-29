@@ -47,6 +47,8 @@ spec:
                   key: hostname
             - name: KC_HTTP_ENABLED
               value: "true"
+            - name: TZ
+              value: "Europe/Dublin"
           ports:
             - name: http
               containerPort: 8080
