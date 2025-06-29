@@ -11,7 +11,7 @@ spec:
     group: gateway.networking.k8s.io	
     kind: Gateway
   hostnames:
-  - "argocd-home.z3cyber.tech"
+  - "argocd.k8s.z3cyber.tech"
   rules:
    - backendRefs:
       - name: argocd-server
