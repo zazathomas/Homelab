@@ -11,3 +11,4 @@ resources:
   - global-ratelimit-policy.yaml
   - gw-auth-policy.yaml
   - gw-client-secret.yaml
+  - podmonitors.yaml

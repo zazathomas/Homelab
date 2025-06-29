@@ -6,3 +6,5 @@ resources:
   - kafka-rebalance.yaml
   - kafka-topic.yaml
   - kafka-users.yaml
+  - kafka-metrics.yaml
+  - podmonitor.yaml
