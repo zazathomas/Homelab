@@ -45,7 +45,7 @@ data:
     \       href: https://semaphore.k8s.z3cyber.tech\n        description: Automation
     Server\n        icon: semaphore.png\n    - Argocd:\n        href: https://argocd.z3cyber.tech\n
     \       description: GitOps for Continuous Deployment\n        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png\n
-    \   - Argocd-home:\n        href: https://argocd-home.z3cyber.tech\n        description:
+    \   - Argocd-home:\n        href: https://argocd.k8s.z3cyber.tech\n        description:
     GitOps for Continuous Deployment\n        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png\n
     \   - N8n:\n        href: https://n8n.local.z3cyber.tech\n        description:
     Workflow Automation\n        icon: n8n.png\n    - Codeserver:\n        href: https://code.local.z3cyber.tech\n

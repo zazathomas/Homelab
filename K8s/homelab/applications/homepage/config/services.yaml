@@ -49,7 +49,7 @@
         description: GitOps for Continuous Deployment
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png
     - Argocd-home:
-        href: https://argocd-home.z3cyber.tech
+        href: https://argocd.k8s.z3cyber.tech
         description: GitOps for Continuous Deployment
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png
     - N8n:
