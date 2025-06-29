@@ -1,0 +1,47 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: envoy-proxy-podmonitor
+  namespace: envoy-gateway-system
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: proxy
+  podMetricsEndpoints:
+    - port: metrics
+      interval: 5s
+      path: /stats/prometheus
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: eg-podmonitor
+  namespace: envoy-gateway-system
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: envoy-gateway
+  podMetricsEndpoints:
+    - port: metrics
+      interval: 5s
+      path: /metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: ratelimit-podmonitor
+  namespace: envoy-gateway-system
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: envoy-ratelimit
+  podMetricsEndpoints:
+    - port: metrics
+      interval: 5s
+      path: /metrics
