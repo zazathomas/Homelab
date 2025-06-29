@@ -14,3 +14,6 @@ spec:
     - secretKey: token # Key in the secret to be created
       remoteRef:
         key: cloudflare-token # Key in the OCI Vault
+        metadataPolicy: None
+        conversionStrategy: Default	
+        decodingStrategy: None
