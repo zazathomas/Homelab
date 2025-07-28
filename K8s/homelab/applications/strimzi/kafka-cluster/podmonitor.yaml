@@ -6,6 +6,7 @@ metadata:
   namespace: kafka-tenants
   labels:
     app: homelab-kafka-metrics
+    release: prometheus
 spec:
   namespaceSelector: 
     matchNames:
