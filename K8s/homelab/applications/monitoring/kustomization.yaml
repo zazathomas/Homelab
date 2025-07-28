@@ -4,3 +4,11 @@ resources:
   - kube-prom-app.yaml
   - loki-app.yaml
   - httproutes.yaml
+  - alloy.yaml
+
+configMapGenerator:
+  - name: alloy-config
+    files:
+      - alloy-config.alloy
+    options:
+      disableNameSuffixHash: true

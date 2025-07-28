@@ -1,0 +1,25 @@
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  labels:
+    app.kubernetes.io/name: dragonfly
+    app.kubernetes.io/instance: dragonfly-cluster
+    app.kubernetes.io/part-of: dragonfly-operator
+    app.kubernetes.io/created-by: dragonfly-operator
+  name: dragonfly-cluster
+  namespace: dragonfly-operator-system
+
+spec:
+  replicas: 3
+  args: 
+  - "--requirepass=<>"
+  - "--snapshot_cron="
+  - "--cluster_mode=yes"
+  - "--admin_port=6060"
+  resources:
+    requests:
+      cpu: 500m
+      memory: 500Mi
+    limits:
+      cpu: 1000m
+      memory: 1000Mi
