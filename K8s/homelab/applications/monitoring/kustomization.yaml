@@ -8,6 +8,7 @@ resources:
 
 configMapGenerator:
   - name: alloy-config
+    namespace: monitoring
     files:
       - alloy-config.alloy
     options:
