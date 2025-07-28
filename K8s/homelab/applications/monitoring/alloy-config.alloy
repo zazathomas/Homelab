@@ -83,7 +83,7 @@ loki.process "pod_logs" {
   
   stage.drop {
     source = "timestamp" 
-    older_than = "7d"
+    older_than = "10080m"
     drop_counter_reason = "too old"
   }
   
@@ -118,7 +118,7 @@ loki.process "cluster_events" {
 
   stage.drop {
     source = "timestamp" 
-    older_than = "7d"
+    older_than = "10080m"
     drop_counter_reason = "too old"
   }
 
