@@ -4,6 +4,10 @@ metadata:
   name: envoy-gw
   namespace: gateway
 spec:
+  infrastructure:
+    annotations:
+      oci.oraclecloud.com/load-balancer-type: "nlb"
+      oci-network-load-balancer.oraclecloud.com/internal: "true"
   gatewayClassName: envoy
   listeners:
     - name: http
