@@ -1,33 +1,30 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: alloy
+  name: envoy-bundle
   namespace: argocd
   #finalizers:
   #  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
-  - repoURL: 'https://grafana.github.io/helm-charts'
-    chart: alloy
-    targetRevision: 0.10.1 
+  - repoURL: 'docker.io/envoyproxy'
+    chart: gateway-helm
+    targetRevision: v1.4.1
     helm:
-      releaseName: alloy
+      releaseName: envoy-gateway
       valueFiles:
-      - $values/K8s/OKE+Cilium/alloy+node-exporter/alloy-values.yaml
+      - $values/K8s/OKE+Cilium/envoy/values.yaml
   - repoURL: 'https://github.com/zazathomas/Homelab'
     targetRevision: HEAD
     ref: values
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: monitoring
+    namespace: envoy-gateway-system
   syncPolicy:
-#    automated:
-#      prune: true
-#      selfHeal: true
-#      allowEmpty: false
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
 #      - Validate=true
 #      - PrunePropagationPolicy=foreground
 #      - PruneLast=true

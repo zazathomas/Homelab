@@ -1,26 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: neuvector
+  name: envoy-bundle
   namespace: argocd
   #finalizers:
-  #  - resources-finalizer.argocd.argoproj.io
+   # - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  sources:
-  - chart: core
-    repoURL: https://neuvector.github.io/neuvector-helm
-    targetRevision: 2.8.1
-    helm:
-      releaseName: neuvector
-      valueFiles:
-      - $values/K8s/OKE+Cilium/neuvector/values-oke.yaml
-  - repoURL: 'https://github.com/zazathomas/Homelab'
+  source:
+    repoURL: https://github.com/zazathomas/Homelab.git
     targetRevision: HEAD
-    ref: values
+    path: K8s/OKE+Cilium/envoy
+    directory:
+      recurse: true
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: neuvector
   syncPolicy:
 #    automated:
 #      prune: true
@@ -31,4 +25,3 @@ spec:
 #      - Validate=true
 #      - PrunePropagationPolicy=foreground
 #      - PruneLast=true
-

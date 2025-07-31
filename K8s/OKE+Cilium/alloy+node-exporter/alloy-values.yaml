@@ -1,5 +1,0 @@
-alloy:
-  configMap:
-    create: false
-    name: alloy-config
-    key: alloy-config.alloy
