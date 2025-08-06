@@ -6,7 +6,7 @@ metadata:
   namespace: ghost
 spec:
   parentRefs:
-  - name: cilium-gw
+  - name: envoy-gw
     namespace: gateway
   hostnames:
   - "blog.z3cyber.tech"
