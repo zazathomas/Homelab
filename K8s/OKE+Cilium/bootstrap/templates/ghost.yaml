@@ -11,6 +11,7 @@ spec:
     repoURL: https://github.com/zazathomas/Homelab.git
     targetRevision: HEAD
     path: K8s/OKE+Cilium/ghost
+    kustomize: {}
   destination:
     server: "https://kubernetes.default.svc"
   syncPolicy:
