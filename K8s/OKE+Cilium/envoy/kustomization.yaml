@@ -9,7 +9,6 @@ resources:
   - cf-ratelimit-policy.yaml
   - cf-gw-auth-policy.yaml
   - gatewayclass.yaml
-  - ghost-service.yaml
   - gw-client-secret.yaml
   - nlb-envoy-gateway.yaml
   - nlb-http-redirects.yaml

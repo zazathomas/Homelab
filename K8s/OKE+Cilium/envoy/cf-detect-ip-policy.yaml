@@ -2,7 +2,7 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
-  name: client-traffic-policy
+  name: cf-detect-ip-policy
   namespace: gateway
 spec:
   targetRefs:
