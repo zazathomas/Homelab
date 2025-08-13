@@ -2,7 +2,7 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: cf-auth-security-policy
+  name: cf-oidc-security-policy
   namespace: gateway
 spec:
   targetRefs:
