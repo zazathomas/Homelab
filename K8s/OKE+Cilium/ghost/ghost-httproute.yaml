@@ -6,7 +6,7 @@ metadata:
   namespace: ghost
 spec:
   parentRefs:
-  - name: envoy-gw
+  - name: nlb-envoy-gw
     namespace: gateway
   hostnames:
   - "blog.z3cyber.tech"
@@ -18,7 +18,3 @@ spec:
   - backendRefs:
       - name: ghost
         port: 2368
-
-
-
-      

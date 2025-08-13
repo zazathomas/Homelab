@@ -6,7 +6,7 @@ metadata:
   namespace: argocd
 spec:
   parentRefs:
-  - name: nlb-cilium-gw
+  - name: cf-envoy-gw
     namespace: gateway
   hostnames:
   - "argocd.z3cyber.tech"
@@ -18,8 +18,5 @@ spec:
   #          value: zazilo
    - backendRefs:
       - name: argocd-server
+        namespace: argocd
         port: 80
-
-
-
-      

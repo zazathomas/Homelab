@@ -3,7 +3,6 @@ kind: Kustomization
 
 resources:
   - ns.yaml
-  - cockpit.yaml
-  - openwebui.yaml
-  - jellyfin.yaml
-  - jellyseerr.yaml
+  - keycloak-sts.yaml
+  - keycloak-route.yaml
+  - sealed_keycloak.yaml

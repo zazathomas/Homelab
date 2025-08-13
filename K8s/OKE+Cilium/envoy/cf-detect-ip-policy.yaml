@@ -8,7 +8,7 @@ spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
-      name: envoy-gw
+      name: cf-envoy-gw
   clientIPDetection:
     # xForwardedFor:
     #   trustedCIDRs:
