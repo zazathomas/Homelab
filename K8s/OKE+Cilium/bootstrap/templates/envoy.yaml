@@ -11,8 +11,7 @@ spec:
     repoURL: https://github.com/zazathomas/Homelab.git
     targetRevision: HEAD
     path: K8s/OKE+Cilium/envoy
-    directory:
-      recurse: true
+    kustomize: {}
   destination:
     server: "https://kubernetes.default.svc"
   syncPolicy:

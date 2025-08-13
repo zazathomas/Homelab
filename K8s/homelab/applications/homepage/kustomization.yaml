@@ -1,6 +1,23 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+configMapGenerator:
+  - name: homepage
+    namespace: homepage
+    files:
+      - config/bookmarks.yaml
+      - config/kubernetes.yaml
+      - config/services.yaml
+      - config/widgets.yaml
+      - config/custom.css
+      - config/custom.js
+      - config/docker.yaml
+      - config/settings.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+
 resources:
   - ns.yaml
   - crb.yaml
@@ -9,5 +26,4 @@ resources:
   - serviceaccount.yaml
   - httproute.yaml
   - secret.yaml
-  - homepage-cm.yaml
   - homepage-secrets.yaml

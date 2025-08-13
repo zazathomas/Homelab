@@ -51,7 +51,7 @@ metadata:
   namespace: minio
 spec:
   parentRefs:
-  - name: nlb-cilium-gw
+  - name: nlb-envoy-gw
     namespace: gateway
   hostnames:
   - "minio.z3cyber.tech"
@@ -68,7 +68,7 @@ metadata:
   namespace: minio
 spec:
   parentRefs:
-  - name: nlb-cilium-gw
+  - name: nlb-envoy-gw
     namespace: gateway
   hostnames:
   - "api-minio.z3cyber.tech"

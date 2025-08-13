@@ -1,0 +1,31 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: cf-envoy-gw
+  namespace: gateway
+spec:
+  infrastructure:
+    annotations:
+      oci.oraclecloud.com/load-balancer-type: "nlb"
+      oci-network-load-balancer.oraclecloud.com/internal: "true"
+  gatewayClassName: envoy
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+    - protocol: HTTPS
+      port: 443
+      name: https
+      hostname: "*.z3cyber.tech"
+      tls:
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: z3cyber-tech-cert-tls
+            namespace: gateway
+      allowedRoutes:
+        namespaces:
+          from: All

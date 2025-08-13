@@ -1,0 +1,21 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: cf-auth-security-policy
+  namespace: gateway
+spec:
+  targetRefs:
+   - group: gateway.networking.k8s.io
+     kind: Gateway
+     name: cf-envoy-gw
+  oidc:
+    provider:
+      issuer: "https://sso.z3cyber.tech/realms/homelab"
+    clientID: "oci-gateway-client"
+    clientSecret:
+      name: "gateway-client-secret"
+    redirectURL: "https://echoserver.z3cyber.tech/login/callback"
+    logoutPath: "/logout"
+    cookieDomain: "z3cyber.tech"
+

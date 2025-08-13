@@ -5,5 +5,7 @@ resources:
   - ns.yaml
   - ghost-deployment.yaml
   - ghost-httproute.yaml
+  - admin-route.yaml
   - ghost-pvc.yaml
   - ghost-service.yaml
+  - gw-client-secret.yaml

@@ -6,7 +6,7 @@ metadata:
   namespace: keycloak
 spec:
   parentRefs:
-  - name: nlb-cilium-gw # gateway name
+  - name: nlb-envoy-gw # gateway name
     namespace: gateway
   hostnames:
   - "sso.z3cyber.tech"

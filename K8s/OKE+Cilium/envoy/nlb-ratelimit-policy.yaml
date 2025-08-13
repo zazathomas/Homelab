@@ -2,13 +2,13 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: BackendTrafficPolicy
 metadata:
-  name: backend-traffic-policy
+  name: nlb-ratelimit-policy
   namespace: gateway
 spec:
   targetRefs:
    - group: gateway.networking.k8s.io
      kind: Gateway
-     name: envoy-gw
+     name: nlb-envoy-gw
   rateLimit:
     type: Global
     global:
@@ -18,5 +18,5 @@ spec:
             value: 0.0.0.0/0
             type: Distinct
         limit:
-          requests: 100
+          requests: 10
           unit: Second
