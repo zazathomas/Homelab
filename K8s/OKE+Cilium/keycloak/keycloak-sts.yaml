@@ -17,7 +17,11 @@ spec:
       containers:
         - name: keycloak
           image: quay.io/keycloak/keycloak:25.0.6
-          args: ["start-dev"]
+          args: 
+          - 'start'
+          - "--db postgres"
+          - "--db-url jdbc:postgresql://keycloak-db.databases.svc:5432/keycloak"
+          - "--db-username keycloak"
           resources:
             requests:
               cpu: 100m
@@ -36,8 +40,11 @@ spec:
                 secretKeyRef:
                   name: keycloak-secret
                   key: password
-            - name: KC_DB
-              value: dev-file
+            - name: KC_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: db_password
             - name: KC_PROXY_HEADERS
               value: "xforwarded"
             - name: KC_HOSTNAME
@@ -56,18 +63,6 @@ spec:
             httpGet:
               path: /realms/master
               port: 8080
-          volumeMounts:
-          - name: keycloak-pvc
-            mountPath: /opt/keycloak/data/h2
-  volumeClaimTemplates:
-  - metadata:
-      name: keycloak-pvc
-    spec:
-      accessModes: [ "ReadWriteMany" ]
-      storageClassName: "nfs-csi"
-      resources:
-        requests:
-          storage: 3Gi
 ---
 apiVersion: v1
 kind: Service

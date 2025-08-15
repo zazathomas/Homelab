@@ -1,0 +1,11 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: keycloak-db-backup
+  namespace: databases
+spec:
+  schedule: "0 0 23 * * *"
+  backupOwnerReference: none
+  immediate: false
+  cluster:
+    name: "keycloak-db"
