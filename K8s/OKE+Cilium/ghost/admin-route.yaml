@@ -33,7 +33,7 @@ spec:
   oidc:
     provider:
       issuer: "https://sso.z3cyber.tech/realms/homelab"
-    clientID: "oci-gateway-client"
+    clientID: "gateway-client"
     clientSecret:
       name: "gateway-client-secret"
     redirectURL: "https://blog.z3cyber.tech/ghost/signin"

@@ -16,66 +16,70 @@ spec:
     spec:
       containers:
         - name: keycloak
-          image: quay.io/keycloak/keycloak:25.0.6
-          args: 
-          - 'start'
-          - "--db postgres"
-          - "--db-url jdbc:postgresql://keycloak-db.databases.svc:5432/keycloak"
-          - "--db-username keycloak"
+          image: quay.io/keycloak/keycloak:26.3.2
+          args: ["start"]
           resources:
             requests:
-              cpu: 100m
-              memory: 498Mi
+              cpu: 50m
+              memory: 300Mi
             limits:
-              cpu: 500m
-              memory: 600Mi
+              cpu: 800m
+              memory: 1500Mi
           env:
-            - name: KEYCLOAK_ADMIN
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            - name: KC_PROXY_HEADERS
+              value: "xforwarded"
+            - name: KC_HOSTNAME
+              value: 'https://sso.z3cyber.tech'
+            - name: 'KC_DB'
+              value: 'postgres'
+            - name: 'KC_DB_URL'
+              value: 'jdbc:postgresql://keycloak-db-rw.databases.svc:5432/keycloak'
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: keycloak-secret
-                  key: user
-            - name: KEYCLOAK_ADMIN_PASSWORD
+                  key: admin_user
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: keycloak-secret
-                  key: password
+                  key: admin_password
+            - name: KC_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: db_username
             - name: KC_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: keycloak-secret
                   key: db_password
-            - name: KC_PROXY_HEADERS
-              value: "xforwarded"
-            - name: KC_HOSTNAME
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-secret
-                  key: hostname
-            - name: KC_HTTP_ENABLED
+            - name: KC_HEALTH_ENABLED
               value: "true"
+            - name: 'KC_CACHE'
+              value: 'ispn'
             - name: TZ
               value: "Europe/Dublin"
           ports:
             - name: http
               containerPort: 8080
+          startupProbe:
+            httpGet:
+              path: /health/started
+              port: 9000
+            periodSeconds: 1
+            failureThreshold: 600              
           readinessProbe:
             httpGet:
-              path: /realms/master
-              port: 8080
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: keycloak
-  name: keycloak-service
-  labels:
-    app: keycloak
-spec:
-  ports:
-    - name: http
-      port: 80
-      targetPort: 8080
-  selector:
-    app: keycloak
-  type: ClusterIP
+              path: /health/ready
+              port: 9000
+            periodSeconds: 10
+            failureThreshold: 3              
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 9000
+            periodSeconds: 10
+            failureThreshold: 3
