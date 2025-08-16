@@ -1,0 +1,38 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: keycloak-db
+  namespace: databases
+spec:
+  description: "Keycloak DB"
+  instances: 2
+  primaryUpdateStrategy: unsupervised
+  enablePDB: true
+  postgresUID: 65534
+  postgresGID: 65534 
+
+  bootstrap:
+    initdb:
+      database: keycloak
+      owner: keycloak
+
+  storage:
+    storageClass: nfs-csi
+    size: 1Gi
+
+  plugins:
+  - name: barman-cloud.cloudnative-pg.io
+    isWALArchiver: true
+    parameters:
+      barmanObjectName: r2-store
+
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "50m"
+    limits:
+      memory: "1Gi"
+      cpu: "300m"
+
+  affinity:
+    enablePodAntiAffinity: true

@@ -4,5 +4,8 @@ kind: Kustomization
 resources:
   - ns.yaml
   - keycloak-sts.yaml
+  - keycloak-svc.yaml
   - keycloak-route.yaml
-  - sealed_keycloak.yaml
+  - keycloak-secret.yaml
+  - keycloak-db.yaml
+  - keycloak-db-backup.yaml
