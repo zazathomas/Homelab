@@ -5,6 +5,11 @@ deploymentMode: SingleBinary
 singleBinary:
   replicas: 1
 
+global:
+  extraEnv:
+    - name: TZ
+      value: "Europe/Dublin"
+
 # Component replicas
 write:
   replicas: 0
