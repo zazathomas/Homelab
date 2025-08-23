@@ -27,7 +27,7 @@
         icon: portainer.png
         widget:
             type: portainer
-            url: http://192.168.0.32:9000
+            url: http://192.168.0.8:9000
             env: 2
             key: {{HOMEPAGE_VAR_PORTAINER_KEY}}
     - Teleport:
@@ -41,7 +41,7 @@
 
 - Automation:
     - SemaphoreUI:
-        href: https://semaphore.k8s.z3cyber.tech
+        href: https://semaphore.local.z3cyber.tech
         description: Automation Server
         icon: semaphore.png
     - Argocd:
@@ -51,6 +51,10 @@
     - Argocd-home:
         href: https://argocd.k8s.z3cyber.tech
         description: GitOps for Continuous Deployment
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png
+    - Workflows:
+        href: https://workflows.k8s.z3cyber.tech
+        description: Job Runner
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png
     - N8n:
         href: https://n8n.local.z3cyber.tech
@@ -80,13 +84,22 @@
           url: http://192.168.0.3
           username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
           password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
-    - Traefik:
-        href: https://traefik.local.z3cyber.tech
+    - Traefik-kyle:
+        href: https://traefik-01.local.z3cyber.tech
         description: Reverse Proxy
         icon: traefik.png
         widget:
             type: traefik
-            url: https://traefik.local.z3cyber.tech
+            url: https://traefik-01.local.z3cyber.tech
+            username: {{HOMEPAGE_VAR_TRAEFIK_USERNAME}} # optional
+            password: {{HOMEPAGE_VAR_TRAEFIK_PASSWORD}} # optional
+    - Traefik-jessie:
+        href: https://traefik-02.local.z3cyber.tech
+        description: Reverse Proxy
+        icon: traefik.png
+        widget:
+            type: traefik
+            url: https://traefik-02.local.z3cyber.tech
             username: {{HOMEPAGE_VAR_TRAEFIK_USERNAME}} # optional
             password: {{HOMEPAGE_VAR_TRAEFIK_PASSWORD}} # optional
     - HobbleUI:
@@ -111,14 +124,18 @@
         href: https://pdf.k8s.z3cyber.tech
         description: PDF Operations
         icon: stirling-pdf.png
+    - Excalidraw:
+        href: https://draw.local.z3cyber.tech
+        description: Design
+        icon: excalidraw.png
+    - It-tools:
+        href: https://tools.local.z3cyber.tech
+        description: Multi purpose
+        icon: https://raw.githubusercontent.com/CorentinTh/it-tools/main/.github/logo-white.png
     - Firefox:
         href: https://ff.local.z3cyber.tech
         description: Local browser
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/firefox.png
-    - Gotify:
-        href: https://gotify.local.z3cyber.tech
-        description: Notifications Server
-        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/gotify.png
     - Json-Crack:
         href: https://json.local.z3cyber.tech
         description: JSON Visualizer
@@ -133,13 +150,13 @@
         icon: vikunja.png
         widget:
             type: vikunja
-            url: http://192.168.0.32:3456
+            url: http://192.168.0.8:3456
             key: {{HOMEPAGE_VAR_VIKUNJA_KEY}}
             enableTaskList: false # optional, defaults to false
-    - Hoarder:
-        href: https://hoarder.local.z3cyber.tech
+    - Karakeep:
+        href: https://karakeep.local.z3cyber.tech
         description: Link Repository
-        icon: hoarder.png
+        icon: karakeep.png
     - PasteBin:
         href: https://lesma.eu
         description: Paste bin
@@ -162,13 +179,17 @@
         widget:
             type: prometheus
             url: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+    - Dozzle:
+        href: https://dozzle.local.z3cyber.tech
+        description: Log monitoring
+        icon: dozzle.png
     - Uptime-kuma:
         href: https://uptime.local.z3cyber.tech
         description: Service Monitor
         icon: uptime-kuma.png
         widget:
             type: uptimekuma
-            url: http://192.168.0.32:3010
+            url: http://192.168.0.8:3010
             slug: statuspageslug
     - Speedtest:
         href: https://speedtest.local.z3cyber.tech
@@ -176,7 +197,7 @@
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/speedtest-tracker.png
         widget:  
             type: speedtest  
-            url: http://192.168.0.32:8045
+            url: http://192.168.0.8:8045
             bitratePrecision: 3 #%20optional,%20default%20is%200
 
 - Security:
@@ -188,10 +209,6 @@
         href: https://akto.local.z3cyber.tech
         description: API Security
         icon: https://avatars.githubusercontent.com/u/91220613?s=48&v=4
-    - Neuvector:
-        href: https://neuvector.z3cyber.tech
-        description: Runtime Security
-        icon: https://avatars.githubusercontent.com/u/19367275?s=200&v=4
     - WebCheck:
         href: https://webcheck.k8s.z3cyber.tech
         description: OSINT
@@ -207,13 +224,13 @@
         description: AI Inference
         icon: https://avatars.githubusercontent.com/u/158137808?s=48&v=4
     
-    - Kopia-1:
-        href: https://kopia-1.local.z3cyber.tech
+    - Kopia:
+        href: https://kopia.local.z3cyber.tech
         description: Disaster Recovery
         icon: kopia.png
         widget:
             type: kopia
-            url: http://192.168.0.32:51515
+            url: http://192.168.0.8:51515
             username: {{HOMEPAGE_VAR_KOPIA_USER}}
             password: {{HOMEPAGE_VAR_KOPIA_PASSWORD}}
 
@@ -222,8 +239,8 @@
         description: Network Attached Storage
         icon: cockpit.png
     
-    - Conduktor:
-        href: https://conduktor.local.z3cyber.tech
+    - Kafka:
+        href: https://kafka.local.z3cyber.tech
         description: Kafka UI
         icon: https://avatars.githubusercontent.com/u/60062294?s=200&v=4
 
@@ -241,10 +258,6 @@
         href: https://minio.z3cyber.tech
         description: Object Storage
         icon: minio.png
-    - Redpanda:
-        href: https://redpanda.local.z3cyber.tech
-        description: Message Broker
-        icon: https://cdn.prod.website-files.com/6632a83042773c5a1a5f4443/6647694a827e35299ffead7f_redpanda-logo-red.svg
     - Pgadmin:
         href: https://pgadmin.local.z3cyber.tech
         description: Database Management
@@ -304,7 +317,7 @@
             key: {{HOMEPAGE_VAR_SONARR_APIKEY}}
             enableQueue: true # optional, defaults to false
     - Audiobookshelf:
-        href: https://audiobooks.local.z3cyber.tech
+        href: https://abs.local.z3cyber.tech
         description: Audio Books
         icon: audiobookshelf.png
         widget:
