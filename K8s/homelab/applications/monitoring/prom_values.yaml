@@ -45,6 +45,9 @@ prometheus:
 grafana:
   defaultDashboardsTimezone: Europe/Dublin
 
+alertmanager:
+  enabled: false
+
 kubeControllerManager:
   enabled: false
 
