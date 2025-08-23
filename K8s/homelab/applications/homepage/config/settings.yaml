@@ -8,6 +8,20 @@ providers:
 
 title: Homelab Dashboard
 
+#favicon: https://www.google.com/favicon.ico
+
+headerStyle: boxedWidgets
+
+hideVersion: true
+disableUpdateCheck: true
+
+quicklaunch:
+  searchDescriptions: true
+  hideInternetSearch: true
+  showSearchSuggestions: true
+  hideVisitURL: true
+  provider: google
+
 background: 
   image: https://images.unsplash.com/photo-1671137513104-89166b4242f9?q=80&w=3687&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
   blur: sm # sm, "", md, xl... see https://tailwindcss.com/docs/backdrop-blur

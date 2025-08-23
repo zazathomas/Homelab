@@ -1,5 +1,9 @@
 prometheus:
   prometheusSpec:
+    enableRemoteWriteReceiver: true
+    enableFeatures:
+    - remote-write-receiver
+    enableOTLPReceiver: true
     podMonitorSelectorNilUsesHelmValues: false
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
@@ -37,18 +41,6 @@ prometheus:
           target_label: instance
         - target_label: __address__
           replacement: 192.168.0.7:9222  # PVE exporter.
-    - job_name: traefik
-      static_configs:
-      - targets: ['192.168.0.32:8082']
-    - job_name: docker-vm-cadvisor
-      static_configs:
-      - targets: ['192.168.0.32:8009']
-    - job_name: docktopus-cadvisor
-      static_configs:
-      - targets: ['192.168.0.7:8009']
-    - job_name: intel-node-cadvisor
-      static_configs:
-      - targets: ['192.168.0.59:8009']
 
 grafana:
   defaultDashboardsTimezone: Europe/Dublin
