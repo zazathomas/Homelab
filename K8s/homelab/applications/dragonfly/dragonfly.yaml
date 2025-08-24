@@ -10,16 +10,26 @@ metadata:
   namespace: dragonfly-operator-system
 
 spec:
+  authentication:
+      passwordFromSecret:
+        name: dragonfly-auth
+        key: password
   replicas: 3
+  snapshot:
+    cron: "*/5 * * * *"
+    persistentVolumeClaimSpec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
   args: 
-  - "--requirepass=<>"
-  - "--snapshot_cron="
   - "--cluster_mode=yes"
-  - "--admin_port=6060"
+  - "--dbfilename=dragonfly"
   resources:
     requests:
-      cpu: 500m
-      memory: 500Mi
+      cpu: 100m
+      memory: 100Mi
     limits:
       cpu: 1000m
       memory: 1000Mi
