@@ -40,10 +40,10 @@
         icon: https://kamaji.clastix.io/images/logo.png
 
 - Automation:
-    - SemaphoreUI:
-        href: https://semaphore.local.z3cyber.tech
-        description: Automation Server
-        icon: semaphore.png
+    - Workflows:
+        href: https://workflows.k8s.z3cyber.tech
+        description: Job Runner
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png
     - Argocd:
         href: https://argocd.z3cyber.tech
         description: GitOps for Continuous Deployment
@@ -52,20 +52,34 @@
         href: https://argocd.k8s.z3cyber.tech
         description: GitOps for Continuous Deployment
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png
-    - Workflows:
-        href: https://workflows.k8s.z3cyber.tech
-        description: Job Runner
-        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png
+    - Home-Assistant:
+        href: https://haos.local.z3cyber.tech
+        description: Home automation
+        icon: https://avatars.githubusercontent.com/u/13844975?s=48&v=4
     - N8n:
         href: https://n8n.local.z3cyber.tech
         description: Workflow Automation
         icon: n8n.png
+    - SemaphoreUI:
+        href: https://semaphore.local.z3cyber.tech
+        description: Automation Server
+        icon: semaphore.png
     - Codeserver:
         href: https://code.local.z3cyber.tech
         description: VScode in Browser
         icon: vscode.png
 
 - Networking:
+    - OpnSense:
+        href: https://fw.local.z3cyber.tech
+        description: Network Firewall
+        icon: opnsense.png
+        widget:
+            type: opnsense
+            url: https://10.0.100.1:443
+            username: {{HOMEPAGE_VAR_OPNSENSE_USERNAME}}
+            password: {{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}
+            wan: wan
     - Adguard-01:
         href: https://dns.local.z3cyber.tech
         description: DNS Provider
@@ -84,6 +98,17 @@
           url: http://192.168.0.3
           username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
           password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
+    - Wireguard:
+        href: https://wg.z3cyber.tech
+        description: Home VPN
+        icon: wireguard.png
+        widget:
+          type: wgeasy
+          url: https://wg.z3cyber.tech
+          version: 2
+          username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}} 
+          password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
+          threshold: 2
     - Traefik-kyle:
         href: https://traefik-01.local.z3cyber.tech
         description: Reverse Proxy

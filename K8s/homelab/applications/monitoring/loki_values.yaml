@@ -4,6 +4,10 @@ deploymentMode: SingleBinary
 # Number of replicas
 singleBinary:
   replicas: 1
+  extraArgs: [ "-config.expand-env=true" ]
+  extraEnv:
+    - { name: MINIO_ACCESS_KEY_ID, valueFrom: { secretKeyRef: { name: minio-credentials, key: MINIO_ACCESS_KEY_ID } } }
+    - { name: MINIO_SECRET_ACCESS_KEY, valueFrom: { secretKeyRef: { name: minio-credentials, key: MINIO_SECRET_ACCESS_KEY } } }
 
 # Component replicas
 write:
@@ -11,6 +15,22 @@ write:
 read:
   replicas: 0
 backend:
+  replicas: 0
+distributor:
+  replicas: 0
+ingester:
+  replicas: 0
+querier:
+  replicas: 0
+queryFrontend:
+  replicas: 0
+queryScheduler:
+  replicas: 0
+ruler:
+  replicas: 0
+compactor:
+  replicas: 0
+indexGateway:
   replicas: 0
 
 # Caching
@@ -39,19 +59,39 @@ loki:
       memory: 256Mi
     limits:
       cpu: 1000m
-      memory: 1Gi
+      memory: 2Gi
 
   storage:
-    type: filesystem
-    filesystem:
-      chunks_directory: /var/loki/chunks
-      rules_directory: /var/loki/rules
+    type: s3
+    bucketNames:
+      chunks: loki-chunks
+      ruler: loki-ruler
+      admin: loki-admin
+
+    s3:
+      endpoint: https://api-s3.local.z3cyber.tech
+      accessKeyId: ${MINIO_ACCESS_KEY_ID}
+      secretAccessKey: ${MINIO_SECRET_ACCESS_KEY}
+      region: null
+      signatureVersion: null
+      s3ForcePathStyle: true
+      insecure: false
+      http_config:
+        idle_conn_timeout: 90s
+        response_header_timeout: 0s
+        insecure_skip_verify: false
+
+
+    tsdb_shipper:
+      active_index_directory: /var/loki/index
+      cache_location: /var/loki/cache
+      cache_ttl: 24h
 
   schemaConfig:
     configs:
-      - from: "2025-01-01"
+      - from: "2025-06-01"
         store: tsdb
-        object_store: filesystem
+        object_store: s3
         schema: v13
         index:
           prefix: loki_index_
@@ -63,18 +103,20 @@ loki:
   
   # Configure limits for stability
   limits_config:
-    ingestion_rate_mb: 8
-    ingestion_burst_size_mb: 16
-    max_global_streams_per_user: 5000
+    max_query_parallelism: 16
+    ingestion_rate_mb: 16 
+    ingestion_burst_size_mb: 32 
     reject_old_samples: true
     reject_old_samples_max_age: 168h
     retention_period: 72h # 3 days retention
     allow_structured_metadata: true
     volume_enabled: true
   
-  # Persistence configuration
-  persistence:
-    volumeClaimsEnabled: true
-    size: 10Gi
-    storageClassName: longhorn
+  compactor:
+    retention_enabled: true
+    delete_request_store: s3
+    compaction_interval: 2h
+    working_directory: /var/loki/compactor
 
+  ingester:
+    chunk_encoding: snappy
