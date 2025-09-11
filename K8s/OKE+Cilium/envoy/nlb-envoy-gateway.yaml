@@ -29,4 +29,10 @@ spec:
             group: ""
             name: z3cyber-tech-cert-tls
             namespace: gateway
+    - name: wg-easy
+      protocol: UDP
+      port: 51820
+      allowedRoutes:
+        namespaces:
+          from: All
 

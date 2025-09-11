@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wireguard
+  namespace: argocd
+  #finalizers:
+   # - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/zazathomas/Homelab.git
+    targetRevision: HEAD
+    path: K8s/OKE+Cilium/wireguard
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: wg-easy
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

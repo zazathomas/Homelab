@@ -1,0 +1,14 @@
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: UDPRoute
+metadata:
+  name: wg-easy-wg
+  namespace: wg-easy
+spec:
+  parentRefs:
+    - name: nlb-envoy-gw
+      namespace: gateway
+      sectionName: wg-easy
+  rules:
+    - backendRefs:
+        - name: wg-easy-wg
+          port: 51820
