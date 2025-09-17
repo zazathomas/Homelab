@@ -11,11 +11,6 @@ spec:
   hostnames:
   - "argocd.z3cyber.tech"
   rules:
-  #- matches:
-  #    - headers:
-  #        - type: Exact
-  #          name: allow-access
-  #          value: zazilo
    - backendRefs:
       - name: argocd-server
         namespace: argocd

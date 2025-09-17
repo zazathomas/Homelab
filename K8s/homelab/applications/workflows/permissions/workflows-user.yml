@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: workflows-users
+  namespace: argo
+  annotations:
+    workflows.argoproj.io/rbac-rule: "'workflows-user' in groups"
+    workflows.argoproj.io/rbac-rule-precedence: "2"
+automountServiceAccountToken: true
+secrets:
+  - name: workflows-users.service-account-token
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: workflows-users.service-account-token
+  namespace: argo
+  annotations:
+    kubernetes.io/service-account.name: workflows-users
+type: kubernetes.io/service-account-token
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: workflows-users
+  namespace: argo
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "events"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["events.k8s.io"]
+    resources: ["events"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["argoproj.io"]
+    resources:
+      - workflows
+      - workflowtemplates
+      - cronworkflows
+      - workfloweventbindings
+      - workflowtaskresults
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: workflows-users-rb
+  namespace: argo
+subjects:
+- kind: ServiceAccount
+  name: workflows-users
+  namespace: argo
+roleRef:
+  kind: Role
+  name: workflows-users
+  apiGroup: rbac.authorization.k8s.io
+
+
+

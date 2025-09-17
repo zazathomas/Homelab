@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - oidc-secrets.yml
+  - workflows-route.yml
+  - permissions/default-user.yml
+  - permissions/workflows-admin.yml
+  - permissions/workflows-user.yml
+
+helmCharts:
+- name: argo-workflows
+  namespace: argo
+  repo: https://argoproj.github.io/argo-helm
+  version: 0.45.24
+  releaseName: workflows
+  valuesFile: values.yml
