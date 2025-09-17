@@ -1,0 +1,40 @@
+server:
+  secure: false
+  extraArgs:
+    - --access-control-allow-origin=true   
+  extraEnv:
+    - name: SSO_DELEGATE_RBAC_TO_NAMESPACE
+      value: "true"
+  authModes:
+    - sso
+  
+  logging:
+    level: info
+
+  sso:
+    enabled: true
+    issuer: https://sso.z3cyber.tech/realms/homelab
+    sessionExpiry: 8h
+    clientId:
+      name: workflows-oidc-secrets
+      key: client-id
+    clientSecret:
+      name: workflows-oidc-secrets
+      key: client-secret
+    redirectUrl: https://workflows.k8s.z3cyber.tech/oauth2/callback
+    customGroupClaimName: groups
+    scopes:
+     - openid
+     - email
+     - profile
+    rbac:
+      enabled: true
+    insecureSkipVerify: true
+
+controller:
+  workflowDefaults:
+    spec:
+      securityContext:
+        runAsNonRoot: true
+  # workflowRestrictions:
+  #   templateReferencing: Strict # Make users only run workflows via workflow templates.

@@ -1,0 +1,144 @@
+## Ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles
+createAggregateRoles: false
+createClusterRoles: true
+
+crds:
+  install: true
+  keep: true
+
+global:
+  domain: argocd.z3cyber.tech
+
+
+  # Default image used by all components
+  image:
+    # -- If defined, a repository applied to all Argo CD deployments
+    repository: quay.io/argoproj/argocd
+    # -- Overrides the global Argo CD image tag whose default is the chart appVersion
+    tag: ""
+    # -- If defined, a imagePullPolicy applied to all Argo CD deployments
+    imagePullPolicy: IfNotPresent
+
+
+  # Default logging options used by all components
+  logging:
+    # -- Set the global logging format. Either: `text` or `json`
+    format: json
+    # -- Set the global logging level. One of: `debug`, `info`, `warn` or `error`
+    level: info
+
+
+  # -- Environment variables to pass to all deployed Deployments
+  env: []
+
+## Argo Configs
+configs:
+  cm:
+    # -- Create the argocd-cm configmap for [declarative setup]
+    create: true
+    kustomize.buildOptions: --enable-helm
+    admin.enabled: true
+    oidc.config: |
+      name: Keycloak
+      issuer: https://sso.z3cyber.tech/realms/homelab
+      clientID: argocd
+      clientSecret: $extra-secret:oidc.keycloak.clientSecret
+      requestedIDTokenClaims:
+        groups:
+          essential: true
+      requestedScopes:
+        - openid
+        - profile
+        - email
+
+
+
+  # Argo CD configuration parameters
+  ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cmd-params-cm.yaml
+  params:
+    # -- Create the argocd-cmd-params-cm configmap
+    create: true
+    otlp.address: ''
+    server.insecure: true
+
+
+  rbac:
+    create: false
+
+
+  # Argo CD sensitive data
+  # Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/#sensitive-data-and-sso-client-secrets
+  secret:
+    # -- Create the argocd-secret
+    createSecret: true
+    # -- Labels to be added to argocd-secret
+    labels: {}
+    # -- Annotations to be added to argocd-secret
+    annotations: {}
+
+    # -- Shared secret for authenticating GitHub webhook events
+    githubSecret: ""
+    # -- Shared secret for authenticating GitLab webhook events
+    gitlabSecret: ""
+    # -- Shared secret for authenticating BitbucketServer webhook events
+    bitbucketServerSecret: ""
+    # -- UUID for authenticating Bitbucket webhook events
+    bitbucketUUID: ""
+
+
+    # -- add additional secrets to be added to argocd-secret
+    ## Custom secrets. Useful for injecting SSO secrets into environment variables.
+    ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/#sensitive-data-and-sso-client-secrets
+    ## Note that all values must be non-empty.
+    extra:
+      {}
+      # LDAP_PASSWORD: "mypassword"
+
+    # -- Bcrypt hashed admin password
+    ## Argo expects the password in the secret to be bcrypt hashed. You can create this hash with
+    ## `htpasswd -nbBC 10 "" $ARGO_PWD | tr -d ':\n' | sed 's/$2y/$2a/'`
+    argocdServerAdminPassword: ""
+    # -- Admin password modification time. Eg. `"2006-01-02T15:04:05Z"`
+    # @default -- `""` (defaults to current time)
+    argocdServerAdminPasswordMtime: ""
+
+
+
+## Server
+server:
+  name: server
+  replicas: 1
+
+
+  ## Argo CD server image
+  image:
+    repository: "" # defaults to global.image.repository
+    tag: "" # defaults to global.image.tag
+    imagePullPolicy: "" # IfNotPresent
+
+
+
+  # -- Resource limits and requests for the Argo CD server
+  resources: {}
+  #  limits:
+  #    cpu: 100m
+  #    memory: 128Mi
+  #  requests:
+  #    cpu: 50m
+  #    memory: 64Mi
+
+  # Server container ports
+  containerPorts:
+    # -- Server container port
+    server: 8080
+    # -- Metrics container port
+    metrics: 8083
+
+
+
+
+
+
+
+
+

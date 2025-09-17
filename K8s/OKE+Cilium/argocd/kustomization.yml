@@ -6,7 +6,6 @@ resources:
   - secret.yml
   - argocd-route.yaml
 
-
 helmCharts:
 - name: argo-cd
   namespace: argocd

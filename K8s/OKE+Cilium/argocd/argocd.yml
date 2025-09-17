@@ -10,11 +10,11 @@ spec:
   sources:
   - repoURL: 'https://argoproj.github.io/argo-helm'
     chart: argo-cd
-    targetRevision: 8.1.1
+    targetRevision: 8.3.7
     helm:
       releaseName: argocd
       valueFiles:
-      - $values/K8s/homelab/applications/argocd/values.yaml
+      - $values/K8s/OKE+Cilium/argocd.yml/argocd-values.yaml
   - repoURL: 'https://github.com/zazathomas/Homelab'
     targetRevision: HEAD
     ref: values
@@ -22,5 +22,12 @@ spec:
     server: "https://kubernetes.default.svc"
     namespace: argocd
   syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
+#      allowEmpty: false
     syncOptions:
       - CreateNamespace=true
+#      - Validate=true
+#      - PrunePropagationPolicy=foreground
+#      - PruneLast=true
