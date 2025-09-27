@@ -1,0 +1,7 @@
+apiVersion: workflows
+metadata:
+  generateName: sample-wf-
+  namespace: workflows
+spec:
+  entrypoint: start
+  templates:

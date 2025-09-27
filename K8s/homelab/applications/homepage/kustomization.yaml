@@ -14,9 +14,6 @@ configMapGenerator:
       - config/docker.yaml
       - config/settings.yaml
 
-generatorOptions:
-  disableNameSuffixHash: true
-
 
 resources:
   - ns.yaml
