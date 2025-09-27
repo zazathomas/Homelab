@@ -29,3 +29,17 @@ background:
   brightness: 50 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
   opacity: 50 # 0-100
 
+# Layout Configuration
+layout:
+  # HOME Tab Items
+  Main:
+    style: row
+    columns: 4
+    tab: Main
+  Media:
+      style: column
+      #columns: 2
+      tab: Media
+      Services:
+        style: row
+        columns: 4
