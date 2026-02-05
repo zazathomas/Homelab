@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+    name: image-scan
+    namespace: argo
+spec:
+    entrypoint: start
+    templates:
+        - name: start
+          inputs:
+            parameters:
+            - name: image
+          steps:
+            - - name: scan-image
+                template: scan
+                arguments:
+                    parameters:
+                    - name: image
+                      value: "{{inputs.parameters.image}}"
+        - name: scan
+          inputs:
+              parameters:
+              - name: image
+          container:
+            name: trivy
+            image: aquasec/trivy:latest
+            command: ['sh', '-c']
+            args:
+            - |
+                trivy image --format json --output /tmp/trivy.json --severity CRITICAL,HIGH {{inputs.parameters.image}} || true
+                echo 'Printing Scan Results'
+                ls -al /tmp
+            volumeMounts:
+            - name: workdir
+              mountPath: /.cache/
+            - name: workdir
+              mountPath: /tmp/
+    volumes:
+    - name: workdir
+      emptyDir: {}

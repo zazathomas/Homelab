@@ -34,6 +34,10 @@
             href: https://access.z3cyber.tech
             description: Identity Aware Proxy
             icon: teleport.png
+        - Termix:
+            href: https://termix.local.z3cyber.tech
+            description: Server Management
+            icon: termix.png
         - Kamaji-Console:
             href: https://console.z3cyber.tech/ui
             description: Hosted Control Plane
@@ -72,16 +76,6 @@
             description: VScode in Browser
             icon: vscode.png
     - Networking:
-        - OpnSense:
-            href: https://fw.local.z3cyber.tech
-            description: Network Firewall
-            icon: opnsense.png
-            widget:
-                type: opnsense
-                url: https://10.0.100.1:443
-                username: {{HOMEPAGE_VAR_OPNSENSE_USERNAME}}
-                password: {{HOMEPAGE_VAR_OPNSENSE_PASSWORD}}
-                wan: wan
         - Adguard-01:
             href: https://dns.local.z3cyber.tech
             description: DNS Provider
@@ -154,6 +148,14 @@
             href: https://draw.local.z3cyber.tech
             description: Design
             icon: excalidraw.png
+        - Budget:
+            href: https://budget.local.z3cyber.tech
+            description: Finance Tool
+            icon: https://actualbudget.org/img/actual.png
+        - Mealie:
+            href: https://mealie.local.z3cyber.tech
+            description: Recipe & Meal Planning
+            icon: mealie.png
         - IT tools:
             href: https://tools.local.z3cyber.tech
             description: Multi purpose
@@ -204,6 +206,10 @@
             widget:
                 type: prometheus
                 url: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+        - Beszel:
+            href: https://beszel.local.z3cyber.tech
+            description: Monitoring
+            icon: beszel.png
         - Dozzle:
             href: https://dozzle.local.z3cyber.tech
             description: Log monitoring
@@ -216,13 +222,21 @@
                 type: uptimekuma
                 url: http://192.168.0.8:3010
                 slug: statuspageslug
-        - Speedtest:
-            href: https://speedtest.local.z3cyber.tech
+        - Speedtest01:
+            href: https://speedtest01.local.z3cyber.tech
             description: Latency tests
             icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/speedtest-tracker.png
             widget:  
                 type: speedtest  
                 url: http://192.168.0.8:8045
+                bitratePrecision: 3 #%20optional,%20default%20is%200
+        - Speedtest02:
+            href: https://speedtest02.local.z3cyber.tech
+            description: Latency tests
+            icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/speedtest-tracker.png
+            widget:  
+                type: speedtest  
+                url: http://192.168.0.7:8045
                 bitratePrecision: 3 #%20optional,%20default%20is%200
     - Security:
         - Keycloak:

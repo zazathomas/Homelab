@@ -1,4 +1,5 @@
-installCRDs: false
+crds:
+  enabled: true
 replicaCount: 1
 extraArgs:
   - --dns01-recursive-nameservers=1.1.1.1:53,9.9.9.9:53
@@ -8,19 +9,3 @@ podDnsConfig:
   nameservers:
     - 1.1.1.1
     - 9.9.9.9
-
-image:
-  repository: zazathomas/cg-cert-manager-controller
-  tag: 1.15.3
-acmesolver:
-  image:
-    repository: zazathomas/cg-cert-manager-acmesolver
-    tag: 1.15.3
-webhook:
-  image:
-    repository: zazathomas/cg-cert-manager-webhook
-    tag: 1.15.3
-cainjector:
-  image:
-    repository: zazathomas/cg-cert-manager-cainjector
-    tag: 1.15.3
