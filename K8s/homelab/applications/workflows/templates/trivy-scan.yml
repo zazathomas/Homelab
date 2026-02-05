@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+metadata:
+    name: trivy-scan
+    namespace: argo
+spec:
+    entrypoint: main
+    volumes:
+    - name: workdir
+      emptydir: {}
+    templates:
+    - name: main
+      inputs:
+        parameters:
+        - name: image
+      steps:
+      - - name: run-trivy-scan
+          template: run-trivy-scan
+          arguments:
+            parameters:
+            - name: image
+              value: "{{inputs.parameters.image}}"
+    - name: scan
+      script:
+        image: aquasec/trivy:latest
+        name: trivy
+        volumeMounts:
+            - name

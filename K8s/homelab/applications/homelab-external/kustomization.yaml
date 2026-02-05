@@ -5,5 +5,4 @@ resources:
   - ns.yaml
   - cockpit.yaml
   - openwebui.yaml
-  - jellyfin.yaml
-  - jellyseerr.yaml
+  - argocd.yaml
