@@ -22,7 +22,7 @@ spec:
         fsGroup: 65534
       containers:
       - name: ghost
-        image: ghost:6.0.4
+        image: docker.io/ghost:6.16.1
         ports:
         - containerPort: 2368
         env:
