@@ -29,11 +29,18 @@ envoy:
 
 # Setup mutual authentication
 authentication:
+  enabled: true
   mutual:
     spire:
       enabled: true
       install:
         enabled: true
+        server:
+          podSecurityContext:               
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
 
 encryption:
   enabled: true
