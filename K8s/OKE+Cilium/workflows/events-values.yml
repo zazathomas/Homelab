@@ -6,8 +6,8 @@ configs:
     # @default -- See [values.yaml]
     versions:
       - version: latest
-        natsStreamingImage: nats-streaming:latest
-        metricsExporterImage: natsio/prometheus-nats-exporter:latest
+        natsStreamingImage: docker.io/nats-streaming:latest
+        metricsExporterImage: docker.io/natsio/prometheus-nats-exporter:latest
       - version: 0.22.1
         natsStreamingImage: docker.io/nats-streaming:0.22.1
-        metricsExporterImage: natsio/prometheus-nats-exporter:0.8.0
+        metricsExporterImage: docker.io/natsio/prometheus-nats-exporter:0.8.0
