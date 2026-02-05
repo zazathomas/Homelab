@@ -2,7 +2,7 @@
 global:
   # If set, these take highest precedence and change both envoyGateway and ratelimit's container registry and pull secrets.
   # -- Global override for image registry
-  imageRegistry: "docker.io"
+  imageRegistry: ""
   # -- Global override for image pull secrets
   imagePullSecrets: []
 
