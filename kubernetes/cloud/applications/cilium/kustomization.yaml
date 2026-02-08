@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+- name: cilium
+  namespace: kube-system
+  repo: https://helm.cilium.io
+  version: 1.19.0
+  releaseName: cilium
+  valuesFile: cilium-values-cloud.yaml
+  additionalValuesFiles:
+  - cilium-values-monitoring.yaml
