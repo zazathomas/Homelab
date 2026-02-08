@@ -8,6 +8,8 @@ spec:
   parentRefs:
   - name: cf-envoy-gw
     namespace: gateway
+    group: gateway.networking.k8s.io	
+    kind: Gateway
   hostnames:
   - "argocd.z3cyber.tech"
   rules:
@@ -15,3 +17,10 @@ spec:
       - name: argocd-server
         namespace: argocd
         port: 80
+        group: ''	
+        kind: Service
+        weight: 1
+     matches:	
+        - path:	
+            type: PathPrefix	
+            value: /

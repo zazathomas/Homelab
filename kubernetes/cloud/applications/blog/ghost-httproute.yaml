@@ -8,6 +8,8 @@ spec:
   parentRefs:
   - name: nlb-envoy-gw
     namespace: gateway
+    group: gateway.networking.k8s.io	
+    kind: Gateway
   hostnames:
   - "blog.z3cyber.tech"
   rules:
@@ -18,3 +20,10 @@ spec:
   - backendRefs:
       - name: ghost
         port: 2368
+        group: ''	
+        kind: Service
+        weight: 1	
+    matches:	
+      - path:	
+          type: PathPrefix	
+          value: /

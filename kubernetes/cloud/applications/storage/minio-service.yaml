@@ -53,12 +53,21 @@ spec:
   parentRefs:
   - name: nlb-envoy-gw
     namespace: gateway
+    group: gateway.networking.k8s.io	
+    kind: Gateway
   hostnames:
   - "minio.z3cyber.tech"
   rules:
    - backendRefs:
       - name: minio
         port: 80
+        group: ''	
+        kind: Service
+        weight: 1
+     matches:	
+        - path:	
+            type: PathPrefix	
+            value: /
 ---
 # Minio UI
 apiVersion: gateway.networking.k8s.io/v1
@@ -70,9 +79,18 @@ spec:
   parentRefs:
   - name: nlb-envoy-gw
     namespace: gateway
+    group: gateway.networking.k8s.io	
+    kind: Gateway
   hostnames:
   - "api-minio.z3cyber.tech"
   rules:
    - backendRefs:
       - name: minio
         port: 9000
+        group: ''	
+        kind: Service
+        weight: 1
+     matches:	
+        - path:	
+            type: PathPrefix	
+            value: /

@@ -6,7 +6,7 @@ resources:
   - cf-envoy-gateway.yaml
   - cf-http-redirect.yaml
   - cf-ratelimit-policy.yaml
-  - cf-gw-auth-policy.yaml
+  # - cf-gw-auth-policy.yaml
   - gatewayclass.yaml
   - gw-client-secret.yaml
   - nlb-envoy-gateway.yaml
