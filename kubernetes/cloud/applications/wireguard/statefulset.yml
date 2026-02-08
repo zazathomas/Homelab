@@ -71,7 +71,9 @@ spec:
               mountPath: /etc/wireguard
       restartPolicy: Always
   volumeClaimTemplates:
-    - metadata:
+    - apiVersion: v1	
+      kind: PersistentVolumeClaim
+      metadata:
         name: config
       spec:
         accessModes: ["ReadWriteOnce"]
