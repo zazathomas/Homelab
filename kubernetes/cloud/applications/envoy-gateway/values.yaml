@@ -107,7 +107,8 @@ config:
         type: Redis
         redis:
           url: redis.envoy-gateway-system.svc.cluster.local:6379
-    extensionApis: {}
+    extensionApis: 
+      enableBackend: true
 
 createNamespace: false
 
