@@ -34,7 +34,7 @@ deployment:
   envoyGateway:
     image:
       # if both this and global.imageRegistry are specified, this has to include both registry and repository explicitly, eg docker.io/envoyproxy/gateway
-      repository: "docker.io"
+      repository: "docker.io/envoyproxy/gateway"
       tag: ""
     imagePullPolicy: ""
     imagePullSecrets: []
@@ -107,7 +107,8 @@ config:
         type: Redis
         redis:
           url: redis.envoy-gateway-system.svc.cluster.local:6379
-    extensionApis: {}
+    extensionApis: 
+      enableBackend: true
 
 createNamespace: false
 
