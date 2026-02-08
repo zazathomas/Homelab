@@ -1,0 +1,50 @@
+# helm -n external-dns upgrade --install external-dns external-dns/external-dns -f /Users/zaza/Desktop/Projects/Homelab/kubernetes/homelab/applications/external-dns/values.yaml
+# kubectl -n external-dns create secret generic adguard-configuration --from-literal=url='http://192.168.0.2:80' --from-literal=user='username' --from-literal=password='password'
+
+extraArgs:
+  - --webhook-provider-url=http://localhost:8888 
+# -- _Kubernetes_ resources to monitor for DNS entries.
+
+namespaced: false
+
+sources:
+  - ingress
+  - gateway-httproute
+  - gateway-grpcroute
+  - gateway-tlsroute
+
+serviceMonitor:
+  enabled: false
+
+txtOwnerId: external-dns
+
+policy: sync
+
+provider:
+  name: webhook
+  webhook:
+    env:
+      - name: LOG_LEVEL
+        value: debug
+      - name: ADGUARD_URL
+        valueFrom:
+          secretKeyRef:
+            name: adguard-configuration
+            key: url
+      - name: ADGUARD_USER
+        valueFrom:
+          secretKeyRef:
+            name: adguard-configuration
+            key: user
+      - name: ADGUARD_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: adguard-configuration
+            key: password
+      - name: DRY_RUN
+        value: "false"
+    image:
+      repository: ghcr.io/muhlba91/external-dns-provider-adguard
+      tag: v8.0.1
+    service:
+      port: 8888

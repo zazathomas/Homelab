@@ -27,7 +27,7 @@ I also plan to document my journey and share insights on my [GitHub](https://git
 
 ## 🧑‍💻 Getting Started  
 
-For newcomers to Kubernetes, I have adapted an existing shell script to streamline the [Bootstrapping of k3s with Cilium](https://github.com/zazathomas/Homelab/tree/main/K8s/K3s%2BCilium). This provides a simple and efficient starting point for setting up a lightweight Kubernetes cluster.  
+For newcomers to Kubernetes, I have adapted an existing shell script to streamline the [Bootstrapping of k3s with Cilium](https://github.com/zazathomas/Homelab/tree/main/kubernetes/K3s%2BCilium). This provides a simple and efficient starting point for setting up a lightweight Kubernetes cluster.  
 
 In this repository, I have also implemented a robust DevSecOps pipeline to enhance the security and reliability of the homelab infrastructure. This pipeline integrates **Trufflehog** for secret scanning and **Checkov** for Infrastructure as Code (IaC) security analysis, ensuring adherence to best practices and safeguarding sensitive data. 
 
