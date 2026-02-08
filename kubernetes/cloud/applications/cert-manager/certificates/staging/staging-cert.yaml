@@ -8,7 +8,7 @@ spec:
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
-  commonName: "*.z3cyber.pro"
+  commonName: "*.z3cyber.tech"
   dnsNames:
-  - "z3cyber.pro"
-  - "*.z3cyber.pro"
+  - "z3cyber.tech"
+  - "*.z3cyber.tech"
