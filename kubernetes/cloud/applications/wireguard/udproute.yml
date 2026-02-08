@@ -8,7 +8,16 @@ spec:
     - name: nlb-envoy-gw
       namespace: gateway
       sectionName: wg-easy
+      group: gateway.networking.k8s.io	
+      kind: Gateway
   rules:
     - backendRefs:
         - name: wg-easy-wg
           port: 51820
+          group: ''	
+          kind: Service
+          weight: 1
+      matches:	
+        - path:	
+            type: PathPrefix	
+            value: /
