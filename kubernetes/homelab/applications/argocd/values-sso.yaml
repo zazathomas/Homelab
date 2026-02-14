@@ -1,0 +1,14 @@
+configs:
+  cm:
+    oidc.config: |
+      name: Keycloak
+      issuer: https://sso.z3cyber.tech/realms/homelab
+      clientID: argocd
+      clientSecret: $extra-secrets:oidc.keycloak.clientSecret
+      requestedIDTokenClaims:
+        groups:
+          essential: true
+      requestedScopes:
+        - openid
+        - profile
+        - email

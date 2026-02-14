@@ -4,4 +4,4 @@ cluster:
     cni:
       name: custom
       urls:
-        - https://docs.projectcalico.org/archive/v3.20/manifests/canal.yaml
+        - https://raw.githubusercontent.com/zazathomas/Homelab/refs/heads/main/kubernetes/talos/cilium.yaml
