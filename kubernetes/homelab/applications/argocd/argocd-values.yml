@@ -34,25 +34,9 @@ global:
 ## Argo Configs
 configs:
   cm:
-    # -- Create the argocd-cm configmap for [declarative setup]
     create: true
     kustomize.buildOptions: --enable-helm
     admin.enabled: true
-    oidc.config: |
-      name: Keycloak
-      issuer: https://sso.z3cyber.tech/realms/homelab
-      clientID: argocd
-      clientSecret: $extra-secrets:oidc.keycloak.clientSecret
-      requestedIDTokenClaims:
-        groups:
-          essential: true
-      requestedScopes:
-        - openid
-        - profile
-        - email
-
-
-
   # Argo CD configuration parameters
   ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cmd-params-cm.yaml
   params:

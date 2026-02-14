@@ -22,7 +22,6 @@ Generate the Talos cluster configuration, applying necessary patches for network
 
 ```bash
 talosctl gen config homelab-cluster https://{CONTROL_PLANE_IP}:6443 \
-  --with-secrets secrets.yaml \
   --config-patch @patches/allow-cp-workloads.yaml \
   --config-patch @patches/allow-cp-lb.yaml \
   --config-patch @patches/disable-kubeproxy.yaml \
@@ -32,7 +31,7 @@ talosctl gen config homelab-cluster https://{CONTROL_PLANE_IP}:6443 \
   --config-patch @patches/interface-names.yaml \
   --config-patch @patches/kubelet-certs.yaml \
   --config-patch-control-plane @patches/vip.yaml \
-  --output rendered/
+  --output homelab-cluster/ --install-image factory.talos.dev/nocloud-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.12.3
 ```
 
 This step ensures that all required patches are incorporated into the cluster configuration before deployment.  
