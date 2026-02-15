@@ -21,12 +21,14 @@ This will produce a `secrets.yaml` file, which will be used during configuration
 Generate the Talos cluster configuration, applying necessary patches for networking, workload management, and system configurations:  
 
 ```bash
-talosctl gen config homelab-cluster https://{CONTROL_PLANE_IP}:6443 \
+talosctl gen config homelab-cluster https://${CONTROL_PLANE_IP}:6443 \
   --config-patch @patches/allow-cp-workloads.yaml \
   --config-patch @patches/allow-cp-lb.yaml \
   --config-patch @patches/disable-kubeproxy.yaml \
   --config-patch @patches/cni.yaml \
   --config-patch @patches/dhcp.yaml \
+  --config-patch @patches/extra-manifests.yaml \
+  --config-patch @patches/machine-certSANs.yaml \
   --config-patch @patches/install-disk.yaml \
   --config-patch @patches/interface-names.yaml \
   --config-patch @patches/kubelet-certs.yaml \
