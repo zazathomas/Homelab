@@ -47,7 +47,7 @@ This step ensures that all required patches are incorporated into the cluster co
 Each control plane node must receive its designated configuration:  
 
 ```bash
-talosctl apply -f rendered/controlplane.yaml -n $CONTROL_PLANE_IP --insecure
+talosctl apply -f homelab-cluster/controlplane.yaml -n $CONTROL_PLANE_IP --insecure
 ```
 
 ### **Apply Configuration to Worker Nodes**  
@@ -67,7 +67,7 @@ talosctl apply -f rendered/worker.yaml -n $WORKER_IP --insecure
 Point `talosctl` to use the generated Talos configuration:  
 
 ```bash
-export TALOSCONFIG=./rendered/talosconfig
+export TALOSCONFIG=./homelab-cluster/talosconfig
 ```
 
 ### **Verify Endpoint Configuration**  
@@ -123,7 +123,7 @@ This step is critical for setting up the Kubernetes control plane's distributed 
 After the etcd cluster is bootstrapped, retrieve the Kubernetes configuration file for administrative access:  
 
 ```bash
-talosctl kubeconfig -n <any-control-plane-node-ip> ./rendered/kubeconfig
+talosctl kubeconfig -n $CONTROL_PLANE_IP ./homelab-cluster/kubeconfig
 export KUBECONFIG=./rendered/kubeconfig
 ```
 
