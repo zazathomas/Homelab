@@ -1,0 +1,51 @@
+#tcp-connect.yaml
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: "detect-egress"
+spec:
+  kprobes:
+  - call: "tcp_connect"
+    syscall: false
+    args:
+    - index: 0
+      type: "sock"
+    selectors:
+    - matchArgs:
+      - index: 0
+        operator: "NotDAddr"
+        values:
+        - 127.0.0.1
+        - 10.42.0.0/16
+        - 10.43.0.0/16
+        - 192.168.0.0/24
+  - call: "tcp_close"
+    syscall: false
+    args:
+    - index: 0
+      type: "sock"
+    selectors:
+    - matchArgs:
+      - index: 0
+        operator: "NotDAddr"
+        values:
+        - 127.0.0.1
+        - 10.42.0.0/16
+        - 10.43.0.0/16
+        - 192.168.0.0/24
+  - call: "tcp_sendmsg"
+    syscall: false
+    args:
+    - index: 0
+      type: "sock"
+    - index: 2
+      type: int
+    selectors:
+    - matchArgs:
+      - index: 0
+        operator: "NotDAddr"
+        values:
+        - 127.0.0.1
+        - 10.42.0.0/16
+        - 10.43.0.0/16
+        - 192.168.0.0/24

@@ -1,0 +1,21 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: production-cert
+  namespace: cert-manager
+spec:
+  secretName: production-cert-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: "*.z3cyber.pro"
+  dnsNames:
+  - "z3cyber.pro"
+  - "*.z3cyber.pro"
+  - "*.access.z3cyber.pro"
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "gateway"  
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true" 
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "gateway"

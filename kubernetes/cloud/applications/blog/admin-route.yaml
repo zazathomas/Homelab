@@ -1,0 +1,46 @@
+# Ghost UI
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: ghost-route-admin
+  namespace: ghost
+spec:
+  parentRefs:
+  - name: nlb-envoy-gw
+    namespace: gateway
+    group: gateway.networking.k8s.io	
+    kind: Gateway
+  hostnames:
+  - "blog.z3cyber.tech"
+  rules:
+  - backendRefs:
+      - name: ghost
+        port: 2368
+        namespace: ghost
+        group: ''
+        kind: Service
+        weight: 1
+    matches:	
+        - path:	
+            type: PathPrefix	
+            value: /ghost
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: auth-ghost-admin
+  namespace: ghost
+spec:
+  targetRefs:
+   - group: gateway.networking.k8s.io
+     kind: HTTPRoute
+     name: ghost-route-admin
+  oidc:
+    provider:
+      issuer: "https://sso.z3cyber.tech/realms/homelab"
+    clientID: "gateway-client"
+    clientSecret:
+      name: "gateway-client-secret"
+    redirectURL: "https://blog.z3cyber.tech/ghost/signin"
+    logoutPath: "/logout"
+    cookieDomain: "z3cyber.tech"

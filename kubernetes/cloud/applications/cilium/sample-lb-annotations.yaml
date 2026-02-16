@@ -1,0 +1,72 @@
+# apiVersion: gateway.networking.k8s.io/v1
+# kind: Gateway
+# metadata:
+#   name: nlb-cilium-gw
+#   namespace: gateway
+# spec:
+#   gatewayClassName: cilium
+#   infrastructure:
+#     annotations:
+#       oci.oraclecloud.com/load-balancer-type: "nlb"
+#       oci-network-load-balancer.oraclecloud.com/security-list-management-mode:  "None"
+#       oci.oraclecloud.com/security-rule-management-mode: "None"
+#       oci-network-load-balancer.oraclecloud.com/oci-network-security-groups: "nsg-id"
+#   listeners:
+#     - name: http
+#       protocol: HTTP
+#       port: 80
+#       allowedRoutes:
+#         namespaces:
+#           from: All
+#     - name: https
+#       protocol: HTTPS
+#       hostname: "*.z3cyber.tech"
+#       port: 443
+#       allowedRoutes:
+#         namespaces:
+#           from: All
+#       tls:
+#         mode: Terminate
+#         certificateRefs:
+#           - kind: Secret
+#             group: ""
+#             name: z3cyber-tech-cert-tls
+#             namespace: gateway
+# ---
+# apiVersion: gateway.networking.k8s.io/v1
+# kind: Gateway
+# metadata:
+#   name: cilium-gw
+#   namespace: gateway
+# spec:
+#   gatewayClassName: cilium
+#   infrastructure:
+#     annotations:
+#       service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "10"
+#       service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+#       service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+#       oci.oraclecloud.com/load-balancer-type: "lb"
+#       oci.oraclecloud.com/oci-network-security-groups: "nsg-id"
+#       service.beta.kubernetes.io/oci-load-balancer-security-list-management-mode: "None"
+#       oci.oraclecloud.com/security-rule-management-mode: "None"
+#   listeners:
+#     - name: http
+#       protocol: HTTP
+#       port: 80
+#       allowedRoutes:
+#         namespaces:
+#           from: All
+#     - name: https
+#       protocol: HTTPS
+#       hostname: "*.z3cyber.tech"
+#       port: 443
+#       allowedRoutes:
+#         namespaces:
+#           from: All
+#       tls:
+#         mode: Terminate
+#         certificateRefs:
+#           - kind: Secret
+#             group: ""
+#             name: z3cyber-tech-cert-tls
+#             namespace: gateway

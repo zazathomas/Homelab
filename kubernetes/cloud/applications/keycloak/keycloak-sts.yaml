@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: keycloak
+  namespace: keycloak
+spec:
+  selector:
+    matchLabels:
+      app: keycloak
+  serviceName: "keycloak-service"
+  replicas: 1 
+  template:
+    metadata:
+      labels:
+        app: keycloak 
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:26.3.2
+          args: ["start"]
+          resources:
+            requests:
+              cpu: 50m
+              memory: 300Mi
+            limits:
+              cpu: 800m
+              memory: 1500Mi
+          env:
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            - name: KC_PROXY_HEADERS
+              value: "xforwarded"
+            - name: KC_HOSTNAME
+              value: 'https://sso.z3cyber.tech'
+            - name: 'KC_DB'
+              value: 'postgres'
+            - name: 'KC_DB_URL'
+              value: 'jdbc:postgresql://keycloak-db-rw.databases.svc:5432/keycloak'
+            - name: KC_BOOTSTRAP_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: admin_user
+            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: admin_password
+            - name: KC_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: db_username
+            - name: KC_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: db_password
+            - name: KC_HEALTH_ENABLED
+              value: "true"
+            - name: 'KC_CACHE'
+              value: 'ispn'
+            - name: TZ
+              value: "Europe/Dublin"
+          ports:
+            - name: http
+              containerPort: 8080
+          startupProbe:
+            httpGet:
+              path: /health/started
+              port: 9000
+            periodSeconds: 1
+            failureThreshold: 600              
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 9000
+            periodSeconds: 10
+            failureThreshold: 3              
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 9000
+            periodSeconds: 10
+            failureThreshold: 3

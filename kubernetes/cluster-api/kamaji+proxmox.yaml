@@ -1,0 +1,140 @@
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  name: homelab-cluster
+  namespace: clusters
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 10.244.0.0/16
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/v1alpha1
+    kind: KamajiControlPlane
+    name: homelab-cluster
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+    kind: ProxmoxCluster
+    name: homelab-cluster
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha1
+kind: KamajiControlPlane
+metadata:
+  name: homelab-cluster
+  namespace: clusters
+spec:
+  dataStoreName: default
+  #controlPlaneEndpoint:
+  #  host: 192.168.0.5
+  #  port: 6443
+  addons:
+    coreDNS: { }
+    kubeProxy: { }
+    konnectivity:
+      server:
+        port: 8132
+  kubelet:
+    cgroupfs: systemd
+    preferredAddressTypes:
+    - InternalIP
+  network:
+    serviceType: LoadBalancer
+    #ingress: api.server
+    #certSANs:
+     # - 81.91.32.119
+    #serviceAddress: 192.168.0.9
+    serviceAnnotations:
+      oci.oraclecloud.com/load-balancer-type: "nlb"
+  deployment:
+  replicas: 1
+  version: 1.32.1
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: ProxmoxCluster
+metadata:
+  name: homelab-cluster
+  namespace: clusters
+spec:
+  schedulerHints:
+    memoryAdjustment: 0
+  allowedNodes:
+  - pve-main
+  dnsServers:
+  - 192.168.0.1
+  - 1.1.1.1
+  externalManagedControlPlane: true
+  ipv4Config:
+    addresses:
+    - 192.168.0.232-192.168.0.234
+    gateway: 192.168.0.1
+    prefix: 24
+---
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachineDeployment
+metadata:
+  name: homelab-cluster-workers
+  namespace: clusters
+spec:
+  clusterName: homelab-cluster
+  replicas: 3
+  selector:
+    matchLabels: null
+  template:
+    metadata:
+      labels:
+        node-role.kubernetes.io/node: ""
+    spec:
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+          kind: KubeadmConfigTemplate
+          name: homelab-cluster-worker
+      clusterName: homelab-cluster
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+        kind: ProxmoxMachineTemplate
+        name: homelab-cluster-worker
+      version: v1.32.1
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha1
+kind: ProxmoxMachineTemplate
+metadata:
+  name: homelab-cluster-worker
+  namespace: clusters
+spec:
+  template:
+    spec:
+      disks:
+        bootVolume:
+          disk: scsi0
+          sizeGb: 20
+      format: qcow2
+      full: true
+      memoryMiB: 4096
+      network:
+        default:
+          bridge: vmbr0
+          model: virtio
+      numCores: 16
+      numSockets: 1
+      sourceNode: pve-main
+      templateID: 100
+      #checks:
+       # skipCloudInitStatus: true
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+kind: KubeadmConfigTemplate
+metadata:
+  name: homelab-cluster-worker
+  namespace: clusters
+spec:
+  template:
+    spec:
+      joinConfiguration:
+        nodeRegistration:
+          kubeletExtraArgs:
+            provider-id: proxmox://'{{ ds.meta_data.instance_id }}'
+      users:
+      - name: root
+        sshAuthorizedKeys:
+        - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCojZYUOR7C/xpGlYPRzBT67HRfxrQAwiNIuiOHreNmqJX1ltu4r+cU2DIQVcR9xUmOUpZ2c2w7V5gusEYoG4ANEr6bIbE5ZjQaeKEyGhVuCiJy0aMLZxZ06lkAyl3C4Gq+wHz1E3oV1xc0ydoRSsuZZPbzuQQrzFZ6PaZ9CbP4RvnskEvZILkiWO3qpXtx0FTvSfHauPDi27a5en7Jm0Si2FVMNo2C+HnlnTsZD7G9GlB8gD+fI0a7v942ttpvGO+nrPbOx18S17jmu7oGK80OmmHAYPcBbKZkHknC0pCmv3kMQHXdgj1OreiB7z+KPZPT3xX0IDh1XhCbrv49fcBe5UPcEVS2lkf4wzykmQDG9B3dUfRo+J6wiKLPbpf7lnLxXTSWgACGK9P4bhj8UoU5XdOefV2BEzx41qSjupx9i3NNGAZUb+DSN2dsraBEB/S4zXid+kRlvF92++3uFay0Wu7M/9KIx7KLe3jCjBEZCsc5wwlQnVhEOKx4asWFk9c= zaza@MacBook-Pro-2.local'

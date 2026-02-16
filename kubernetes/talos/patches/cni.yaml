@@ -1,0 +1,7 @@
+---
+cluster:
+  network:
+    cni:
+      name: custom
+      urls:
+        - https://raw.githubusercontent.com/zazathomas/Homelab/refs/heads/main/kubernetes/talos/cilium.yaml

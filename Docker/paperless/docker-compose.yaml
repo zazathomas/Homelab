@@ -1,0 +1,44 @@
+services:
+  broker:
+    container_name: redis
+    image: docker.io/library/redis:7
+    restart: unless-stopped
+    volumes:
+      - ./redisdata:/data
+    networks:
+      - proxy
+  paperless-ngx:
+    container_name: paperless-ngx
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.12.1
+    restart: unless-stopped
+    depends_on:
+      - broker
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/usr/src/paperless/data
+      - ./media:/usr/src/paperless/media
+      - ./export:/usr/src/paperless/export
+      - ./consume:/usr/src/paperless/consume
+    env_file: .env
+    environment:
+      PAPERLESS_REDIS: redis://broker:6379
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY}
+      PAPERLESS_URL: "https://*.z3cyber.tech"
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.paperless-ngx.rule=Host(`paperless.local.z3cyber.tech`)"
+      - "traefik.http.routers.paperless-ngx.entrypoints=https"
+      - "traefik.http.routers.paperless-ngx.tls=true"
+      - "traefik.http.services.paperless-ngx.loadbalancer.server.port=8000"
+
+networks:
+  proxy:
+    external: true
+
+# Create new user
+# python manage.py createsuperuser
+
+

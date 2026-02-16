@@ -1,0 +1,14 @@
+tunnel: oci-k8s
+credentials-file: /etc/cloudflared/creds/credentials.json
+metrics: 0.0.0.0:2000
+no-autoupdate: true
+
+warp-routing:
+  enabled: true
+
+ingress:
+  - hostname: "*.z3cyber.tech"
+    service: https://envoy-gateway-cf-envoy-gw-78c7d496.envoy-gateway-system.svc.cluster.local:443
+    originRequest:
+      originServerName: "*.z3cyber.tech"
+  - service: http_status:404

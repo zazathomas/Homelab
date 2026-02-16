@@ -1,0 +1,23 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/service-widgets
+
+- resources:
+    cpu: true
+    memory: true
+    disk: /
+
+- search:
+    provider: google
+    target: _blank
+
+- openmeteo:
+    label: Current
+    latitude: 36.66
+    longitude: -117.51
+    cache: 5
+
+- datetime:
+    text_size: xl
+    format:
+      timeStyle: short

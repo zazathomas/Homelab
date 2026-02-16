@@ -1,0 +1,42 @@
+services:
+  loki:
+    image: grafana/loki:3.3.0
+    container_name: loki
+    user: "1000"      
+    volumes:
+      - ./loki-config.yaml:/mnt/config/loki-config.yaml
+      - ./data:/tmp
+    ports:
+      - "3100:3100"                               
+    command: -config.file=/mnt/config/loki-config.yaml
+    networks:
+      - proxy
+    environment:
+      - TZ="Europe/Dublin"
+
+  alloy:
+    image: grafana/alloy:v1.5.0
+    container_name: alloy
+    privileged: true
+    ports:
+      - "12345:12345"
+    volumes:
+      - ./alloy-config.alloy:/etc/alloy/config.alloy
+      - /var/log:/tmp/logs/
+      - ./alloy_data:/alloy_data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /:/rootfs:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/alloy_data /etc/alloy/config.alloy
+    depends_on:
+      - loki
+    networks:
+      - proxy
+    environment:
+      - TZ="Europe/Dublin"
+
+networks:
+  proxy:
+    name: proxy
+    external: true

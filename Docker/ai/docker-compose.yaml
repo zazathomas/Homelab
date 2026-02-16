@@ -1,0 +1,37 @@
+services:
+  webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: openwebui
+    ports:
+     - 8070:8080/tcp
+    environment:
+     - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      - ./webui:/app/backend/data
+    depends_on:
+     - ollama
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.routers.webui.rule=Host(`webui.local.z3cyber.tech`)"
+     - "traefik.http.routers.webui.entrypoints=https"
+     - "traefik.http.routers.webui.tls=true"
+     - "traefik.http.services.webui.loadbalancer.server.port=8080"
+
+  ollama:
+    image: ollama/ollama:rocm
+    container_name: ollama
+    ports:
+     - 11434:11434/tcp
+    volumes:
+      - ./ollama:/root/.ollama
+    networks:
+      - proxy
+    restart: unless-stopped
+
+networks:
+  proxy:
+    name: proxy
+    external: true

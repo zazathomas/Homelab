@@ -1,0 +1,369 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+- Main:
+    - Management:
+        - Proxmox-PVE1:
+            href: https://pve-1.local.z3cyber.tech
+            description: Hypervisor
+            icon: proxmox.png
+            widget:
+                type: proxmox
+                url: https://192.168.0.190:8006
+                username: {{HOMEPAGE_VAR_PROXMOX_USERNAME}}
+                password: {{HOMEPAGE_VAR_PROXMOX_PASSWORD}}
+        - Proxmox-PVE2:
+            href: https://pve-2.local.z3cyber.tech
+            description: Hypervisor
+            icon: proxmox.png
+            widget:
+                type: proxmox
+                url: https://192.168.0.189:8006
+                username: {{HOMEPAGE_VAR_PROXMOX_USERNAME}}
+                password: {{HOMEPAGE_VAR_PROXMOX2_PASSWORD}}
+        - Portainer:
+            href: https://portainer.local.z3cyber.tech
+            description: Container Management
+            icon: portainer.png
+            widget:
+                type: portainer
+                url: http://192.168.0.8:9000
+                env: 2
+                key: {{HOMEPAGE_VAR_PORTAINER_KEY}}
+        - Teleport:
+            href: https://access.z3cyber.tech
+            description: Identity Aware Proxy
+            icon: teleport.png
+        - Termix:
+            href: https://termix.local.z3cyber.tech
+            description: Server Management
+            icon: termix.png
+        - Kamaji-Console:
+            href: https://console.z3cyber.tech/ui
+            description: Hosted Control Plane
+            icon: https://kamaji.clastix.io/images/logo.png
+    - Automation:
+        - Workflows:
+            href: https://workflows.z3cyber.tech
+            description: Jobs Engine
+            icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png
+        - Workflows Home:
+            href: https://workflows.k8s.z3cyber.tech
+            description: Jobs Engine
+            icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png
+        - Argocd:
+            href: https://argocd.z3cyber.tech
+            description: GitOps for Continuous Deployment
+            icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png
+        - Argocd Home:
+            href: https://argocd.k8s.z3cyber.tech
+            description: GitOps for Continuous Deployment
+            icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png
+        - Home Assistant:
+            href: https://haos.local.z3cyber.tech
+            description: Home automation
+            icon: https://avatars.githubusercontent.com/u/13844975?s=48&v=4
+        - N8n:
+            href: https://n8n.local.z3cyber.tech
+            description: Workflow Automation
+            icon: n8n.png
+        - SemaphoreUI:
+            href: https://semaphore.local.z3cyber.tech
+            description: Automation Server
+            icon: semaphore.png
+        - Codeserver:
+            href: https://code.local.z3cyber.tech
+            description: VScode in Browser
+            icon: vscode.png
+    - Networking:
+        - Adguard-01:
+            href: https://dns.local.z3cyber.tech
+            description: DNS Provider
+            icon: adguard-home.png
+            widget:
+            type: adguard
+            url: http://192.168.0.2
+            username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
+            password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
+        - Adguard-02:
+            href: https://adguard.local.z3cyber.tech
+            description: DNS Provider
+            icon: adguard-home.png
+            widget:
+            type: adguard
+            url: http://192.168.0.3
+            username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
+            password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
+        - Wireguard:
+            href: https://wg.z3cyber.tech
+            description: Home VPN
+            icon: wireguard.png
+            widget:
+            type: wgeasy
+            url: https://wg.z3cyber.tech
+            version: 2
+            username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}} 
+            password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
+            threshold: 2
+        - Traefik-kyle:
+            href: https://traefik-01.local.z3cyber.tech
+            description: Reverse Proxy
+            icon: traefik.png
+            widget:
+                type: traefik
+                url: https://traefik-01.local.z3cyber.tech
+                username: {{HOMEPAGE_VAR_TRAEFIK_USERNAME}} # optional
+                password: {{HOMEPAGE_VAR_TRAEFIK_PASSWORD}} # optional
+        - Traefik-jessie:
+            href: https://traefik-02.local.z3cyber.tech
+            description: Reverse Proxy
+            icon: traefik.png
+            widget:
+                type: traefik
+                url: https://traefik-02.local.z3cyber.tech
+                username: {{HOMEPAGE_VAR_TRAEFIK_USERNAME}} # optional
+                password: {{HOMEPAGE_VAR_TRAEFIK_PASSWORD}} # optional
+        - HobbleUI:
+            href: https://hubble.k8s.z3cyber.tech
+            description: Network Observability
+            icon: https://cdn.jsdelivr.net/gh/cilium/hubble@main/Documentation/images/hubble_logo.png
+        - Adguard Sync:
+            href: https://sync-dns.local.z3cyber.tech
+            description: DNS Provider
+            icon: adguard-home.png
+        - TPLink:
+            href: https://tplink.local.z3cyber.tech
+            description: Router
+            icon: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQEbyJymhxFmY_oPOmHOu3LW7dcCqhzmjVIQ&s
+    - Utility:
+        - Paperless Ngx:
+            href: https://paperless.local.z3cyber.tech
+            description: Document Archive
+            icon: paperless-ngx.png
+        - Stirling-pdf:
+            href: https://pdf.k8s.z3cyber.tech
+            description: PDF Operations
+            icon: stirling-pdf.png
+        - Excalidraw:
+            href: https://draw.local.z3cyber.tech
+            description: Design
+            icon: excalidraw.png
+        - Budget:
+            href: https://budget.local.z3cyber.tech
+            description: Finance Tool
+            icon: https://actualbudget.org/img/actual.png
+        - Mealie:
+            href: https://mealie.local.z3cyber.tech
+            description: Recipe & Meal Planning
+            icon: mealie.png
+        - IT tools:
+            href: https://tools.local.z3cyber.tech
+            description: Multi purpose
+            icon: https://raw.githubusercontent.com/CorentinTh/it-tools/main/.github/logo-white.png
+        - Firefox:
+            href: https://ff.local.z3cyber.tech
+            description: Local browser
+            icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/firefox.png
+        - Json Crack:
+            href: https://json.local.z3cyber.tech
+            description: JSON Visualizer
+            icon: https://github.com/AykutSarac/jsoncrack.com/raw/main/public/assets/192.png
+        - searXNG:
+            href: https://search.local.z3cyber.tech
+            description: Search engine
+            icon: searxng.png
+        - Vikunja:
+            href: https://vikunja.local.z3cyber.tech
+            description: Project Management
+            icon: vikunja.png
+            widget:
+                type: vikunja
+                url: http://192.168.0.8:3456
+                key: {{HOMEPAGE_VAR_VIKUNJA_KEY}}
+                enableTaskList: false # optional, defaults to false
+        - Karakeep:
+            href: https://karakeep.local.z3cyber.tech
+            description: Link Repository
+            icon: karakeep.png
+        - PasteBin:
+            href: https://lesma.eu
+            description: Paste bin
+            icon: pastebin.png
+    - Monitoring:
+        - Grafana:
+            href: https://grafana.k8s.z3cyber.tech
+            description: Dashboard Visualizer
+            icon: grafana.png
+            widget:
+                type: grafana
+                url: http://prometheus-grafana.monitoring.svc.cluster.local:80
+                username: {{HOMEPAGE_VAR_GRAFANA_USER}}
+                password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}
+        - Prometheus:
+            href: https://prometheus.k8s.z3cyber.tech
+            description: Metrics Store
+            icon: prometheus.png
+            widget:
+                type: prometheus
+                url: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+        - Beszel:
+            href: https://beszel.local.z3cyber.tech
+            description: Monitoring
+            icon: beszel.png
+        - Dozzle:
+            href: https://dozzle.local.z3cyber.tech
+            description: Log monitoring
+            icon: dozzle.png
+        - Uptime kuma:
+            href: https://uptime.local.z3cyber.tech
+            description: Service Monitor
+            icon: uptime-kuma.png
+            widget:
+                type: uptimekuma
+                url: http://192.168.0.8:3010
+                slug: statuspageslug
+        - Speedtest01:
+            href: https://speedtest01.local.z3cyber.tech
+            description: Latency tests
+            icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/speedtest-tracker.png
+            widget:  
+                type: speedtest  
+                url: http://192.168.0.8:8045
+                bitratePrecision: 3 #%20optional,%20default%20is%200
+        - Speedtest02:
+            href: https://speedtest02.local.z3cyber.tech
+            description: Latency tests
+            icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/speedtest-tracker.png
+            widget:  
+                type: speedtest  
+                url: http://192.168.0.7:8045
+                bitratePrecision: 3 #%20optional,%20default%20is%200
+    - Security:
+        - Keycloak:
+            href: https://sso.z3cyber.tech
+            description: Identity Provider
+            icon: keycloak.png
+        - Akto:
+            href: https://akto.local.z3cyber.tech
+            description: API Security
+            icon: https://avatars.githubusercontent.com/u/91220613?s=48&v=4
+        - WebCheck:
+            href: https://webcheck.k8s.z3cyber.tech
+            description: OSINT
+            icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/web-check.png
+        - JuiceShop:
+            href: https://juiceshop.k8s.z3cyber.tech
+            description: Security Testing
+            icon: https://juice-shop.herokuapp.com/assets/public/images/JuiceShop_Logo.png
+    - Data & AI:
+        - OpenWebUI:
+            href: https://webui.local.z3cyber.tech
+            description: AI Inference
+            icon: https://avatars.githubusercontent.com/u/158137808?s=48&v=4
+        
+        - Kopia:
+            href: https://kopia.local.z3cyber.tech
+            description: Disaster Recovery
+            icon: kopia.png
+            widget:
+                type: kopia
+                url: http://192.168.0.8:51515
+                username: {{HOMEPAGE_VAR_KOPIA_USER}}
+                password: {{HOMEPAGE_VAR_KOPIA_PASSWORD}}
+        - Cockpit:
+            href: https://cockpit.k8s.z3cyber.tech
+            description: Network Attached Storage
+            icon: cockpit.png
+        - Kafka:
+            href: https://kafka.local.z3cyber.tech
+            description: Kafka UI
+            icon: https://avatars.githubusercontent.com/u/60062294?s=200&v=4    
+        - Ghost:
+            href: https://blog.z3cyber.tech
+            description: Personal Blog
+            icon: ghost.png
+        - Minio:
+            href: https://minio.z3cyber.tech
+            description: Object Storage
+            icon: minio.png
+        - Minio Local:
+            href: https://s3.local.z3cyber.tech
+            description: Object Storage
+            icon: minio.png
+        - PGadmin:
+            href: https://pgadmin.local.z3cyber.tech
+            description: Database Management
+            icon: pgadmin.png
+- Media:
+    - Media Calendar:
+        widget:
+            type: calendar
+            firstDayInWeek: sunday # optional - defaults to monday
+            view: monthly # optional - possible values monthly, agenda
+            maxEvents: 10 # optional - defaults to 10
+            showTime: true # optional - show time for event happening today - defaults to false
+            timezone: Europe/Dublin # optional and only when timezone is not detected properly (slightly slower performance) - force timezone for ical events (if it's the same - no change, if missing or different in ical - will be converted to this timezone)
+            integrations: # optional
+                - type: sonarr # active widget type that is currently enabled on homepage - possible values: radarr, sonarr, lidarr, readarr, ical
+                  service_group: Services # group name where widget exists
+                  service_name: Sonarr # service name for that widget
+    - Services:
+        - Jellyfin:
+            href: https://jellyfin.local.z3cyber.tech
+            description: Media Server
+            icon: jellyfin.png
+            widget:
+                type: jellyfin
+                url: http://192.168.0.7:8096
+                key: {{HOMEPAGE_VAR_JELLYFIN_APIKEY}}
+                enableBlocks: true # optional, defaults to false
+                enableNowPlaying: true # optional, defaults to true
+                enableUser: true # optional, defaults to false
+                showEpisodeNumber: true # optional, defaults to false
+                expandOneStreamToTwoRows: false # optional, defaults to true
+        - Jellyseerr:
+            href: https://jellyseerr.local.z3cyber.tech
+            description: Media Requester
+            icon: jellyseerr.png
+            widget:
+                type: jellyseerr
+                url: http://192.168.0.7:5055
+                key: {{HOMEPAGE_VAR_JELLYSEERR_APIKEY}}
+        - Radarr:
+            href: https://radarr.local.z3cyber.tech
+            description: Movies
+            icon: radarr.png
+            widget:
+                type: radarr
+                url: http://192.168.0.7:7878
+                key:  {{HOMEPAGE_VAR_RADARR_APIKEY}}
+                enableQueue: true # optional, defaults to false
+        - Sonarr:
+            href: https://sonarr.local.z3cyber.tech
+            description: TV Shows
+            icon: sonarr.png
+            widget:
+                type: sonarr
+                url: http://192.168.0.7:8989
+                key: {{HOMEPAGE_VAR_SONARR_APIKEY}}
+                enableQueue: true # optional, defaults to false
+        - Audiobookshelf:
+            href: https://abs.local.z3cyber.tech
+            description: Audio Books
+            icon: audiobookshelf.png
+            widget:
+                type: audiobookshelf
+                url: http://192.168.0.7:13378
+                key: {{HOMEPAGE_VAR_AUDIOBOOKSHELF_APIKEY}}
+        - Readerr:
+            href: https://readarr.local.z3cyber.tech
+            description: Books
+            icon: readarr.png
+        - Prowlarr:
+            href: https://prowlarr.local.z3cyber.tech
+            description: Torrent Indexer
+            icon: prowlarr.png
+        - Qbit:
+            href: https://qbit.local.z3cyber.tech
+            description: Torrent Downloader
+            icon: qbittorrent.png

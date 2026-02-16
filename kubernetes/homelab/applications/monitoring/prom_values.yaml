@@ -1,0 +1,99 @@
+prometheus:
+  prometheusSpec:
+    enableRemoteWriteReceiver: true
+    enableFeatures:
+    - remote-write-receiver
+    enableOTLPReceiver: true
+    podMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    additionalScrapeConfigs:
+    - job_name: 'pve-1'
+      static_configs:
+        - targets:
+          - 192.168.0.190  # Proxmox VE node.
+      metrics_path: /pve
+      params:
+        module: [default]
+        cluster: ['1']
+        node: ['1']
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: 192.168.0.7:9221  # PVE exporter.
+    - job_name: 'pve-2'
+      static_configs:
+        - targets:
+          - 192.168.0.189  # Proxmox VE node.
+      metrics_path: /pve
+      params:
+        module: [default]
+        cluster: ['1']
+        node: ['1']
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: 192.168.0.7:9222  # PVE exporter.
+
+grafana:
+  defaultDashboardsTimezone: Europe/Dublin
+
+alertmanager:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+kubeProxy:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+defaultRules:
+  create: true
+  rules:
+    alertmanager: true
+    etcd: false
+    configReloaders: true
+    general: true
+    k8sContainerCpuUsageSecondsTotal: true
+    k8sContainerMemoryCache: true
+    k8sContainerMemoryRss: true
+    k8sContainerMemorySwap: true
+    k8sContainerResource: true
+    k8sContainerMemoryWorkingSetBytes: true
+    k8sPodOwner: true
+    kubeApiserverAvailability: true
+    kubeApiserverBurnrate: true
+    kubeApiserverHistogram: true
+    kubeApiserverSlos: true
+    kubeControllerManager: false
+    kubelet: true
+    kubeProxy: false
+    kubePrometheusGeneral: true
+    kubePrometheusNodeRecording: true
+    kubernetesApps: true
+    kubernetesResources: true
+    kubernetesStorage: true
+    kubernetesSystem: true
+    kubeSchedulerAlerting: true
+    kubeSchedulerRecording: true
+    kubeStateMetrics: true
+    network: true
+    node: true
+    nodeExporterAlerting: true
+    nodeExporterRecording: true
+    prometheus: true
+    prometheusOperator: true
+    windows: true

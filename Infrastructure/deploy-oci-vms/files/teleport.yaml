@@ -1,0 +1,67 @@
+version: v3
+teleport:
+  nodename: teleport
+  data_dir: /var/lib/teleport
+  log:
+    output: stderr
+    severity: INFO
+    format:
+      output: text
+  ca_pin: ""
+  diag_addr: ""
+auth_service:
+  enabled: "yes"
+  listen_addr: 0.0.0.0:3025
+  cluster_name: access.z3cyber.tech
+  proxy_listener_mode: multiplex
+ssh_service:
+  enabled: "yes"
+proxy_service:
+  enabled: "yes"
+  web_listen_addr: 0.0.0.0:443
+  public_addr: access.z3cyber.tech:443
+  https_keypairs:
+  - key_file: /var/lib/teleport/privkey.pem
+    cert_file: /var/lib/teleport/fullchain.pem
+  https_keypairs_reload_interval: 0s
+  acme: {}
+app_service:
+    enabled: yes
+    debug_app: false
+    apps:
+    - name: "n8n"
+      uri: "http://docker-vm:5678"
+      public_addr: "n8n.access.z3cyber.tech"
+      insecure_skip_verify: true
+    - name: "portainer"
+      uri: "https://docker-vm:9443"
+      public_addr: "portainer.access.z3cyber.tech"
+      insecure_skip_verify: true
+    - name: "uptime-kuma"
+      uri: "http://docker-vm:3010"
+      public_addr: "uptime.access.z3cyber.tech"
+      insecure_skip_verify: true
+    - name: "paperless-ngx"
+      uri: "http://docker-vm:8000"
+      public_addr: "paperless.access.z3cyber.tech"
+      insecure_skip_verify: true
+    - name: "stirling-pdf"
+      uri: "http://docker-vm:8011"
+      public_addr: "pdf.access.z3cyber.tech"
+      insecure_skip_verify: true
+    - name: "jenkins"
+      uri: "http://docker-vm:9999"
+      public_addr: "jenkins.access.z3cyber.tech"
+      insecure_skip_verify: true
+    - name: "uptime-kuma"
+      uri: "http://docker-vm:3010"
+      public_addr: "uptime.access.z3cyber.tech"
+      insecure_skip_verify: true
+    - name: "homepage"
+      uri: "http://docker-vm:3000"
+      public_addr: "homepage.access.z3cyber.tech"
+      insecure_skip_verify: true
+    - name: "firefox"
+      uri: "http://docker-vm:3033"
+      public_addr: "ff.access.z3cyber.tech"
+      insecure_skip_verify: true

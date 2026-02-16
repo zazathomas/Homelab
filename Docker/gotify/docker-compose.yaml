@@ -1,0 +1,48 @@
+---
+services:
+  gotify:
+    image: gotify/server:2.5.0
+    container_name: gotify
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ="Europe/Dublin"
+    volumes:
+      - ./var/gotify/data:/app/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gotify.rule=Host(`gotify.local.z3cyber.tech`)"
+      - "traefik.http.routers.gotify.entrypoints=https"
+      - "traefik.http.routers.gotify.tls=true"
+      - "traefik.http.services.gotify.loadbalancer.server.port=80"
+    ports:
+      - 8033:80
+    restart: unless-stopped
+    networks:
+      - proxy
+    security_opt:
+      - no-new-privileges:true
+  igotify:
+    container_name: igotify
+    hostname: igotify
+    image: ghcr.io/androidseb25/igotify-notification-assist:latest
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    pull_policy: always
+    networks:
+      - proxy
+    ports:
+      - "8681:8080"
+    volumes:
+      - ./api-data:/app/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.igotify.rule=Host(`igotify.local.z3cyber.tech`)"
+      - "traefik.http.routers.igotify.entrypoints=https"
+      - "traefik.http.routers.igotify.tls=true"
+      - "traefik.http.services.igotify.loadbalancer.server.port=8080"
+
+networks:
+  proxy:
+    external: true

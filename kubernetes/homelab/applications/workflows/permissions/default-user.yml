@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: rouser
+  namespace: argo
+  annotations:
+    workflows.argoproj.io/rbac-rule: "true"
+    workflows.argoproj.io/rbac-rule-precedence: "0"
+automountServiceAccountToken: true
+secrets:
+  - name: rouser.service-account-token
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: rouser.service-account-token
+  namespace: argo
+  annotations:
+    kubernetes.io/service-account.name: rouser
+type: kubernetes.io/service-account-token

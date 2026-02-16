@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: staging-cert
+  namespace: gateway
+spec:
+  secretName: staging-cert-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: "*.z3cyber.tech"
+  dnsNames:
+  - "z3cyber.tech"
+  - "*.z3cyber.tech"

@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: minio
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+  namespace: minio
+spec:
+  ports:
+  - name: app
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  - name: api
+    port: 9000
+    protocol: TCP
+    targetPort: 9000
+  clusterIP: None
+  type: ClusterIP
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: minio
+  namespace: minio
+  labels:
+    kubernetes.io/service-name: minio
+    endpointslice.kubernetes.io/managed-by: cluster-admins
+addressType: IPv4
+endpoints:
+  - addresses:
+      - 10.0.10.254
+    conditions:
+      ready: true
+ports:
+  - name: app
+    port: 80
+    protocol: TCP
+  - name: api
+    port: 9000
+    protocol: TCP
+---
+# Minio UI
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: minio-route
+  namespace: minio
+spec:
+  parentRefs:
+  - name: nlb-envoy-gw
+    namespace: gateway
+    group: gateway.networking.k8s.io	
+    kind: Gateway
+  hostnames:
+  - "minio.z3cyber.tech"
+  rules:
+   - backendRefs:
+      - name: minio
+        port: 80
+        group: ''	
+        kind: Service
+        weight: 1
+     matches:	
+        - path:	
+            type: PathPrefix	
+            value: /
+---
+# Minio UI
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: minio-api-route
+  namespace: minio
+spec:
+  parentRefs:
+  - name: nlb-envoy-gw
+    namespace: gateway
+    group: gateway.networking.k8s.io	
+    kind: Gateway
+  hostnames:
+  - "api-minio.z3cyber.tech"
+  rules:
+   - backendRefs:
+      - name: minio
+        port: 9000
+        group: ''	
+        kind: Service
+        weight: 1
+     matches:	
+        - path:	
+            type: PathPrefix	
+            value: /

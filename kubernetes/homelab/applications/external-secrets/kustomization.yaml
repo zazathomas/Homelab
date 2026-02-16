@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - external-secrets-ns.yaml
+  - external-secrets.yaml
+  - podmonitor.yaml
+
+# Apply the oracle-secret.yaml & vault-secretstore.yaml file to the external-secrets namespace. Check password manager
+# These are required before ExternalSecret objects can be created.

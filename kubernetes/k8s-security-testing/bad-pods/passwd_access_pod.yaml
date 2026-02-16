@@ -1,0 +1,11 @@
+# forbidden-file-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+ name: forbidden-file-pod
+spec:
+ containers:
+ - name: forbidden-file-container
+   image: alpine:latest
+   command: ["/bin/sh"]
+   args: ["-c", "cat /etc/shadow"]

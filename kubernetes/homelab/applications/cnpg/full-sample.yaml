@@ -1,0 +1,81 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: example-db
+  namespace: databases
+spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:15.3
+  description: "Example DB"
+  instances: 2
+  primaryUpdateStrategy: unsupervised
+  enablePDB: true
+  postgresUID: 65534 # NFS specific config
+  postgresGID: 65534 # NFS specific config
+
+  postgresql:
+    parameters:
+      shared_buffers: 256MB
+      pg_stat_statements.max: '10000'
+      pg_stat_statements.track: all
+      auto_explain.log_min_duration: '10s'
+    pg_hba:
+      - host all all 10.244.0.0/16 md5
+
+  bootstrap:
+    initdb:
+      database: app
+      owner: app
+      secret:
+        name: cluster-example-app-user
+  
+  superuserSecret:
+    name: cluster-example-superuser
+      
+
+  storage:
+    storageClass: nfs-csi
+    size: 1Gi
+
+  plugins:
+  - name: barman-cloud.cloudnative-pg.io
+    isWALArchiver: true
+    parameters:
+      barmanObjectName: r2-store
+
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "50m"
+    limits:
+      memory: "1Gi"
+      cpu: "300m"
+
+  affinity:
+    enablePodAntiAffinity: true
+---
+
+apiVersion: v1
+data:
+  password: VHhWZVE0bk44MlNTaVlIb3N3cU9VUlp2UURhTDRLcE5FbHNDRUVlOWJ3RHhNZDczS2NrSWVYelM1Y1U2TGlDMg==
+  username: YXBw
+kind: Secret
+metadata:
+  name: cluster-example-app-user
+type: kubernetes.io/basic-auth
+---
+apiVersion: v1
+data:
+  password: dU4zaTFIaDBiWWJDYzRUeVZBYWNCaG1TemdxdHpxeG1PVmpBbjBRSUNoc0pyU211OVBZMmZ3MnE4RUtLTHBaOQ==
+  username: cG9zdGdyZXM=
+kind: Secret
+metadata:
+  name: cluster-example-superuser
+type: kubernetes.io/basic-auth
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: backup-creds
+data:
+  ACCESS_KEY_ID: a2V5X2lk
+  ACCESS_SECRET_KEY: c2VjcmV0X2tleQ==

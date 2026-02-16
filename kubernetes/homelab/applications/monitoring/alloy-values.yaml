@@ -1,0 +1,10 @@
+alloy:
+  configMap:
+    create: false
+    name: alloy-config
+    key: alloy-config.alloy
+
+serviceMonitor:
+  enabled: true
+  additionalLabels:
+    release: prometheus

@@ -1,0 +1,11 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: semaphore-db-backup
+  namespace: databases
+spec:
+  schedule: "0 0 23/12 * * *" # At 0 minutes past the hour, every 12 hours, starting at 11:00 PM
+  backupOwnerReference: none
+  immediate: false
+  cluster:
+    name: "semaphore-db"

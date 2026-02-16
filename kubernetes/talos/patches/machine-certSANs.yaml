@@ -1,0 +1,4 @@
+machine:
+  certSANs:
+    - home.cluster.local
+    - k8s-api.local.z3cyber.tech

@@ -1,0 +1,28 @@
+#apiVersion: cilium.io/v2
+#kind: CiliumClusterwideNetworkPolicy
+#metadata:
+#  name: gateway-ingress
+#spec:
+#  endpointSelector:
+#    matchExpressions:
+#    - key: reserved:ingress
+#      operator: Exists
+#  ingress:
+#    - fromCIDRSet: 
+#        - cidr:  37.228.206.232/32
+#    - fromEntities:
+#        - cluster
+#  egress:
+#    - toEntities:
+#        - all
+#---
+#apiVersion: "cilium.io/v2"
+#kind: CiliumNetworkPolicy
+#metadata:
+#  name: echo-ingress
+#  namespace: default
+#spec:
+#  endpointSelector: {}
+#  ingress:
+#    - fromEntities:
+#      - ingress

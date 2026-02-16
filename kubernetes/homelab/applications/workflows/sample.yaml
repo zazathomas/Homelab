@@ -1,0 +1,72 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: sample-wf
+  namespace: argo
+spec:
+  entrypoint: start
+  templates:
+  - name: start
+    steps:
+    - - name: step-1
+        template: container-template
+      - name: step-1a
+        template: script-template
+    - - name: step-2
+        template: suspend-template
+      - name: step-2a
+        template: suspend-template
+    - - name: step-3
+        template: container-template
+  - name: container-template
+    container:
+      name: test-container
+      image: alpine
+      command: ['sh', '-c']
+      args: ['echo hello from the other side']
+  - name: script-template
+    script:
+      image: python:3.13-slim
+      command: [python]
+      source: |
+        for i in range(5):
+          print(f'hello from script template {i}')
+  - name: suspend-template
+    suspend:
+      duration: "20s"
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: sample-wf
+  namespace: argo
+spec:
+  entrypoint: start
+  templates:
+  - name: start
+    dag:
+      tasks:
+        - name: step-1
+          template: container-template
+        - name: step-2
+          template: script-template
+          # dependencies: [step-1]
+        - name: step-3
+          template: script-template
+          dependencies: [step-2,step-1]
+  - name: container-template
+    container:
+      name: test-container
+      image: alpine
+      command: ['sh', '-c']
+      args: ['echo hello from the other side']
+  - name: script-template
+    script:
+      image: python:3.13-slim
+      command: [python]
+      source: |
+        for i in range(5):
+          print(f'hello from script template {i}')
+  - name: suspend-template
+    suspend:
+      duration: "20s"

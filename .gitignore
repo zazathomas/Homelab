@@ -1,0 +1,4 @@
+Scribbles/
+.*
+kubernetes/talos/homelab-cluster
+infrastructure/homelab-k8s/

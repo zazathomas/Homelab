@@ -1,0 +1,80 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaNodePool
+metadata:
+  name: homelab-nodepool
+  namespace: kafka-tenants
+  labels:
+    strimzi.io/cluster: homelab-kafka-cluster
+spec:
+  replicas: 1
+  roles:
+    - controller
+    - broker
+  storage:
+    type: jbod
+    volumes:
+      - id: 0
+        type: persistent-claim
+        size: 3Gi
+        deleteClaim: true
+        kraftMetadata: shared
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: homelab-kafka-cluster
+  namespace: kafka-tenants
+  annotations:
+    strimzi.io/node-pools: enabled
+    strimzi.io/kraft: enabled
+spec:
+  kafka:
+    version: 3.9.0
+    metadataVersion: 3.9-IV0
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+      - name: external
+        port: 9094
+        tls: false
+        type: cluster-ip
+        authentication:
+          type: scram-sha-512
+    authorization:
+      type: simple
+      superUsers:
+      - admin
+    config:
+      offsets.topic.replication.factor: 1
+      transaction.state.log.replication.factor: 1
+      transaction.state.log.min.isr: 1
+      default.replication.factor: 1
+      min.insync.replicas: 1
+      message.max.bytes: 104857600
+      replica.fetch.max.bytes: 104857600
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: kafka-metrics-config.yml
+  kafkaExporter:
+    topicRegex: ".*"
+    groupRegex: ".*"
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+  cruiseControl:
+    autoRebalance:
+      - mode: add-brokers
+        template:
+          name: my-add-brokers-rebalancing-template
+      - mode: remove-brokers
+        template:
+          name: my-remove-brokers-rebalancing-template

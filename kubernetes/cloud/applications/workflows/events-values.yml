@@ -1,0 +1,13 @@
+## Event bus configuration
+configs:
+  ## NATS event bus
+  nats:
+    # -- Supported versions of NATS event bus
+    # @default -- See [values.yaml]
+    versions:
+      - version: latest
+        natsStreamingImage: docker.io/nats-streaming:latest
+        metricsExporterImage: docker.io/natsio/prometheus-nats-exporter:latest
+      - version: 0.22.1
+        natsStreamingImage: docker.io/nats-streaming:0.22.1
+        metricsExporterImage: docker.io/natsio/prometheus-nats-exporter:0.8.0

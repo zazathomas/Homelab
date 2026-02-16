@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ns.yaml
+  - ghost-deployment.yaml
+  - ghost-httproute.yaml
+  - admin-route.yaml
+  - ghost-pvc.yaml
+  - ghost-service.yaml
+  - ghost-secret.yaml
+  - gw-client-secret.yaml

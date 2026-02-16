@@ -1,0 +1,38 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: semaphore-db
+  namespace: databases
+spec:
+  description: "Semaphore DB"
+  instances: 1
+  primaryUpdateStrategy: unsupervised
+
+  monitoring:
+    enablePodMonitor: true
+
+  nodeMaintenanceWindow:
+    reusePVC: false
+
+  storage:
+    size: 2Gi
+
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://pg-backups-homelab/
+      endpointURL: https://d4f626e53977981652bb18a0948b046c.r2.cloudflarestorage.com
+      s3Credentials:
+        accessKeyId:
+          name: r2-creds
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: r2-creds
+          key: ACCESS_SECRET_KEY
+      wal:
+        compression: gzip
+        encryption: AES256
+      data:
+        compression: gzip
+        encryption: AES256
+    retentionPolicy: "3d"

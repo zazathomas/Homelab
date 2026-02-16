@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ns.yaml
+  - keycloak-sts.yaml
+  - keycloak-svc.yaml
+  - keycloak-route.yaml
+  - keycloak-secret.yaml
+  - keycloak-db.yaml
+  - keycloak-db-backup.yaml

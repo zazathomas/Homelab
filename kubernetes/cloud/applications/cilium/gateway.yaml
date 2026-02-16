@@ -1,0 +1,52 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: cilium-gw
+  namespace: gateway
+spec:
+  gatewayClassName: cilium
+  infrastructure:
+    annotations:
+      service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "10"
+      service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+      service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+      oci.oraclecloud.com/load-balancer-type: "lb"
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      protocol: HTTPS
+      hostname: "*.z3cyber.tech"
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: z3cyber-tech-cert-tls
+            namespace: gateway
+    - name: tls-teleport
+      protocol: TLS
+      hostname: "access.z3cyber.tech"
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Passthrough
+    - name: tls-teleport-wildcard
+      protocol: TLS
+      hostname: "*.access.z3cyber.tech"
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Passthrough

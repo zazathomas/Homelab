@@ -1,0 +1,131 @@
+singleNamespace: false
+
+server:
+  replicas: 1
+  secure: false
+  extraArgs:
+    - --access-control-allow-origin=true
+  extraEnv:
+    - name: SSO_DELEGATE_RBAC_TO_NAMESPACE
+      value: "true"
+  authModes:
+    - sso
+  
+  logging:
+    level: info
+
+  sso:
+    enabled: true
+    issuer: https://sso.z3cyber.tech/realms/homelab
+    sessionExpiry: 8h
+    clientId:
+      name: workflows-secrets
+      key: client-id
+    clientSecret:
+      name: workflows-secrets
+      key: client-secret
+    redirectUrl: https://workflows.z3cyber.tech/oauth2/callback
+    customGroupClaimName: groups
+    scopes:
+     - openid
+     - email
+     - profile
+    rbac:
+      enabled: true
+    insecureSkipVerify: true
+
+workflow:
+  serviceAccount:
+    create: true
+    name: "wf-runner"
+    pullSecrets: []
+  rbac:
+    create: true
+
+controller:
+  parallelism: 50
+  namespaceParallelism: 10
+  workflowNamespaces:
+  - workflows
+  - learning
+  - default
+  workflowDefaults:
+    spec:
+      serviceAccountName: wf-runner
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 8737
+      podGC:
+        strategy: OnPodCompletion
+      ttlStrategy:
+        secondsAfterSuccess: 3600
+        secondsAfterFailure: 86400
+      archiveLogs: true
+  workflowRestrictions:
+    templateReferencing: Strict # Make users only run workflows via workflow templates.
+  metricsConfig:
+    enabled: true
+  persistence:
+    nodeStatusOffLoad: true
+    archive: true
+    archiveTTL: 7d
+    postgresql:
+      host: workflows-db-rw.databases.svc
+      port: 5432
+      database: postgres
+      tableName: argo_workflows
+      userNameSecret:
+        name: workflows-secrets
+        key: username
+      passwordSecret:
+        name: workflows-secrets
+        key: password
+  # links: |
+  #   # Link visible on the Workflow details page
+  #   - name: Grafana - Workflow logs
+  #     scope: workflow
+  #     url: >-
+  #       https://grafana.local.z3cyber.tech/explore
+  #       ?orgId=1
+  #       &left={"datasource":"Loki",
+  #              "queries":[{"expr":"{namespace=\\"{{workflow.namespace}}\\", job=\\"kubernetes-pods\\", workflow=\\"{{workflow.name}}\\"}"}],
+  #              "range":{"from":"${status.startedAtEpoch}","to":"${status.finishedAtEpoch}"}}
+
+  #   # Link visible on each Pod/Node page
+  #   - name: Grafana - Pod logs
+  #     scope: pod
+  #     url: >-
+  #       https://grafana.local.z3cyber.tech/explore
+  #       ?orgId=1
+  #       &left={"datasource":"Loki",
+  #              "queries":[{"expr":"{namespace=\\"{{pod.namespace}}\\", pod=\\"{{pod.name}}\\"}"}],
+  #              "range":{"from":"${status.startedAtEpoch}","to":"${status.finishedAtEpoch}"}}
+
+
+artifactRepository:
+  archiveLogs: true
+  s3:
+    insecure: false
+    endpoint: api-minio.z3cyber.tech
+    bucket: argo-workflows
+    region: null
+    accessKeySecret:
+      name: workflows-secrets
+      key: accessKey
+    secretKeySecret:
+      name: workflows-secrets
+      key: secretKey
+
+executor:
+  image:
+    registry: quay.io
+    repository: argoproj/argoexec
+    tag: "v3.6.11-nonroot"
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 8737
+    runAsGroup: 8737
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL

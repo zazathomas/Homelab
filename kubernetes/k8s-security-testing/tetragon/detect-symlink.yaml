@@ -1,0 +1,32 @@
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: "detect-symlink"
+spec:
+  kprobes:
+  - call: "sys_symlinkat"
+    syscall: true
+    args:
+    - index: 0
+      type: "string"
+    - index: 1
+      type: "int"
+    - index: 2
+      type: "string"
+    selectors:
+    - matchArgs:
+      - index: 0
+        operator: "Equal"
+        values:
+        - "/boot"           # Reads to sensitive directories
+        - "/root/.ssh"      # Reads to sensitive files we want to know about
+        - "/etc/shadow"
+        - "/etc/passwd"
+        - "/etc/profile"
+        - "/etc/sudoers"
+        - "/etc/pam.conf"   # Reads global shell configs bash/csh supported
+        - "/etc/bashrc"
+        - "/etc/csh.cshrc"
+        - "/etc/csh.login"
+        - "var/run/secrets/kubernetes.io"
+        - "root/.kube"

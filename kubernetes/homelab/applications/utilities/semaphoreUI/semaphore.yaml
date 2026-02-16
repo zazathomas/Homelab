@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  semaphore
+  namespace: utilities
+  labels:
+    app:  semaphore
+spec:
+  selector:
+    matchLabels:
+      app: semaphore
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app:  semaphore
+    spec:
+      containers:
+      - name: semaphore
+        image: semaphoreui/semaphore:v2.13.1
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 800m
+            memory: 800Mi
+        livenessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        envFrom:
+          - secretRef:
+              name: semaphore-secrets
+          - configMapRef:
+              name: semaphore-config
+        ports:
+        - containerPort:  3000
+          name:  http
+      volumes:
+        - name: semaphore-secrets
+          secret:
+            secretName: semaphore-secrets
+        - name: semaphore-config
+          configMap:
+            name: semaphore-config
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: semaphore-ui
+  namespace: utilities
+spec:
+  selector:
+    app: semaphore
+  type: ClusterIP
+  ports:
+  - name: http
+    protocol: TCP
+    port: 3000
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: semaphore-route
+  namespace: utilities
+spec:
+  parentRefs:
+  - name: cilium-gw
+    namespace: gateway
+  hostnames:
+  - "semaphore.k8s.z3cyber.tech"
+  rules:
+   - backendRefs:
+      - name: semaphore-ui
+        port: 3000
+        group: ''	
+        kind: Service
+        weight: 1	
+     matches:	
+        - path:	
+            type: PathPrefix	
+            value: /

@@ -1,0 +1,20 @@
+services:
+  juice-shop:
+    container_name: juice-shop
+    image: bkimminich/juice-shop
+    restart: unless-stopped
+    networks:
+       - proxy
+    labels:
+     - "traefik.enable=true"
+     - "traefik.http.routers.juice-shop.rule=Host(`juiceshop.local.z3cyber.tech`)"
+     - "traefik.http.routers.juice-shop.entrypoints=https"
+     - "traefik.http.routers.juice-shop.tls=true"
+     - "traefik.http.services.juice-shop.loadbalancer.server.port=3000"
+    ports:
+      - '3999:3000'
+
+networks:
+  proxy:
+    name: proxy
+    external: true

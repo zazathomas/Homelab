@@ -1,0 +1,23 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: r2-store
+  namespace: databases
+spec:
+  retentionPolicy: "7d"
+  configuration:
+    destinationPath: s3://pg-backups-oci/
+    endpointURL: https://d4f626e53977981652bb18a0948b046c.r2.cloudflarestorage.com
+    s3Credentials:
+      accessKeyId:
+        name: r2-creds
+        key: ACCESS_KEY_ID
+      secretAccessKey:
+        name: r2-creds
+        key: ACCESS_SECRET_KEY
+    wal:
+        compression: gzip
+        encryption: AES256
+    data:
+        compression: gzip
+        encryption: AES256

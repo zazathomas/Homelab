@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - kube-prom-app.yaml
+  - loki-app.yaml
+  - httproutes.yaml
+  - alloy.yaml
+
+configMapGenerator:
+  - name: alloy-config
+    namespace: monitoring
+    files:
+      - alloy-config.alloy
+    options:
+      disableNameSuffixHash: true

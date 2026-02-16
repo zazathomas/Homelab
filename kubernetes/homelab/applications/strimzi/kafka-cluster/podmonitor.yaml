@@ -1,0 +1,49 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: homelab-kafka-metrics
+  namespace: kafka-tenants
+  labels:
+    app: homelab-kafka-metrics
+    release: prometheus
+spec:
+  namespaceSelector: 
+    matchNames:
+      - kafka-tenants
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: homelab-kafka-cluster
+  podMetricsEndpoints:
+  - path: /metrics
+    port: tcp-prometheus
+    relabelings:
+    - separator: ;
+      regex: __meta_kubernetes_pod_label_(strimzi_io_.+)
+      replacement: $1
+      action: labelmap
+    - sourceLabels: [__meta_kubernetes_namespace]
+      separator: ;
+      regex: (.*)
+      targetLabel: namespace
+      replacement: $1
+      action: replace
+    - sourceLabels: [__meta_kubernetes_pod_name]
+      separator: ;
+      regex: (.*)
+      targetLabel: kubernetes_pod_name
+      replacement: $1
+      action: replace
+    - sourceLabels: [__meta_kubernetes_pod_node_name]
+      separator: ;
+      regex: (.*)
+      targetLabel: node_name
+      replacement: $1
+      action: replace
+    - sourceLabels: [__meta_kubernetes_pod_host_ip]
+      separator: ;
+      regex: (.*)
+      targetLabel: node_ip
+      replacement: $1
+      action: replace
+

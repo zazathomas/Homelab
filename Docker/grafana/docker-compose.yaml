@@ -1,0 +1,19 @@
+services:
+   grafana:
+    image: grafana/grafana:11.3.1
+    container_name: grafana
+    user: "1000"
+    environment:
+      - TZ=Europe/Dublin
+    volumes:
+      - ./grafana:/var/lib/grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    networks:
+       - proxy
+
+networks:
+  proxy:
+    name: proxy
+    external: true

@@ -1,0 +1,59 @@
+# Enable Operator metrics
+operator:
+  prometheus:
+    enabled: true
+    port: 9963
+
+# Enable cilium agent(& Envoy) metrics
+prometheus:
+  enabled: true
+  port: 9965
+
+# Configure envoy metrics port
+envoy:
+  prometheus:
+    port: "9964"
+
+# Enable Hubble metrics
+hubble:
+  metrics:
+    port: 9966
+    enableOpenMetrics: true
+    enabled: [dns, drop, tcp, flow, icmp, port-distribution]
+  export:
+    dynamic:
+      enabled: true
+      config:
+        enabled: true
+        content:
+        - name: "dropped-flows"
+          filePath: "/var/run/cilium/hubble/dropped-flows.log"
+          fieldMask: []
+          includeFilters:
+          - verdict: ["DROPPED","ERROR"]
+          excludeFilters: 
+          - source_pod: ["tailscale/"]
+          - destination_pod: ["tailscale/"]
+        - name: "coredns"
+          filePath: "/var/run/cilium/hubble/coredns.log"
+          fieldMask: ["time", "source.namespace", "source.pod_name", "destination.namespace", "destination.pod_name", "verdict", "Summary"]
+          includeFilters:
+          - source_label: ["k8s-app=kube-dns"]
+          - destination_label: ["k8s-app=kube-dns"]
+          excludeFilters: []
+        - name: "ingress-access"
+          filePath: "/var/run/cilium/hubble/ingress-access.log"
+          fieldMask: []
+          includeFilters:
+          - source_identity: [2]
+            destination_identity: [8]
+            traffic_direction: ["INGRESS"]
+          excludeFilters: []
+
+  tls:
+    auto:
+      enabled: true
+      method: cronJob 
+      certValidityDuration: 1095  
+      schedule: "0 0 1 */4 *"
+ 
