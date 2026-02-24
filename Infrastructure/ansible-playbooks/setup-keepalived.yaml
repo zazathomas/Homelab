@@ -1,0 +1,66 @@
+---
+- name: Install and Enable keepalived on Ubuntu with Optional Health Check
+  hosts: all
+  become: true
+  vars:
+    interface: "eth0"
+    virtual_router_id: 51
+    vip_instance_name: "vip_name"
+    vip: "192.168.0.x/24"
+    auth_password: "your-password"
+    
+    # Health Check Variables
+    enable_port_check: true   # Set to false to disable
+    check_port: 443            # Port to monitor 
+
+    # Alerts config
+    enable_alerts: true
+    webhook_url: "webhook"
+
+  tasks:
+    - name: Install package
+      ansible.builtin.apt:
+        name:
+          - keepalived
+          - iproute2
+        state: present
+        update_cache: yes
+
+    - name: Determine Role and Priority
+      ansible.builtin.set_fact:
+        role: "{{ 'MASTER' if inventory_hostname == groups['all'][0] else 'BACKUP' }}"
+        priority: "{{ 155 if inventory_hostname == groups['all'][0] else 150 }}"
+
+
+    - name: Deploy Keepalived Notify script
+      ansible.builtin.template:
+        src: keepalived_notify.sh.j2
+        dest: /usr/local/bin/keepalived_notify.sh
+        owner: root
+        group: root
+        mode: '0655'
+      when:
+        - enable_alerts | bool
+        - webhook_url is defined
+        - webhook_url | length > 0
+
+    - name: Deploy Keepalived Configuration
+      ansible.builtin.template:
+        src: keepalived.conf.j2
+        dest: /etc/keepalived/keepalived.conf
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart keepalived
+
+    - name: Ensure keepalived service is started and enabled
+      ansible.builtin.systemd:
+        name: keepalived
+        state: started
+        enabled: true
+
+  handlers:
+    - name: Restart keepalived
+      ansible.builtin.systemd:
+        name: keepalived
+        state: restarted

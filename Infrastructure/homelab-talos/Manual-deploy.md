@@ -1,4 +1,4 @@
-# **Talos Cluster Deployment Guide**  
+# **Talos Cluster Manual Deployment Guide**  
 
 This document provides step-by-step instructions for deploying a Talos-based Kubernetes cluster, including configuration generation, application, and cluster management.  
 

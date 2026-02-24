@@ -1,0 +1,30 @@
+---
+- name: Perform Full OS Release Upgrade
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure all current packages are at latest version first
+      ansible.builtin.apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install ubuntu-release-upgrader-core
+      ansible.builtin.apt:
+        name: ubuntu-release-upgrader-core
+        state: present
+
+    - name: Run do-release-upgrade non-interactively
+      ansible.builtin.command:
+        cmd: do-release-upgrade -f DistUpgradeViewNonInteractive
+      register: upgrade_output
+      # This command often returns non-zero codes on success/reboot required
+      failed_when: false 
+
+    - name: Reboot the server to apply the new kernel/OS
+      ansible.builtin.reboot:
+        msg: "Rebooting to complete OS upgrade"
+        connect_timeout: 5
+        reboot_timeout: 600
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+        test_command: uptime

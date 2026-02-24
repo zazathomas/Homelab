@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Replace with your actual Discord Webhook URL
+WEBHOOK_URL={{ webhook_url }}
+
+TYPE=$1
+NAME=$2
+STATE=$3
+
+case $STATE in
+    "MASTER")
+        MESSAGE="🚀 **$NAME** has transitioned to **MASTER** state on $(hostname)."
+        COLOR=3066993 # Green
+        ;;
+    "BACKUP")
+        MESSAGE="🛡️ **$NAME** has transitioned to **BACKUP** state on $(hostname)."
+        COLOR=15105570 # Orange
+        ;;
+    "FAULT")
+        MESSAGE="⚠️ **$NAME** has entered a **FAULT** state on $(hostname)!"
+        COLOR=15158332 # Red
+        ;;
+    *)
+        MESSAGE="❓ **$NAME** unknown state: $STATE"
+        COLOR=9807270 # Grey
+        ;;
+esac
+
+curl -H "Content-Type: application/json" \
+     -X POST \
+     -d '{
+       "embeds": [{
+         "title": "Keepalived Alert",
+         "description": "'"$MESSAGE"'",
+         "color": '"$COLOR"'
+       }]
+     }' $WEBHOOK_URL

@@ -1,0 +1,32 @@
+services:
+  pihole:
+    container_name: pihole
+    hostname: pihole
+    image: docker.io/pihole/pihole:2026.02.0
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 80:80/tcp
+    environment:
+      TZ: Europe/Dublin
+      FTLCONF_dns_listeningMode: 'ALL'
+      FTLCONF_dns_upstreams: "unbound#53"
+      FTLCONF_webserver_api_password: ${WEBPASSWORD}
+      FTLCONF_dns_dnssec: "true"
+      PUID: "1000"
+      PGID: "1000"
+    env_file: .env
+    volumes:
+      - './pihole:/etc/pihole'
+    restart: unless-stopped
+    depends_on:
+      - unbound
+  unbound:
+    container_name: unbound
+    image: "mvance/unbound:latest"
+    ports:
+      - "5353:53/tcp"
+      - "5353:53/udp"
+    volumes:
+      - './unbound:/etc/unbound/custom.conf.d'
+    restart: unless-stopped

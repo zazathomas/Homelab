@@ -1,5 +1,0 @@
-cluster:
-  extraManifests:
-   # --- ArgoCD Installation ---
-   - https://raw.githubusercontent.com/zazathomas/Homelab/refs/heads/main/kubernetes/talos/argocd.yaml
-   - https://raw.githubusercontent.com/zazathomas/Homelab/refs/heads/main/kubernetes/homelab/cluster-appset.yaml

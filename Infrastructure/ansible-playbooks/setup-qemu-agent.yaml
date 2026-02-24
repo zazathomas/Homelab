@@ -1,0 +1,17 @@
+---
+- name: Setup QEMU Guest Agent
+  hosts: all
+  become: true  # Runs commands with sudo
+  
+  tasks:
+    - name: Install qemu-guest-agent
+      ansible.builtin.apt:
+        name: qemu-guest-agent
+        state: present
+        update_cache: yes  # Runs apt update before installing
+
+    - name: Ensure qemu-guest-agent is enabled and running
+      ansible.builtin.systemd:
+        name: qemu-guest-agent
+        state: started
+        enabled: true

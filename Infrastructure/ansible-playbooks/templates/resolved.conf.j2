@@ -1,0 +1,9 @@
+# Managed by Ansible - Manual changes will be overwritten
+[Resolve]
+DNS={{ primary_dns | join(' ') }}
+FallbackDNS={{ secondary_dns | join(' ') }}
+Domains={{ search_domains | join(' ') }} ~.
+LLMNR=no
+MulticastDNS=no
+DNSSEC=no
+Cache=yes

@@ -1,0 +1,15 @@
+---
+- name: Update Package Cache and Patch Packages
+  hosts: all
+  become: true
+  tasks:
+    - name: Update apt cache and upgrade all packages
+      ansible.builtin.apt:
+        update_cache: yes
+        upgrade: dist  # 'dist' handles changing dependencies in new versions
+        cache_valid_time: 3600 # Only updates cache if last run was > 1 hour ago
+
+    - name: Remove redundant packages
+      ansible.builtin.apt:
+        autoremove: yes
+        purge: yes

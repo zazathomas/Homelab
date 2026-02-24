@@ -1,0 +1,44 @@
+global_defs {
+    router_id {{ role }}_NODE
+}
+
+{% if enable_port_check | default(false) %}
+vrrp_script check_port {
+    script "/usr/bin/timeout 0.9 /bin/bash -c '</dev/tcp/127.0.0.1/{{ check_port }}'"
+    interval 2
+    weight -10  # Reduces priority if port is closed, triggering failover
+}
+{% endif %}
+
+vrrp_instance {{ vip_instance_name }} {
+    state {{ role }}
+    interface {{ interface }}
+    virtual_router_id {{ virtual_router_id }}
+    priority {{ priority }}
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass {{ auth_password }}
+    }
+    unicast_peer {
+        {% for host in groups['all'] %}
+        {% if hostvars[host]['ansible_default_ipv4']['address'] != ansible_default_ipv4.address %}
+        {{ hostvars[host]['ansible_default_ipv4']['address'] }}
+        {% endif %}
+        {% endfor %}
+    }
+    virtual_ipaddress {
+        {{ vip }}
+    }
+
+    {% if enable_port_check | default(false) %}
+    track_script {
+        check_port
+    }
+    {% endif %}
+
+    {% if enable_alerts | bool and webhook_url is defined %}
+    # The script receives 3 arguments: $1=type, $2=name, $3=state
+    notify "/usr/local/bin/keepalived_notify.sh"
+    {% endif %}
+}

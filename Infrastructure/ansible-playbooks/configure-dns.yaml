@@ -1,0 +1,58 @@
+---
+- name: Deploy DNS Configuration
+  hosts: all
+  become: true
+  vars:
+    primary_dns: 
+      - "10.0.0.2"
+      - "192.168.0.2"
+    secondary_dns: 
+      - "9.9.9.9"
+      - "1.1.1.1"
+    search_domains: 
+      - "local.z3cyber.tech"
+      - "k8s.z3cyber.tech"
+      - "z3cyber.tech"
+    target_interfaces:
+      - "eth0"
+
+  tasks:
+    - name: Ensure systemd-resolved is running
+      ansible.builtin.systemd:
+        name: systemd-resolved
+        state: started
+        enabled: true
+
+    - name: Overwrite resolved.conf with clean template
+      ansible.builtin.template:
+        src: templates/resolved.conf.j2
+        dest: /etc/systemd/resolved.conf
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart systemd-resolved
+
+    - name: Ensure /etc/resolv.conf is the correct symlink
+      ansible.builtin.file:
+        src: /run/systemd/resolve/stub-resolv.conf
+        dest: /etc/resolv.conf
+        state: link
+        force: true
+
+    - name: Wipe and force DNS on target interfaces
+      ansible.builtin.command:
+        cmd: "resolvectl dns {{ item }} {{ primary_dns | join(' ') }}"
+      loop: "{{ target_interfaces }}"
+      changed_when: false
+
+    - name: Wipe and force Search Domains on target interfaces
+      ansible.builtin.command:
+        cmd: "resolvectl domain {{ item }} {{ search_domains | join(' ') }}"
+      loop: "{{ target_interfaces }}"
+      changed_when: false
+
+  handlers:
+    - name: Restart systemd-resolved
+      ansible.builtin.systemd:
+        name: systemd-resolved
+        state: restarted
