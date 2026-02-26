@@ -1,5 +1,21 @@
 crds:
   enabled: true
+  upgradeJob:
+    enabled: false
+    forceConflicts: false
+    image:
+      busybox:
+        registry: docker.io
+        repository: busybox
+        tag: "latest"
+        sha: ""
+        pullPolicy: IfNotPresent
+      kubectl:
+        registry: registry.k8s.io
+        repository: kubectl
+        tag: ""  
+        sha: ""
+        pullPolicy: IfNotPresent
 
 prometheus:
   prometheusSpec:
