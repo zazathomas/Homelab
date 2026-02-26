@@ -10,7 +10,6 @@ spec:
      kind: Gateway
      name: envoy-gw
    - name: ext-envoy-gw
-     namespace: gateway
      group: gateway.networking.k8s.io	
      kind: Gateway
   rateLimit:

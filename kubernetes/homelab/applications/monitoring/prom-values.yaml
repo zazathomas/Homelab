@@ -27,6 +27,16 @@ prometheus:
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
     probeSelectorNilUsesHelmValues: false
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+    retention: 7d
+    retentionSize: "8GiB"
     additionalScrapeConfigs:
     - job_name: 'pve-1'
       static_configs:
@@ -72,16 +82,16 @@ alertmanager:
   enabled: false
 
 kubeControllerManager:
-  enabled: true
+  enabled: false
 
 kubeEtcd:
-  enabled: true
+  enabled: false
 
 kubeProxy:
-  enabled: true
+  enabled: false
 
 kubeScheduler:
-  enabled: true
+  enabled: false
 
 coreDns:
   enabled: true
