@@ -4,10 +4,10 @@ kind: Kustomization
 resources:
   - redis.yaml
   - gatewayclass.yaml
-  - envoy-gateway.yaml
-  - cf-envoy-gateway.yaml
+  - envoy-gw.yaml
+  - ext-envoy-gw.yaml
   - http-redirect.yaml
-  - detect-ip-policy.yaml
+  # - detect-ip-policy.yaml
   - global-ratelimit-policy.yaml
   - gw-auth-policy.yaml
   - gw-client-secret.yaml

@@ -1,7 +1,7 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: cf-envoy-gw
+  name: ext-envoy-gw
   namespace: gateway
 spec:
   gatewayClassName: envoy
