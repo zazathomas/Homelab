@@ -5,7 +5,7 @@ resources:
   - l2annoucements.yaml
   - ipaddresspool.yaml
   # - gateway.yaml
-  - http-redirect.yaml
+  # - http-redirect.yaml
 
 helmCharts:
 - name: cilium
