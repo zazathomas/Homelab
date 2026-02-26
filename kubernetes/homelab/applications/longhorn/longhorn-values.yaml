@@ -4,8 +4,6 @@ global:
   # -- Node selector for nodes allowed to run user-deployed components such as Longhorn Manager, Longhorn UI, and Longhorn Driver Deployer.
   nodeSelector: {}
 
-defaultBackupStore:
-  backupTarget: "NFS"
 
 defaultSettings:
   defaultReplicaCount: 2
