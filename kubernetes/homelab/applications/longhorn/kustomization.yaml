@@ -8,6 +8,6 @@ helmCharts:
 - name: longhorn
   namespace: longhorn-system
   repo: https://charts.longhorn.io 
-  version: 82.3.0
+  version: 1.11.0
   releaseName: longhorn
   valuesFile: longhorn-values.yaml
