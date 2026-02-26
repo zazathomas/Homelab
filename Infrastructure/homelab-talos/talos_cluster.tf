@@ -71,6 +71,7 @@ data "talos_machine_configuration" "controlplane" {
     file("${path.module}/patches/machine-certSANs.yaml"),
     file("${path.module}/patches/vip.yaml"),
     file("${path.module}/patches/hostname-config.yaml"),
+    file("${path.module}/patches/kernel-modules.yaml"),
    ]
 }
 
@@ -96,6 +97,7 @@ data "talos_machine_configuration" "worker" {
     file("${path.module}/patches/interface-names.yaml"),
     file("${path.module}/patches/kubelet-certs.yaml"),
     file("${path.module}/patches/hostname-config.yaml"),
+    file("${path.module}/patches/kernel-modules.yaml"),
    ]
 }
 

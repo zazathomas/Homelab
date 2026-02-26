@@ -1,9 +1,9 @@
 cluster:
-  extraManifests:
+  extraManifests: []
    # --- ArgoCD Installation ---
-   - https://raw.githubusercontent.com/zazathomas/Homelab/refs/heads/main/Infrastructure/homelab-talos/bootstrap-apps/argocd.yaml
-   - https://raw.githubusercontent.com/zazathomas/Homelab/refs/heads/main/Infrastructure/homelab-talos/bootstrap-apps/cert-manager.yaml
-   - https://raw.githubusercontent.com/zazathomas/Homelab/refs/heads/main/Infrastructure/homelab-talos/bootstrap-apps/external-secrets.yaml
-   - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
-   - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-   - https://raw.githubusercontent.com/zazathomas/Homelab/refs/heads/main/kubernetes/homelab/cluster-appset.yaml
+  #  - https://raw.githubusercontent.com/zazathomas/Homelab/refs/heads/main/Infrastructure/homelab-talos/bootstrap-apps/argocd.yaml
+  #  - https://raw.githubusercontent.com/zazathomas/Homelab/refs/heads/main/Infrastructure/homelab-talos/bootstrap-apps/cert-manager.yaml
+  #  - https://raw.githubusercontent.com/zazathomas/Homelab/refs/heads/main/Infrastructure/homelab-talos/bootstrap-apps/external-secrets.yaml
+  #  - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
+  #  - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+  #  - https://raw.githubusercontent.com/zazathomas/Homelab/refs/heads/main/kubernetes/homelab/cluster-appset.yaml

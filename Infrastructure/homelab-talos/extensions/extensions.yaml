@@ -1,0 +1,6 @@
+customization:
+  systemExtensions:
+    officialExtensions:
+      - ghcr.io/siderolabs/iscsi-tools:v0.2.0
+      - ghcr.io/siderolabs/util-linux-tools:2.41.2
+      - ghcr.io/siderolabs/qemu-guest-agent:10.2.1

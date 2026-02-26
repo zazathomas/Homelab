@@ -274,3 +274,9 @@ If bootstrap fails:
 ```bash
 talosctl logs etcd
 ```
+
+Upgrade talos image
+talos upgrade --image factory.talos.dev/nocloud-installer/{ID-FROM-SCHEMATICS-API}:v{TALOS_VERSION}
+```bash
+curl -X POST --data-binary @extensions/extensions.yaml https://factory.talos.dev/schematics
+```
