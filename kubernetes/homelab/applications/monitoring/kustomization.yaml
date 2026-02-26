@@ -1,8 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - kube-prom-app.yaml
-  - loki-app.yaml
   - httproutes.yaml
   - alloy.yaml
 
@@ -13,3 +11,11 @@ configMapGenerator:
       - alloy-config.alloy
     options:
       disableNameSuffixHash: true
+
+helmCharts:
+- name: kube-prometheus-stack
+  namespace: monitoring
+  repo: https://prometheus-community.github.io/helm-charts
+  version: 82.3.0
+  releaseName: kube-prometheus-stack
+  valuesFile: prom-values.yaml

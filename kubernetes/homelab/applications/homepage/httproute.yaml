@@ -6,7 +6,7 @@ metadata:
   namespace: homepage
 spec:
   parentRefs:
-  - name: cilium-gw
+  - name: envoy-gw
     namespace: gateway
     group: gateway.networking.k8s.io	
     kind: Gateway

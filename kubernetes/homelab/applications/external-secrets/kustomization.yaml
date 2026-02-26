@@ -3,8 +3,14 @@ kind: Kustomization
 
 resources:
   - external-secrets-ns.yaml
-  - external-secrets.yaml
   - podmonitor.yaml
+
+helmCharts:
+- name: external-secrets
+  namespace: external-secrets
+  repo: https://charts.external-secrets.io
+  version: 2.0.1
+  releaseName: external-secrets
 
 # Apply the oracle-secret.yaml & vault-secretstore.yaml file to the external-secrets namespace. Check password manager
 # These are required before ExternalSecret objects can be created.

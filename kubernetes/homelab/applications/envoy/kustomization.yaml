@@ -3,12 +3,20 @@ kind: Kustomization
 
 resources:
   - redis.yaml
-  - envoy.yaml
   - gatewayclass.yaml
   - envoy-gateway.yaml
+  - cf-envoy-gateway.yaml
   - http-redirect.yaml
   - detect-ip-policy.yaml
   - global-ratelimit-policy.yaml
   - gw-auth-policy.yaml
   - gw-client-secret.yaml
   - podmonitors.yaml
+
+helmCharts:
+- name: gateway-helm
+  namespace: envoy-gateway-system
+  repo: oci://docker.io/envoyproxy
+  version: v1.6.3
+  releaseName: envoy-gateway
+  valuesFile: values.yaml

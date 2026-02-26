@@ -4,13 +4,8 @@ kind: Kustomization
 resources:
   - l2annoucements.yaml
   - ipaddresspool.yaml
-  # - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.3.0/config/crd/experimental/gateway.networking.k8s.io_gatewayclasses.yaml
-  # - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.3.0/config/crd/experimental/gateway.networking.k8s.io_gateways.yaml
-  # - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.3.0/config/crd/experimental/gateway.networking.k8s.io_httproutes.yaml
-  # - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.3.0/config/crd/experimental/gateway.networking.k8s.io_referencegrants.yaml
-  # - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.3.0/config/crd/experimental/gateway.networking.k8s.io_grpcroutes.yaml
   # - gateway.yaml
-  # - http-redirect.yaml
+  - http-redirect.yaml
 
 helmCharts:
 - name: cilium

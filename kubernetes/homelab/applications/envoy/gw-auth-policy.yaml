@@ -8,14 +8,14 @@ spec:
   targetRefs:
    - group: gateway.networking.k8s.io
      kind: Gateway
-     name: envoy-gw
+     name: cf-envoy-gw
   oidc:
     provider:
       issuer: "https://sso.z3cyber.tech/realms/homelab"
     clientID: "gateway-client"
     clientSecret:
       name: "gateway-client-secret"
-    redirectURL: "https://echo.z3cyber.tech/login/callback"
+    redirectURL: "https://echo.k8s.z3cyber.tech/login/callback"
     logoutPath: "/logout"
     cookieDomain: "z3cyber.tech"
 

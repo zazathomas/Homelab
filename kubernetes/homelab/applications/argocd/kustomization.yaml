@@ -12,7 +12,7 @@ helmCharts:
 - name: argo-cd
   namespace: argocd
   repo: https://argoproj.github.io/argo-helm
-  version: 8.3.7
+  version: 9.4.1
   releaseName: argocd
   valuesFile: argocd-values.yml
   additionalValuesFiles:
