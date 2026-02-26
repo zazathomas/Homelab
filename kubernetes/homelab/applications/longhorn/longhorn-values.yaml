@@ -6,20 +6,16 @@ global:
 
 
 defaultSettings:
-  defaultReplicaCount: 2
+  defaultReplicaCount: "2"
 
 persistence:
   defaultClassReplicaCount: 1
 
 csi:
-  attacherReplicaCount: 1
-  provisionerReplicaCount: 1
-  resizerReplicaCount: 1
-  snapshotterReplicaCount: 1
-
-service:
-  ui:
-    type: ClusterIP
+  attacherReplicaCount: "1"
+  provisionerReplicaCount: "1"
+  resizerReplicaCount: "1"
+  snapshotterReplicaCount: "1"
 
 preUpgradeChecker:
             jobEnabled: false
