@@ -2280,6 +2280,16 @@ spec:
           type: RuntimeDefault
       serviceAccountName: hubble-generate-certs
 ---
+apiVersion: cilium.io/v2
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: default-pool
+  namespace: kube-system
+spec:
+  blocks:
+  - start: 192.168.0.201
+    stop: 192.168.0.210
+---
 apiVersion: cilium.io/v2alpha1
 kind: CiliumL2AnnouncementPolicy
 metadata:
@@ -2289,12 +2299,25 @@ spec:
   externalIPs: true
   loadBalancerIPs: true
 ---
-apiVersion: cilium.io/v2alpha1
-kind: CiliumLoadBalancerIPPool
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
 metadata:
-  name: default-pool
-  namespace: kube-system
+  name: cgw-http-redirect
+  namespace: gateway
 spec:
-  blocks:
-  - start: 192.168.0.201
-    stop: 192.168.0.210
+  parentRefs:
+  - group: gateway.networking.k8s.io
+    kind: Gateway
+    name: cilium-gw
+    namespace: gateway
+    sectionName: http
+  rules:
+  - filters:
+    - requestRedirect:
+        scheme: https
+        statusCode: 301
+      type: RequestRedirect
+    matches:
+    - path:
+        type: PathPrefix
+        value: /

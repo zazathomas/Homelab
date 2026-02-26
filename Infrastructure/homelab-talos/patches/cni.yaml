@@ -4,4 +4,4 @@ cluster:
     cni:
       name: custom
       urls:
-        - https://raw.githubusercontent.com/zazathomas/Homelab/refs/heads/main/kubernetes/talos/cilium.yaml
+        - https://raw.githubusercontent.com/zazathomas/Homelab/refs/heads/main/Infrastructure/homelab-talos/bootstrap-apps/cilium.yaml
