@@ -1,0 +1,20 @@
+server:
+  enabled: true
+  replicaCount: 1
+  retentionPeriod: 3d
+  retentionDiskSpaceUsage: 9GB
+  vmServiceScrape:
+    enabled: true
+  persistentVolume:
+    enabled: true
+    storageClassName: "longhorn"
+    size: 10Gi
+
+vector:
+  enabled: true
+
+dashboards:
+  enabled: true
+  labels:
+    grafana_dashboard: '1'
+  namespace: monitoring

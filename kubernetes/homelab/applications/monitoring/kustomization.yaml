@@ -3,15 +3,15 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - httproutes.yaml
-  # - alloy.yaml
+  - minio-credentials.yml
 
-configMapGenerator:
-  - name: alloy-config
-    namespace: monitoring
-    files:
-      - alloy-config.alloy
-    options:
-      disableNameSuffixHash: true
+# configMapGenerator:
+#   - name: alloy-config
+#     namespace: monitoring
+#     files:
+#       - alloy-config.alloy
+#     options:
+#       disableNameSuffixHash: true
 
 helmCharts:
 - name: kube-prometheus-stack
@@ -20,3 +20,15 @@ helmCharts:
   version: 82.3.0
   releaseName: kube-prometheus-stack
   valuesFile: prom-values.yaml
+# - name: loki
+#   namespace: monitoring
+#   repo: https://grafana.github.io/helm-charts 
+#   version: 6.53.0
+#   releaseName: loki
+#   valuesFile: loki_values.yaml
+- name: victoria-logs-single 
+  namespace: monitoring
+  repo: https://victoriametrics.github.io/helm-charts 
+  version: 0.11.28
+  releaseName: victorialogs
+  valuesFile: victoria-values.yaml

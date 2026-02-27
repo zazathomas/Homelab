@@ -79,7 +79,7 @@ prometheusOperator:
   enabled: true
 
 alertmanager:
-  enabled: false
+  enabled: true
 
 kubeControllerManager:
   enabled: false

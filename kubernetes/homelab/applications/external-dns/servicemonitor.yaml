@@ -1,5 +1,5 @@
 apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+kind: PodMonitor
 metadata:
   name: external-dns
   namespace: external-dns
@@ -8,10 +8,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: external-dns
+      app: external-dns
   namespaceSelector:
     matchNames:
       - external-dns
-  endpoints:
-  - path: /metrics
-    port: http
+  podMetricsEndpoints:
+    - port: metrics
+      interval: 10s
+      path: /metrics

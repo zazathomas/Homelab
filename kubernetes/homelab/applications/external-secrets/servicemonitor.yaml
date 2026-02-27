@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: external-secrets-monitor
+  namespace: external-secrets 
+  labels:
+    release: prometheus  
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: external-secrets
+  namespaceSelector:
+    matchNames:
+      - external-secrets
+  endpoints:
+    - port: metrics      
+      path: /metrics     
+      interval: 30s     
+      scrapeTimeout: 25s

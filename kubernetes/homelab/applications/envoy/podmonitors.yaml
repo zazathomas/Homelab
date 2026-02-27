@@ -33,15 +33,18 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: ratelimit-podmonitor
+  name: ratelimit-monitor
   namespace: envoy-gateway-system
   labels:
     release: prometheus
 spec:
+  namespaceSelector:
+    matchNames:
+      - envoy-gateway-system
   selector:
     matchLabels:
-      app.kubernetes.io/name: envoy-ratelimit
+      app.kubernetes.io/component: ratelimit
   podMetricsEndpoints:
-    - port: metrics
+    - targetPort: 19001
       interval: 5s
       path: /metrics

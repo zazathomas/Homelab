@@ -1,0 +1,21 @@
+replicaCount: 1
+serviceMonitor:
+  enabled: true
+  additionalLabels: 
+    release: prometheus
+  interval: 30s
+  scrapeTimeout: 25s
+
+metrics:
+  listen:
+    port: 8080
+  service:
+    enabled: true
+webhook:
+  metrics:
+    service:
+      enabled: true
+certController:
+  metrics:
+    service:
+      enabled: true
