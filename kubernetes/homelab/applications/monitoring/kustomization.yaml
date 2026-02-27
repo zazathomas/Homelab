@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - httproutes.yaml
   - minio-credentials.yml
+  - servcicemonitor.yaml
 
 # configMapGenerator:
 #   - name: alloy-config

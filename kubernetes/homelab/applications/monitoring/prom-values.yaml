@@ -74,6 +74,20 @@ prometheus:
 grafana:
   enabled: true
   defaultDashboardsTimezone: Europe/Dublin
+  persistence:
+    enabled: true
+    type: pvc
+    storageClassName: "longhorn"
+    accessModes:
+      - ReadWriteOnce
+    size: 2Gi
+  sidecar:
+    dashboards:
+      enabled: true
+      provider:
+        allowUiUpdates: true 
+    datasources:
+      enabled: true
 
 prometheusOperator:
   enabled: true

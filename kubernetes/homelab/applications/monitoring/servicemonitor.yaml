@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: victoria-logs-monitor
+  namespace: monitoring
+  labels:
+    release: prometheus  
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: victoria-logs-single 
+  endpoints:
+    - port: http      
+      path: /metrics     
+      interval: 30s     
+      scrapeTimeout: 25s

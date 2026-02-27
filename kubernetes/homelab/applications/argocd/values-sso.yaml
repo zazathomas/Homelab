@@ -4,7 +4,7 @@ configs:
       name: Keycloak
       issuer: https://sso.z3cyber.tech/realms/homelab
       clientID: argocd
-      clientSecret: $extra-secrets:oidc.keycloak.clientSecret
+      clientSecret: $extra-secrets:clientSecret
       requestedIDTokenClaims:
         groups:
           essential: true
