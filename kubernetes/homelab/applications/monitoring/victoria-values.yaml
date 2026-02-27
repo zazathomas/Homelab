@@ -4,12 +4,16 @@ server:
   retentionPeriod: 3d
   retentionDiskSpaceUsage: 9GB
   vmServiceScrape:
-    enabled: true
+    enabled: false
   persistentVolume:
     enabled: true
     storageClassName: "longhorn"
     size: 10Gi
-
+  serviceMonitor:
+    enabled: true
+    extraLabels:
+      release: prometheus
+      
 vector:
   enabled: true
 
