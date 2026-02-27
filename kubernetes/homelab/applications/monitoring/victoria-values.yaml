@@ -9,10 +9,6 @@ server:
     enabled: true
     storageClassName: "longhorn"
     size: 10Gi
-  serviceMonitor:
-    enabled: true
-    extraLabels:
-      release: prometheus
       
 vector:
   enabled: true
