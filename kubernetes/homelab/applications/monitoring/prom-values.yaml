@@ -93,7 +93,7 @@ grafana:
     userKey: grafana_admin
     passwordKey: grafana_password
   grafana.ini:
-    auth.github:
+    auth.generic_oauth:
       enabled: true
       allow_sign_up: true
       auto_login: false

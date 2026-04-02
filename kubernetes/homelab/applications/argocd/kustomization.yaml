@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - rbac.yml
-  - secret.yml
   - argocd-route.yaml
 
 

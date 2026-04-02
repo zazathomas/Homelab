@@ -4,7 +4,7 @@ configs:
       name: Keycloak
       issuer: https://sso.z3cyber.tech/realms/homelab
       clientID: argocd
-      clientSecret: $argocd-sso-secrets:client_secret
+      clientSecret: $oidc.keycloak.clientSecret
       requestedIDTokenClaims:
         groups:
           essential: true
@@ -12,3 +12,5 @@ configs:
         - openid
         - profile
         - email
+
+# kubectl -n argocd patch secret argocd-secret --patch='{"stringData": { "oidc.keycloak.clientSecret": "changeme" }}'
