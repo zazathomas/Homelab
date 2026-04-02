@@ -111,6 +111,8 @@ grafana:
         "contains(roles[*], 'grafana-admin') && 'GrafanaAdmin' || contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || contains(roles[*], 'viewer') && 'Viewer'"
       role_attribute_strict: true
       allow_assign_grafana_admin: true
+    server:
+      root_url: https://grafana.k8s.z3cyber.tech
   envFromSecrets: 
     - name: "monitoring-secrets"
 
