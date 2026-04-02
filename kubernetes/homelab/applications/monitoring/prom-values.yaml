@@ -96,7 +96,7 @@ grafana:
     auth.github:
       enabled: true
       allow_sign_up: true
-      auto_login: true
+      auto_login: false
       client_id: ${CLIENT_ID}
       client_secret: ${CLIENT_SECRET}
       scopes: "openid profile email"
@@ -107,12 +107,9 @@ grafana:
         "contains(roles[*], 'grafana-admin') && 'GrafanaAdmin' || contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || contains(roles[*], 'viewer') && 'Viewer'"
       role_attribute_strict: false
       allow_assign_grafana_admin: true
-  extraSecretMounts:
-  - name: monitoring-secrets
-    secretName: monitoring-secrets
-    defaultMode: 0440
-    mountPath: /etc/secrets/monitoring-secrets
-    readOnly: true
+  extraEnvFrom:
+  - secretRef:
+      name: monitoring-secrets
 
 prometheusOperator:
   enabled: true
