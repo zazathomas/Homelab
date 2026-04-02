@@ -4,8 +4,9 @@ kind: Kustomization
 resources:
   - l2annoucements.yaml
   - ipaddresspool.yaml
-  # - gateway.yaml
-  # - http-redirect.yaml
+  - gateway.yaml
+  - http-redirect.yaml
+  - hubble-route.yaml
 
 helmCharts:
 - name: cilium

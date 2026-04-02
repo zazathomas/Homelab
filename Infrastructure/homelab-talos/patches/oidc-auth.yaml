@@ -1,0 +1,7 @@
+cluster:
+  apiServer:
+      extraArgs:
+        oidc-client-id: kubernetes
+        oidc-groups-claim: groups
+        oidc-issuer-url: https://sso.z3cyber.tech/realms/homelab
+        oidc-username-claim: preferred_username

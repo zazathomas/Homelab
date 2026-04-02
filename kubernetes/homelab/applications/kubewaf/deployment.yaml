@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: envoy-kubewaf
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: envoy-kubewaf
+  template:
+    metadata:
+      labels:
+        app: envoy-kubewaf
+    spec:
+      containers:
+        - name: envoy-kubewaf
+          image: ghcr.io/zazathomas/envoy-kubewaf:0.0.1
+          volumeMounts:
+            - name: geoip-db
+              mountPath: /geoip_db
+          envFrom:
+            - configMapRef:
+                name: envoy-kubewaf
+          resources:
+            requests:
+              cpu: 10m
+              memory: 20Mi
+            limits:
+              cpu: 300m
+              memory: 500Mi
+          imagePullPolicy: Always
+      volumes:
+        - name: geoip-db
+          persistentVolumeClaim:
+            claimName: geoip-db-pvc

@@ -72,6 +72,8 @@ data "talos_machine_configuration" "controlplane" {
     file("${path.module}/patches/vip.yaml"),
     file("${path.module}/patches/hostname-config.yaml"),
     file("${path.module}/patches/kernel-modules.yaml"),
+    file("${path.module}/patches/oidc-auth.yaml"),
+    file("${path.module}/patches/audit-logging.yaml"),
    ]
 }
 

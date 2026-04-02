@@ -5,18 +5,20 @@ resources:
   - redis.yaml
   - gatewayclass.yaml
   - envoy-gw.yaml
-  - ext-envoy-gw.yaml
   - http-redirect.yaml
   # - detect-ip-policy.yaml
   - global-ratelimit-policy.yaml
-  - gw-auth-policy.yaml
+  # - gw-auth-policy.yaml
   - gw-client-secret.yaml
   - podmonitors.yaml
+  - kubewaf-policy.yaml
+  - accesslogs.yaml
+
 
 helmCharts:
 - name: gateway-helm
   namespace: envoy-gateway-system
   repo: oci://docker.io/envoyproxy
-  version: v1.6.3
+  version: v1.7.0
   releaseName: envoy-gateway
   valuesFile: values.yaml

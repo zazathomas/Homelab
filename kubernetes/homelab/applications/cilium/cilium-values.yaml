@@ -38,12 +38,12 @@ envoy:
 
 # Setup mutual authentication
 authentication:
-  enabled: false
+  enabled: true
   mutual:
     spire:
-      enabled: false
+      enabled: true
       install:
-        enabled: false
+        enabled: true
 
 encryption:
   enabled: true

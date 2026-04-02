@@ -76,22 +76,22 @@
             description: VScode in Browser
             icon: vscode.png
     - Networking:
-        - Adguard-01:
-            href: https://dns.local.z3cyber.tech
+        - Pihole-01:
+            href: https://dns.local.z3cyber.tech/admin
             description: DNS Provider
-            icon: adguard-home.png
+            icon: pi-hole
             widget:
-            type: adguard
-            url: http://192.168.0.2
+            type: pihole
+            url: http://192.168.0.3
             username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
             password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
-        - Adguard-02:
-            href: https://adguard.local.z3cyber.tech
+        - Pihole-02:
+            href: https://pihole-2.local.z3cyber.tech/admin
             description: DNS Provider
-            icon: adguard-home.png
+            icon: pi-hole
             widget:
-            type: adguard
-            url: http://192.168.0.3
+            type: pihole
+            url: http://192.168.0.4
             username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
             password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
         - Wireguard:
@@ -127,10 +127,6 @@
             href: https://hubble.k8s.z3cyber.tech
             description: Network Observability
             icon: https://cdn.jsdelivr.net/gh/cilium/hubble@main/Documentation/images/hubble_logo.png
-        - Adguard Sync:
-            href: https://sync-dns.local.z3cyber.tech
-            description: DNS Provider
-            icon: adguard-home.png
         - TPLink:
             href: https://tplink.local.z3cyber.tech
             description: Router
@@ -205,7 +201,11 @@
             icon: prometheus.png
             widget:
                 type: prometheus
-                url: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
+                url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+        - VictoriaLogs:
+            href: https://victoria.k8s.z3cyber.tech
+            description: Logging
+            icon: victorialogs.png
         - Beszel:
             href: https://beszel.local.z3cyber.tech
             description: Monitoring
@@ -271,7 +271,7 @@
                 username: {{HOMEPAGE_VAR_KOPIA_USER}}
                 password: {{HOMEPAGE_VAR_KOPIA_PASSWORD}}
         - Cockpit:
-            href: https://cockpit.k8s.z3cyber.tech
+            href: https://cockpit.local.z3cyber.tech
             description: Network Attached Storage
             icon: cockpit.png
         - Kafka:

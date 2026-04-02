@@ -1,0 +1,18 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: json-access-logging
+  namespace: envoy-gateway-system
+spec:
+  telemetry:
+    accessLog:
+      settings:
+        - format:
+            type: JSON
+            json:
+              status: "%RESPONSE_CODE%"
+              message: "%LOCAL_REPLY_BODY%"
+          sinks:
+            - type: File
+              file:
+                path: /dev/stdout

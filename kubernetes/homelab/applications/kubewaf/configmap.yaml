@@ -1,0 +1,15 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: envoy-kubewaf
+data:
+  LOG_LEVEL: "INFO"
+  # GeoIP Config
+  ENABLE_GEOIP: "true"
+  GEOIP_DB_PATH: "/geoip_db/GeoLite2-Country.mmdb"
+  GEOIP_DEFAULT_BLOCK: "true"
+  WHITELISTED_COUNTRIES: "IE,GB,NG"
+  # Bot Detection Config
+  ENABLE_BOT_DETECTION: "true"
+  USER_BLACKLISTED_BOTS: "Googlebot,Bingbot,Slurp"

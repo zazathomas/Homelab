@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ns.yaml
-  - cockpit.yaml
+  - jellyfin.yaml
+  - seerr.yaml
   - openwebui.yaml
   - argocd.yaml

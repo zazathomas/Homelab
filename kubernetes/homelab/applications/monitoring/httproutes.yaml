@@ -6,7 +6,7 @@ metadata:
   namespace: monitoring
 spec:
   parentRefs:
-  - name: envoy-gw
+  - name: cilium-gw
     namespace: gateway
     group: gateway.networking.k8s.io	
     kind: Gateway
@@ -31,7 +31,7 @@ metadata:
   namespace: monitoring
 spec:
   parentRefs:
-  - name: envoy-gw
+  - name: cilium-gw
     namespace: gateway
     group: gateway.networking.k8s.io	
     kind: Gateway
@@ -56,7 +56,7 @@ metadata:
   namespace: monitoring
 spec:
   parentRefs:
-  - name: envoy-gw
+  - name: cilium-gw
     namespace: gateway
     group: gateway.networking.k8s.io	
     kind: Gateway

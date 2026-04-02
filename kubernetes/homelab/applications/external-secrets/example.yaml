@@ -3,7 +3,7 @@ kind: ExternalSecret
 metadata:
   name: example
 spec:
-  refreshInterval: 0.03m
+  refreshInterval: 24h
   secretStoreRef:
     kind: ClusterSecretStore
     name: oci-vault-secretstore # Must match SecretStore on the cluster

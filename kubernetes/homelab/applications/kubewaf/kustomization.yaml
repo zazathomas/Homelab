@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: gateway
+resources:
+  - ns.yaml
+  - httproute.yaml
+  - configmap.yaml
+  - pvc.yaml
+  - service.yaml
+  - updater.yaml
+  - deployment.yaml
+  - secret.yaml

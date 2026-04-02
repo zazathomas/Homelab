@@ -9,9 +9,6 @@ spec:
    - group: gateway.networking.k8s.io
      kind: Gateway
      name: envoy-gw
-   - name: ext-envoy-gw
-     group: gateway.networking.k8s.io	
-     kind: Gateway
   rateLimit:
     type: Global
     global:

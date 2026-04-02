@@ -2,49 +2,51 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cockpit
-  namespace: external-routes
+  name: openwebui
+  namespace: external-services
 spec:
   ports:
   - name: http
-    port: 80
+    port: 8282
     protocol: TCP
-    targetPort: 9090
+    targetPort: 8282
   type: ClusterIP
 ---
 apiVersion: discovery.k8s.io/v1
 kind: EndpointSlice
 metadata:
-  name: cockpit
-  namespace: external-routes
+  name: openwebui
+  namespace: external-services
   labels:
-    kubernetes.io/service-name: cockpit
+    kubernetes.io/service-name: openwebui
 addressType: IPv4
 endpoints:
   - addresses:
-      - 192.168.0.5
+      - 192.168.0.10
 ports:
   - name: http
-    port: 9090
+    port: 8282
     protocol: TCP
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: cockpit-route
-  namespace: external-routes
+  name: openwebui-ext-route
+  namespace: external-services
+  annotations:
+    external-dns.alpha.kubernetes.io/controller: "ignore"
 spec:
   parentRefs:
-  - name: cilium-gw
+  - name: envoy-gw
     namespace: gateway
     group: gateway.networking.k8s.io	
     kind: Gateway
   hostnames:
-  - "cockpit.k8s.z3cyber.tech"
+  - "chat.z3cyber.tech"
   rules:
    - backendRefs:
-      - name: cockpit
-        port: 80
+      - name: openwebui
+        port: 8282
         group: ''	
         kind: Service
         weight: 1	
