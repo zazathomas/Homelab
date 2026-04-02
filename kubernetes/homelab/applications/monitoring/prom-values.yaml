@@ -107,9 +107,7 @@ grafana:
         "contains(roles[*], 'grafana-admin') && 'GrafanaAdmin' || contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || contains(roles[*], 'viewer') && 'Viewer'"
       role_attribute_strict: false
       allow_assign_grafana_admin: true
-  extraEnvFrom:
-  - secretRef:
-      name: monitoring-secrets
+  envFromSecret: "monitoring-secrets"
 
 prometheusOperator:
   enabled: true
