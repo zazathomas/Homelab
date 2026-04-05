@@ -80,18 +80,6 @@ deployment:
     tolerations: []
     nodeSelector: {}
 
-service:
-  # If set to PreferClose, the Envoy fleet will prioritize connecting to the Envoy Gateway pods that are topologically closest to them.
-  trafficDistribution: ""
-  annotations: {}
-
-hpa:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 1
-  metrics: []
-  behavior: {}
-
 config:
 # -- EnvoyGateway configuration. Visit https://gateway.envoyproxy.io/docs/api/extension_types/#envoygateway to view all options.
   envoyGateway:
@@ -107,7 +95,34 @@ config:
         type: Redis
         redis:
           url: redis.envoy-gateway-system.svc.cluster.local:6379
-    extensionApis: {}
+    # Enable Gateway API Inference Extension support for Envoy Gateway
+    extensionManager:
+      backendResources:
+        - group: inference.networking.x-k8s.io
+          kind: InferencePool
+          version: v1alpha2
+      hooks:
+        xdsTranslator:
+          translation:
+            listener:
+              includeAll: true
+            route:
+              includeAll: true
+            cluster:
+              includeAll: true
+            secret:
+              includeAll: true
+          post:
+            - Translation
+            - Cluster
+            - Route
+      service:
+        fqdn:
+          hostname: ai-gateway-controller.envoy-ai-gateway-system.svc.cluster.local
+          port: 1063
+    extensionApis:
+      enableEnvoyPatchPolicy: true
+      enableBackend: true
 
 createNamespace: false
 
@@ -135,9 +150,6 @@ certgen:
       runAsUser: 65532
       seccompProfile:
         type: RuntimeDefault
-  rbac:
-    annotations: {}
-    labels: {}
 
 topologyInjector:
   enabled: true

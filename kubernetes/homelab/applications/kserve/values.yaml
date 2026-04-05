@@ -1,0 +1,38 @@
+kserve:
+  controller:
+    deploymentMode: Standard
+    gateway:
+      domain: ai.z3cyber.tech
+      additionalIngressDomains: []
+      domainTemplate: '{{ .Name }}-{{ .Namespace }}.{{ .IngressDomain }}'
+      pathTemplate: ''
+      urlScheme: http
+      disableIstioVirtualHost: false
+      disableIngressCreation: false
+      localGateway:
+        gateway: knative-serving/knative-local-gateway
+        gatewayService: knative-local-gateway.istio-system.svc.cluster.local
+        knativeGatewayService: ''
+      ingressGateway:
+        enableGatewayApi: false
+        kserveGateway: kserve/kserve-ingress-gateway
+        createGateway: false
+        gateway: knative-serving/knative-ingress-gateway
+        className: istio
+    nodeSelector: {}
+    tolerations: []
+    topologySpreadConstraints: []
+    affinity: {}
+    image: kserve/kserve-controller
+    tag: ''
+    imagePullSecrets: []
+    resources:
+      limits:
+        cpu: 100m
+        memory: 300Mi
+      requests:
+        cpu: 100m
+        memory: 300Mi
+    knativeAddressableResolver:
+      enabled: false
+

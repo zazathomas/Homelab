@@ -1,0 +1,15 @@
+# gpu-test-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gpu-test
+spec:
+  runtimeClassName: nvidia
+  containers:
+    - name: cuda-test
+      image: nvcr.io/nvidia/cuda:12.3.1-base-ubuntu22.04
+      command: ["nvidia-smi"]
+      resources:
+        limits:
+          nvidia.com/gpu: 1
+  restartPolicy: Never

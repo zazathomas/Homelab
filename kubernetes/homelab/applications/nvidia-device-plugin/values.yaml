@@ -1,0 +1,8 @@
+runtimeClassName: "nvidia"
+tolerations:
+  - operator: Exists
+  - key: CriticalAddonsOnly
+    operator: Exists
+  - key: nvidia.com/gpu
+    operator: Exists
+    effect: NoSchedule

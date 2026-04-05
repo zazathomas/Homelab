@@ -1,19 +1,12 @@
 cluster:
   apiServer:
     extraArgs:
-      audit-log-path: /var/log/audit/kube-apiserver-audit.log
+      audit-log-path: /var/log/kubernetes/audit.log
       audit-log-maxage: "3"
       audit-log-maxbackup: "3"
       audit-log-maxsize: "50"
       audit-policy-file: /etc/kubernetes/audit-policy/audit-policy.yaml
-    extraVolumes:
-      - hostPath: /var/log/audit
-        mountPath: /var/log/audit
-        name: audit-log
-      - hostPath: /etc/kubernetes/audit-policy
-        mountPath: /etc/kubernetes/audit-policy
-        name: audit-policy
-        readOnly: true
+
 machine:
   files:
     - content: |
@@ -43,6 +36,8 @@ machine:
           - level: Metadata
             omitStages:
               - RequestReceived
+          - level: RequestResponse
+            userGroups: ["system:unauthenticated"]
       permissions: 0644
       path: /etc/kubernetes/audit-policy/audit-policy.yaml
       op: create

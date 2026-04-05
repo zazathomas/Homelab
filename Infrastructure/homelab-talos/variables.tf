@@ -1,14 +1,14 @@
-variable "backend_access_key" {
-  description = "Access key for s3 backend"
-  type = string
-  sensitive = true
-}
+# variable "backend_access_key" {
+#   description = "Access key for s3 backend"
+#   type = string
+#   sensitive = true
+# }
 
-variable "backend_secret_key" {
-  description = "secret key for s3 backend"
-  type = string
-  sensitive = true
-}
+# variable "backend_secret_key" {
+#   description = "secret key for s3 backend"
+#   type = string
+#   sensitive = true
+# }
 
 variable "api_token_secret_pve_1" {
   description = "Token secret for pve-1 terraform user"
@@ -25,19 +25,19 @@ variable "api_token_secret_pve_2" {
 variable "talos_version" {
   description = "Talos version for cluster"
   type = string
-  default = "1.12.3"
+  default = "1.12.6"
 }
 
 variable "talos_installer_image" {
   description = "Talos installer image for cluster"
   type = string
-  default = "factory.talos.dev/nocloud-installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515:v1.12.3"
+  default = "factory.talos.dev/nocloud-installer/c35d5bd14fd96abc839f9f44f5effd00c48f654edb8a42648f4b2eb6051d1dd6:v1.12.6"
 }
 
 variable "kubernetes_version" {
   description = "Kubernetes version to deploy"
   type        = string
-  default     = "v1.35.1"
+  default     = "v1.35.3"
 }
 
 variable "cluster_name" {

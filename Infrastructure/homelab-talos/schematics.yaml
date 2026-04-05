@@ -1,0 +1,8 @@
+customization:
+    systemExtensions:
+        officialExtensions:
+            - siderolabs/iscsi-tools
+            - siderolabs/nonfree-kmod-nvidia-production
+            - siderolabs/nvidia-container-toolkit-production
+            - siderolabs/qemu-guest-agent
+            - siderolabs/util-linux-tools

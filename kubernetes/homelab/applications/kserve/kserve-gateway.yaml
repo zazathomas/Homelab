@@ -1,0 +1,33 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: kserve-ingress-gateway
+  namespace: kserve
+spec:
+  gatewayClassName: envoy
+  addresses:
+  - type: IPAddress
+    value: 192.168.0.209
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+    - protocol: HTTPS
+      port: 443
+      name: https
+      hostname: "*.ai.z3cyber.tech"
+      tls:
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: z3cyber-tech-cert-tls
+            namespace: gateway
+      allowedRoutes:
+        namespaces:
+          from: All
+  infrastructure:
+    labels:
+      serving.kserve.io/gateway: kserve-ingress-gateway

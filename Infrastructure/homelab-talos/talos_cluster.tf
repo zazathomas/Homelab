@@ -73,7 +73,7 @@ data "talos_machine_configuration" "controlplane" {
     file("${path.module}/patches/hostname-config.yaml"),
     file("${path.module}/patches/kernel-modules.yaml"),
     file("${path.module}/patches/oidc-auth.yaml"),
-    file("${path.module}/patches/audit-logging.yaml"),
+    # file("${path.module}/patches/audit-logging.yaml"),
    ]
 }
 
@@ -103,6 +103,33 @@ data "talos_machine_configuration" "worker" {
    ]
 }
 
+data "talos_machine_configuration" "worker_gpu" {
+  cluster_name     = var.cluster_name
+  machine_type     = "worker"
+  cluster_endpoint = "https://${var.vip_ip}:6443"
+  machine_secrets  = talos_machine_secrets.talos.machine_secrets
+  kubernetes_version = var.kubernetes_version
+  talos_version = var.talos_version
+  config_patches = [
+    yamlencode({
+      machine = {
+        install = {
+          image = var.talos_installer_image
+        }
+      }
+    }),
+    file("${path.module}/patches/cni.yaml"),
+    file("${path.module}/patches/dhcp.yaml"),
+    file("${path.module}/patches/disable-kubeproxy.yaml"),
+    file("${path.module}/patches/install-disk.yaml"),
+    file("${path.module}/patches/interface-names.yaml"),
+    file("${path.module}/patches/kubelet-certs.yaml"),
+    file("${path.module}/patches/hostname-config.yaml"),
+    file("${path.module}/patches/kernel-modules.yaml"),
+    file("${path.module}/patches/gpu-support.yaml"),
+   ]
+}
+
 resource "talos_machine_configuration_apply" "apply_talos_control_planes" {
   client_configuration        = talos_machine_secrets.talos.client_configuration
   machine_configuration_input = data.talos_machine_configuration.controlplane.machine_configuration
@@ -125,11 +152,45 @@ resource "talos_machine_configuration_apply" "apply_talos_control_planes" {
   ]
 }
 
+# 1. Apply standard config to all workers EXCEPT 192.168.0.233
 resource "talos_machine_configuration_apply" "apply_talos_workers" {
   client_configuration        = talos_machine_secrets.talos.client_configuration
   machine_configuration_input = data.talos_machine_configuration.worker.machine_configuration
-  for_each                    = local.worker_nodes
-  node                        = each.value.ip_address
+  
+  # Filter out the GPU node from the standard worker list
+  for_each = {
+    for k, v in local.worker_nodes : k => v if v.ip_address != "192.168.0.233"
+  }
+
+  node = each.value.ip_address
+  config_patches = [
+    yamlencode({
+      machine = {
+        network = {
+          nameservers = var.dns_servers
+        }
+      }
+    }),
+    yamlencode({
+      apiVersion = "v1alpha1"
+      kind       = "HostnameConfig"
+      hostname   = each.value.hostname
+      auto       = "off"
+    })
+  ]
+}
+
+# 2. Apply GPU config ONLY to 192.168.0.236
+resource "talos_machine_configuration_apply" "apply_talos_worker_gpu" {
+  client_configuration        = talos_machine_secrets.talos.client_configuration
+  machine_configuration_input = data.talos_machine_configuration.worker_gpu.machine_configuration
+  
+  # Only include the specific GPU node
+  for_each = {
+    for k, v in local.worker_nodes : k => v if v.ip_address == "192.168.0.233"
+  }
+
+  node = each.value.ip_address
   config_patches = [
     yamlencode({
       machine = {
