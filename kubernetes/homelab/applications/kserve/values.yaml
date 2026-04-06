@@ -3,16 +3,6 @@ kserve:
     deploymentMode: Standard
     gateway:
       domain: ai.z3cyber.tech
-      additionalIngressDomains: []
-      domainTemplate: '{{ .Name }}-{{ .Namespace }}.{{ .IngressDomain }}'
-      pathTemplate: ''
-      urlScheme: http
-      disableIstioVirtualHost: false
-      disableIngressCreation: false
-      localGateway:
-        gateway: knative-serving/knative-local-gateway
-        gatewayService: knative-local-gateway.istio-system.svc.cluster.local
-        knativeGatewayService: ''
       ingressGateway:
         enableGatewayApi: false
         kserveGateway: kserve/kserve-ingress-gateway

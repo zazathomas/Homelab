@@ -7,12 +7,12 @@ resources:
 helmCharts:
 - name: kserve-crd
   namespace: kserve
-  repo: oci://ghcr.io/kserve/charts/kserve-crd
+  repo: oci://ghcr.io/kserve/charts
   version: 0.17.0
   releaseName: kserve-crd
 - name: kserve-resources
   namespace: kserve
-  repo: oci://ghcr.io/kserve/charts/kserve-resources
+  repo: oci://ghcr.io/kserve/charts
   version: 0.17.0
   releaseName: kserve
   valuesFile: values.yaml
