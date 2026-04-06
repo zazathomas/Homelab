@@ -11,7 +11,7 @@ resources:
   # - gw-auth-policy.yaml
   - gw-client-secret.yaml
   - podmonitors.yaml
-  - kubewaf-policy.yaml
+  # - kubewaf-policy.yaml
   - accesslogs.yaml
 
 

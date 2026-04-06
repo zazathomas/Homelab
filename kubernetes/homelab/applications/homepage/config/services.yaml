@@ -192,7 +192,7 @@
             icon: grafana.png
             widget:
                 type: grafana
-                url: http://prometheus-grafana.monitoring.svc.cluster.local:80
+                url: http://kube-prometheus-stack-grafana.monitoring.svc.cluster.local:80
                 username: {{HOMEPAGE_VAR_GRAFANA_USER}}
                 password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}
         - Prometheus:
@@ -321,12 +321,13 @@
                 enableUser: true # optional, defaults to false
                 showEpisodeNumber: true # optional, defaults to false
                 expandOneStreamToTwoRows: false # optional, defaults to true
-        - Jellyseerr:
-            href: https://jellyseerr.local.z3cyber.tech
+                version: 2
+        - Seerr:
+            href: https://seerr.local.z3cyber.tech
             description: Media Requester
-            icon: jellyseerr.png
+            icon: seerr.png
             widget:
-                type: jellyseerr
+                type: seerr
                 url: http://192.168.0.7:5055
                 key: {{HOMEPAGE_VAR_JELLYSEERR_APIKEY}}
         - Radarr:
