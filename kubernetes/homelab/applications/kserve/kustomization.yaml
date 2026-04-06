@@ -32,14 +32,6 @@ helmCharts:
   valuesInline:
       kserve:
         createSharedResources: false
-- name: kserve-llmisvc-resources
-  namespace: kserve
-  repo: oci://ghcr.io/kserve/charts
-  version: v0.17.0
-  releaseName: kserve-llmisvc-resources
-  valuesInline:
-      kserve:
-        createSharedResources: false
 - name: kserve-runtime-configs
   namespace: kserve
   repo: oci://ghcr.io/kserve/charts
