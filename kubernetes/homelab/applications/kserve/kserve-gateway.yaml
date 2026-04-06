@@ -18,7 +18,7 @@ spec:
     - protocol: HTTPS
       port: 443
       name: https
-      hostname: "*.ai.z3cyber.tech"
+      hostname: "*.z3cyber.tech"
       tls:
         certificateRefs:
           - kind: Secret

@@ -3,6 +3,8 @@ kind: Kustomization
 resources:
   - https://github.com/kubernetes-sigs/gateway-api-inference-extension/releases/download/v1.1.0/manifests.yaml
   - kserve-gateway.yaml
+  - namespace.yaml
+  - inference-secrets.yaml
 
 helmCharts:
 - name: kserve-crd
@@ -16,3 +18,33 @@ helmCharts:
   version: v0.17.0
   releaseName: kserve
   valuesFile: values.yaml
+# LLM Inference Service Dependencies
+- name: kserve-llmisvc-crd
+  namespace: kserve
+  repo: oci://ghcr.io/kserve/charts
+  version: v0.17.0
+  releaseName: kserve-llmisvc-crd
+- name: kserve-llmisvc-resources
+  namespace: kserve
+  repo: oci://ghcr.io/kserve/charts
+  version: v0.17.0
+  releaseName: kserve-llmisvc-resources
+  valuesInline:
+      kserve:
+        createSharedResources: false
+- name: kserve-llmisvc-resources
+  namespace: kserve
+  repo: oci://ghcr.io/kserve/charts
+  version: v0.17.0
+  releaseName: kserve-llmisvc-resources
+  valuesInline:
+      kserve:
+        createSharedResources: false
+- name: kserve-runtime-configs
+  namespace: kserve
+  repo: oci://ghcr.io/kserve/charts
+  version: v0.17.0
+  releaseName: kserve-runtime-configs
+  valuesInline:
+      kserve:
+        llmisvcConfigs.enabled: true

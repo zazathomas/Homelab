@@ -1,0 +1,47 @@
+apiVersion: llm.serving.kserve.io/v1alpha1
+kind: LLMInferenceService
+metadata:
+  name: huggingface-gemma4
+  namespace: ai-inference
+spec:
+  predictor:
+    nodeSelector:
+      nvidia.com/gpu.present: "true" 
+    model:
+      modelFormat:
+        name: huggingface
+      args:
+        - --enable_docs_url=True
+        - --model_name=gemma-4-E4B-it
+        - --model_id=google/gemma-4-E4B-it
+      env:
+      - name: HF_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: inference-secrets
+            key: hf_api_token
+      resources:
+        limits:
+          cpu: "4"
+          memory: 8Gi
+          nvidia.com/gpu: "1"
+        requests:
+          cpu: "1"
+          memory: 2Gi
+          nvidia.com/gpu: "1"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 1
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80

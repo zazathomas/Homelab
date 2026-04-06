@@ -6,6 +6,7 @@ resources:
   - cloudflare-token.yaml
   - cloudflare-issuer.yaml
   - production-certificate.yaml
+  - referencegrant.yaml
 
 helmCharts:
 - name: cert-manager

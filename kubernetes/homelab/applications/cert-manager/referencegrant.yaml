@@ -1,0 +1,14 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: allow-kserve-to-use-tls
+  namespace: gateway 
+spec:
+  from:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      namespace: kserve
+  to:
+    - group: ""
+      kind: Secret
+      name: z3cyber-tech-cert-tls
