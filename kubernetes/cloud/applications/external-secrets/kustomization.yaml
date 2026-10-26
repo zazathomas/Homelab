@@ -3,7 +3,6 @@ kind: Kustomization
 
 resources:
   - external-secrets-ns.yaml
-  - servicemonitor.yaml
 
 helmCharts:
 - name: external-secrets

@@ -30,3 +30,4 @@ spec:
           port: 3000
           group: ""
           kind: Service
+          weight: 1

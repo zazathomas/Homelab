@@ -1,38 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-generatorOptions:
-  # The Deployment refers to this stable name. Mounted ConfigMaps update in place.
-  disableNameSuffixHash: true
-
-configMapGenerator:
-  - name: ghost-theme
-    namespace: ghost
-    files:
-      - theme/default.hbs
-      - theme/error.hbs
-      - theme/index.hbs
-      - theme/page-search.hbs
-      - theme/page.hbs
-      - theme/post.hbs
-      - theme/tag.hbs
-      - theme/package.json
-      - theme/assets/css/screen.css
-      - theme/assets/js/opencode.js
-      - theme/assets/js/vendor/highlight.LICENSE
-      - theme/assets/js/vendor/highlight.min.js
-      - theme/assets/fonts/IBMPlexMono-Medium.woff2
-      - theme/assets/fonts/IBMPlexMono-Regular.woff2
-      - theme/assets/fonts/IBMPlexMono-SemiBold.woff2
-      - theme/assets/fonts/IBMPlexSans-Regular.woff2
-      - theme/assets/fonts/IBMPlexSans-SemiBold.woff2
-      - theme/partials/nav.hbs
-      - theme/partials/pagination.hbs
-      - theme/partials/post-hero.hbs
-      - theme/partials/post-row.hbs
-      - theme/partials/rail-tag-open.hbs
-      - theme/partials/rail.hbs
-
 resources:
   - ns.yaml
   - ghost-deployment.yaml

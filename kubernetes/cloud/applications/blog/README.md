@@ -20,18 +20,6 @@ kubectl --context "$K" -n ghost get externalsecret,pvc,httproute
 curl -I https://blog.z3cyber.tech
 ```
 
-## Theme
-
-The `theme/` directory is bundled into a `ghost-theme` ConfigMap by Kustomize and mounted at `/var/lib/ghost/content/themes/opencode`. The deployment also enables `optimization__allowLimitAll`, which the theme needs for its archive search page.
-
-After the first install, activate it in Ghost under **Design → Change theme** and create a Ghost Page with the slug `search`. Theme files are read-only in the pod. To deploy a theme change, commit the changed files and reapply the application:
-
-```bash
-kubectl --context "$K" kustomize --enable-helm kubernetes/cloud/applications/blog \
-  | kubectl --context "$K" apply --server-side -f -
-kubectl --context "$K" -n ghost rollout restart deploy/ghost
-```
-
 ## Upgrade
 
 1. Back up the Ghost content volume, including `content/data/ghost.db`.

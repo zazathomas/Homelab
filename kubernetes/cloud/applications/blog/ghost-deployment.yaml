@@ -32,14 +32,9 @@ spec:
           value: "/var/lib/ghost/content/data/ghost.db"
         - name: url
           value: https://blog.z3cyber.tech
-        - name: optimization__allowLimitAll
-          value: "true"
         volumeMounts:
         - name: ghost-data
           mountPath: /var/lib/ghost/content
-        - name: ghost-theme
-          mountPath: /var/lib/ghost/content/themes/opencode
-          readOnly: true
         envFrom:
         - secretRef:
             name: ghost-secret
@@ -54,53 +49,3 @@ spec:
       - name: ghost-data
         persistentVolumeClaim:
           claimName: ghost-pvc
-      - name: ghost-theme
-        configMap:
-          name: ghost-theme
-          items:
-          - key: default.hbs
-            path: default.hbs
-          - key: error.hbs
-            path: error.hbs
-          - key: index.hbs
-            path: index.hbs
-          - key: page-search.hbs
-            path: page-search.hbs
-          - key: page.hbs
-            path: page.hbs
-          - key: post.hbs
-            path: post.hbs
-          - key: tag.hbs
-            path: tag.hbs
-          - key: package.json
-            path: package.json
-          - key: screen.css
-            path: assets/css/screen.css
-          - key: opencode.js
-            path: assets/js/opencode.js
-          - key: highlight.LICENSE
-            path: assets/js/vendor/highlight.LICENSE
-          - key: highlight.min.js
-            path: assets/js/vendor/highlight.min.js
-          - key: IBMPlexMono-Medium.woff2
-            path: assets/fonts/IBMPlexMono-Medium.woff2
-          - key: IBMPlexMono-Regular.woff2
-            path: assets/fonts/IBMPlexMono-Regular.woff2
-          - key: IBMPlexMono-SemiBold.woff2
-            path: assets/fonts/IBMPlexMono-SemiBold.woff2
-          - key: IBMPlexSans-Regular.woff2
-            path: assets/fonts/IBMPlexSans-Regular.woff2
-          - key: IBMPlexSans-SemiBold.woff2
-            path: assets/fonts/IBMPlexSans-SemiBold.woff2
-          - key: nav.hbs
-            path: partials/nav.hbs
-          - key: pagination.hbs
-            path: partials/pagination.hbs
-          - key: post-hero.hbs
-            path: partials/post-hero.hbs
-          - key: post-row.hbs
-            path: partials/post-row.hbs
-          - key: rail-tag-open.hbs
-            path: partials/rail-tag-open.hbs
-          - key: rail.hbs
-            path: partials/rail.hbs
