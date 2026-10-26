@@ -6,7 +6,7 @@ metadata:
   namespace: ghost
 spec:
   parentRefs:
-  - name: nlb-envoy-gw
+  - name: cf-envoy-gw
     namespace: gateway
     group: gateway.networking.k8s.io	
     kind: Gateway

@@ -31,6 +31,10 @@ global:
   # -- Environment variables to pass to all deployed Deployments
   env: []
 
+  # -- Create NetworkPolicy objects for all components
+  networkPolicy:
+    create: false
+
 ## Argo Configs
 configs:
   cm:

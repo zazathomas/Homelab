@@ -1,17 +1,5 @@
-## Steps to Install Kyverno via Helm:
+# Kyverno values
 
-1. Add the Longhorn Helm Repository:
+This directory currently contains only `values.yaml`. It is not a complete Kyverno application and has no `kustomization.yaml` or deployable resource list.
 
-`helm repo add kyverno https://kyverno.github.io/kyverno`
-
-2. Update the Helm Repositories:
-   
-   `helm repo update`
-
-3. Deploy Kyverno Using Helm: Install or upgrade Longhorn by specifying the desired version and custom values file:
-    ```
-    helm upgrade --install kyverno kyverno/kyverno \
-    --namespace kyverno \
-    --create-namespace \
-    -f values.yaml
-    ```
+The values file is retained for a future Helm deployment. Do not treat this directory as an installed or managed Kyverno release. Before deploying it, add a pinned chart reference and a kustomization, then document the target namespace, CRD ownership, policies, and verification commands.

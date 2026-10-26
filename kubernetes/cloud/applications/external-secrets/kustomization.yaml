@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - external-secrets-ns.yaml
+  - servicemonitor.yaml
+
+helmCharts:
+- name: external-secrets
+  namespace: external-secrets
+  repo: https://charts.external-secrets.io
+  version: 2.14.0
+  releaseName: external-secrets
+  valuesFile: values.yaml
+
+# Reuses the existing ClusterSecretStore named oci-vault-secretstore.
+# Its OCI credential Secret and ClusterSecretStore are managed separately.

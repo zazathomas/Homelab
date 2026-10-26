@@ -5,7 +5,7 @@ resources:
   - podmonitor.yaml
   - namespaces.yaml
   - r2-secrets.yaml
-  - https://github.com/cloudnative-pg/plugin-barman-cloud/releases/download/v0.11.0/manifest.yaml
+  - https://github.com/cloudnative-pg/plugin-barman-cloud/releases/download/v0.15.0/manifest.yaml
   - objectstore.yaml
 
 
@@ -14,5 +14,5 @@ helmCharts:
 - name: cloudnative-pg
   namespace: cnpg-system
   repo: https://cloudnative-pg.github.io/charts
-  version: 0.27.1
+  version: 0.29.0
   releaseName: cnpg

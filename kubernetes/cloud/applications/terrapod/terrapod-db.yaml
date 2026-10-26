@@ -1,0 +1,42 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: terrapod-db
+  namespace: databases
+spec:
+  description: Terrapod PostgreSQL database
+  instances: 1
+  primaryUpdateStrategy: unsupervised
+  enablePDB: true
+  postgresUID: 65534
+  postgresGID: 65534
+
+  bootstrap:
+    initdb:
+      database: terrapod
+      owner: terrapod
+      secret:
+        name: terrapod-credentials
+
+  storage:
+    storageClass: nfs-csi
+    size: 2Gi
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      enabled: true
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: r2-store-backups
+        serverName: terrapod-db
+
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 100m
+    limits:
+      memory: 1Gi
+      cpu: 500m
+
+  affinity:
+    enablePodAntiAffinity: true

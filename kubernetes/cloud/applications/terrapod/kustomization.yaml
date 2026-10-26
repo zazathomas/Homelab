@@ -1,0 +1,152 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - terrapod-route.yaml
+  - terrapod-webhook-route.yaml
+  - terrapod-credentials-external-secret.yaml
+  - terrapod-listener-token-external-secret.yaml
+  - terrapod-db-credentials-external-secret.yaml
+  - terrapod-r2-external-secret.yaml
+  - terrapod-db.yaml
+  - terrapod-db-backup.yaml
+  - terrapod-dragonfly.yaml
+
+patches:
+  - path: terrapod-bootstrap-patch.yaml
+    target:
+      group: batch
+      version: v1
+      kind: Job
+      labelSelector: app.kubernetes.io/component in (bootstrap,migrations)
+
+  # nfs-csi mounts generic ephemeral PVCs as nobody:nogroup. The API runs as
+  # UID/GID 1000, so use node-local ephemeral storage for its writable VCS
+  # scratch space instead of relying on NFS fsGroup handling.
+  - path: terrapod-api-tmpdir-patch.yaml
+    target:
+      kind: Deployment
+      name: terrapod-api
+
+  # Helm templates omit metadata.namespace for these namespaced resources.
+  # Keep the database resources in databases while placing the application in terrapod.
+  - target:
+      kind: ServiceAccount
+      name: terrapod
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: terrapod
+
+  - target:
+      kind: ServiceAccount
+      name: terrapod-web
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: terrapod
+
+  - target:
+      kind: ServiceAccount
+      name: terrapod-listener
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: terrapod
+
+  - target:
+      kind: ConfigMap
+      name: terrapod-api-config
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: terrapod
+
+  - target:
+      kind: ConfigMap
+      name: terrapod-runner-config
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: terrapod
+
+  - target:
+      kind: Service
+      name: terrapod-api
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: terrapod
+
+  - target:
+      kind: Service
+      name: terrapod-web
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: terrapod
+
+  - target:
+      kind: Deployment
+      name: terrapod-api
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: terrapod
+
+  - target:
+      kind: Deployment
+      name: terrapod-web
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: terrapod
+
+  - target:
+      kind: Deployment
+      name: terrapod-listener
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: terrapod
+
+  - target:
+      kind: PodDisruptionBudget
+      name: terrapod-api
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: terrapod
+
+  - target:
+      kind: PodDisruptionBudget
+      name: terrapod-web
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: terrapod
+
+  - target:
+      kind: PodDisruptionBudget
+      name: terrapod-listener
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: terrapod
+
+  - target:
+      kind: Job
+      labelSelector: app.kubernetes.io/component in (bootstrap,migrations)
+    patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: terrapod
+
+helmCharts:
+- name: terrapod
+  namespace: terrapod
+  repo: oci://ghcr.io/mattrobinsonsre
+  version: 1.11.1
+  releaseName: terrapod
+  valuesFile: terrapod-values.yaml

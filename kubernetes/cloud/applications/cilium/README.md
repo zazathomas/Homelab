@@ -1,79 +1,38 @@
-# Oracle Kubernetes Engine (OKE) Cluster Setup with Cilium
+# Cilium
 
-This guide provides step-by-step instructions for setting up a new managed Oracle Kubernetes Engine (OKE) cluster using Flannel as the network overlay and transitioning to Cilium for advanced networking and security capabilities.
+Cilium provides networking, policy enforcement, and observability for the cloud cluster. It runs in `kube-system` and is configured by `cilium-values-cloud.yaml` and `cilium-values-monitoring.yaml`.
 
-## Prerequisites
+Current Helm chart version: `1.20.4`.
 
-- Oracle Cloud Infrastructure (OCI) account with permissions to create and manage OKE clusters.
-- OCI CLI installed and configured on your local machine.
-- Helm installed on your local machine.
-- Basic understanding of Kubernetes and OCI networking concepts.
+## Install
 
-## 1. Create a New Managed OKE Cluster
-
-1. Log in to the Oracle Cloud Console.
-2. Navigate to **Oracle Kubernetes Engine (OKE)** and select **Create Cluster**.
-3. Choose **Create basic cluster** and configure the following settings:
-   - **Network Overlay**: Select Flannel.
-   - **Public IP Address**: Assign public IP addresses for worker nodes.
-   - **Secure Subnets**: Configure secure subnets for Load Balancer services and API endpoints.
-   - **Private Subnet**: Configure a private subnet for the node pool.
-
-Once the cluster is created and the nodes are ready, proceed with the following steps to set up Cilium and configure the cluster.
-
-## 2. Access the Cluster
-
-To access the cluster locally, use the required OCI commands to configure your `kubeconfig`:
-
-```oci ce cluster create-kubeconfig --cluster-id <cluster-id> --file $HOME/.kube/config --region <region> --token-version 2.0.0```
-
-## 3. Install the Kubernetes Metrics Server
-The Metrics Server provides resource usage data such as CPU and memory, which can be viewed via kubectl top commands:
-
-```kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml```
-
-## 4. Install and Configure Cilium
-
-```
-helm repo add cilium https://helm.cilium.io
-cilium install -f values-cloud.yaml
-curl -sLO https://raw.githubusercontent.com/cilium/cilium/master/contrib/kubernetes/k8s-unmanaged.sh
-chmod +x k8s-unmanaged.sh
-./k8s-unmanaged.sh
-kubectl delete pod {each pod from the above}
-cilium status --wait
-```
-
-## 5. Remove Flannel and Kube-Proxy DaemonSets
-To ensure Cilium handles networking exclusively, remove the existing Flannel and Kube-Proxy components:
-
-- Delete the Flannel DaemonSet: `kubectl delete -n kube-system daemonset kube-flannel-ds`
-- Delete the Kube-Proxy DaemonSet: `kubectl delete -n kube-system daemonset kube-proxy`
-
-## 6. Upgrade Cilium with Control Plane Private IP
-To ensure proper communication with the control plane, follow these steps:
-- Copy the control plane's private IP address from the OKE console.
-- Add the private IP to the Cilium values file.
-- `cilium upgrade -f /Users/zaza/Desktop/Projects/Homelab/kubernetes/cloud/OCI-OKE-Setup/cilium-values-cloud.yaml -f /Users/zaza/Desktop/Projects/Homelab/kubernetes/cloud/oci-oke-setup/cilium-values-monitoring.yaml --version 1.16.5 --namespace kube-system`
-
-## 7. Test Cilium Connectivity
-Run the Cilium connectivity test to ensure that Cilium is functioning correctly:
-`cilium connectivity test`
-
-## 8. Setup Storage
-Setup an nfs server first.
-
-To set up nfs storage, execute the following commands:
+From the repository root:
 
 ```bash
-helm repo add csi-driver-nfs https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
-helm install csi-driver-nfs csi-driver-nfs/csi-driver-nfs --namespace kube-system --version v4.5.0
-kubectl apply -f storageclass.yaml
+export K=zaza-oke-cluster
+kubectl --context "$K" kustomize --enable-helm kubernetes/cloud/applications/cilium \
+  | kubectl --context "$K" apply --server-side -f -
 ```
 
-## Conclusion
-By following this guide, you've successfully set up an OKE cluster with Flannel as the initial network overlay and transitioned to Cilium for enhanced networking and security. Cilium provides advanced features such as network policies, load balancing, and observability, making it a powerful choice for Kubernetes networking.
+Verify Cilium:
 
-If you encounter any issues or need further assistance, please refer to the Cilium documentation or the Oracle Kubernetes Engine documentation.
+```bash
+cilium status --context "$K" --wait
+kubectl --context "$K" -n kube-system get pods -l k8s-app=cilium
+```
 
-Happy Kubernetes-ing!
+Run the connectivity test only when the cluster can tolerate its temporary test resources:
+
+```bash
+cilium connectivity test --context "$K"
+```
+
+## Upgrade
+
+1. Review the Cilium release notes and compatibility with the Kubernetes server version.
+2. Update the chart version and review both values files for deprecated options.
+3. Render and apply the directory with the install command above.
+4. Wait for the Cilium DaemonSet and operator to roll out on every node.
+5. Run `cilium status --wait`, inspect policy and Gateway traffic, then run the connectivity test.
+
+Keep the cluster network path available during the rollout. Do not remove the existing CNI until the replacement pods are ready.

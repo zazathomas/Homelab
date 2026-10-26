@@ -1,3 +1,4 @@
-Scribbles/
+kubernetes/homelab/archive
+# Helm chart archives downloaded by Kustomize's helmCharts support.
+**/charts/
 .*
-infrastructure/homelab-talos/secrets

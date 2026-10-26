@@ -5,13 +5,14 @@ resources:
   - namespace.yaml
   - rbac.yml
   - argocd-route.yaml
+  - extra-argocd-secrets.yaml
 
 
 helmCharts:
 - name: argo-cd
   namespace: argocd
   repo: https://argoproj.github.io/argo-helm
-  version: 9.4.17
+  version: 10.8.0
   releaseName: argocd
   valuesFile: argocd-values.yml
   additionalValuesFiles:

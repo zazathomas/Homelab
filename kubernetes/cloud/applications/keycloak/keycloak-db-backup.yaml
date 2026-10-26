@@ -1,14 +1,16 @@
 apiVersion: postgresql.cnpg.io/v1
-kind: Backup
+kind: ScheduledBackup
 metadata:
-  name: keycloak-backup
+  name: keycloak-db-backup
   namespace: databases
 spec:
+  schedule: "0 15 2 * * *" # Every day at 02:15 UTC
+  backupOwnerReference: self
   cluster:
     name: keycloak-db
   method: plugin
   pluginConfiguration:
     name: barman-cloud.cloudnative-pg.io
     parameters:
-        barmanObjectName: r2-store
-        serverName: keycloak-db
+      barmanObjectName: r2-store-backups
+      serverName: keycloak-db

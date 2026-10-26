@@ -4,5 +4,6 @@ kind: Kustomization
 resources:
   - dragonfly-operator.yaml
   - dragonfly.yaml
+  - metrics-network-policy.yaml
   - podmonitor.yaml
   - secret.yaml

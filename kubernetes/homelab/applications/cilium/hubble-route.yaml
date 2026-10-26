@@ -6,8 +6,8 @@ metadata:
   namespace: kube-system
 spec:
   parentRefs:
-  - name: cilium-gw
-    namespace: gateway
+  - name: envoy-gw
+    namespace: envoy-gateway-system
     group: gateway.networking.k8s.io	
     kind: Gateway
   hostnames:

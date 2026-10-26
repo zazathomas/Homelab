@@ -24,7 +24,6 @@ hubble:
     dynamic:
       enabled: true
       config:
-        enabled: true
         content:
         - name: "dropped-flows"
           filePath: "/var/run/cilium/hubble/dropped-flows.log"
@@ -53,7 +52,14 @@ hubble:
   tls:
     auto:
       enabled: true
-      method: cronJob 
-      certValidityDuration: 1095  
+      method: cronJob
+      certValidityDuration: 1095
       schedule: "0 0 1 */4 *"
+
+# Disable certgen's hard check that the CA stays valid for the full leaf
+# duration (default true in v1.20+). Without this, the hubble-generate-certs
+# cronJob fails once the existing CA has less than certValidityDuration
+# (1095 days) of validity remaining.
+certgen:
+  enforceCAValidityThroughoutLeavesDuration: false
  

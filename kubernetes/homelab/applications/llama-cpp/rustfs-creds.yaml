@@ -1,0 +1,20 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: llama-cpp-creds
+  namespace: ai-inference
+spec:
+  refreshInterval: 24h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: oci-vault-secretstore
+  target:
+    name: rustfs-creds 
+    creationPolicy: Owner
+  dataFrom:
+    - extract: 
+        conversionStrategy: Default	
+        decodingStrategy: None
+        key: llama-cpp-creds # Key in the OCI Vault
+        metadataPolicy: None
+      

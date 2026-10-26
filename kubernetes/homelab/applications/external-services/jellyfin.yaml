@@ -22,7 +22,7 @@ metadata:
 addressType: IPv4
 endpoints:
   - addresses:
-      - 192.168.0.7
+      - 192.168.20.12
 ports:
   - name: http
     port: 8096
@@ -34,11 +34,11 @@ metadata:
   name: jellyfin-ext-route
   namespace: external-services
   annotations:
-    external-dns.alpha.kubernetes.io/controller: "ignore"
+    external-dns.kubernetes.io/controller: "ignore"
 spec:
   parentRefs:
   - name: envoy-gw
-    namespace: gateway
+    namespace: envoy-gateway-system
     group: gateway.networking.k8s.io	
     kind: Gateway
   hostnames:
@@ -73,5 +73,5 @@ spec:
     - unix:
         path: /var/run/backend.sock   
     - ip:
-        address: 192.168.0.7
+        address: 192.168.20.12
         port: 8096

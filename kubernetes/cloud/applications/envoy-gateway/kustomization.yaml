@@ -8,7 +8,7 @@ resources:
   - cf-ratelimit-policy.yaml
   # - cf-gw-auth-policy.yaml
   - gatewayclass.yaml
-  - gw-client-secret.yaml
+  - gateway-client-external-secret.yaml
   - nlb-envoy-gateway.yaml
   - nlb-http-redirects.yaml
   - nlb-ratelimit-policy.yaml
@@ -18,6 +18,7 @@ helmCharts:
 - name: gateway-helm
   namespace: envoy-gateway-system
   repo: oci://docker.io/envoyproxy
-  version: v1.6.3
+  version: v1.9.1
   releaseName: envoy-gateway
   valuesFile: values.yaml
+  includeCRDs: true

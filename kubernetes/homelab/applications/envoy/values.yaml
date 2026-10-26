@@ -11,7 +11,7 @@ global:
   images:
     envoyGateway:
       # This is the full image name including the hub, repo, and tag.
-      image: docker.io/envoyproxy/gateway:v1.4.1
+      image: docker.io/envoyproxy/gateway:v1.9.1
       # Specify image pull policy if default behavior isn't desired.
       # Default behavior: latest images will be Always else IfNotPresent.
       pullPolicy: IfNotPresent
@@ -19,7 +19,7 @@ global:
       pullSecrets: []
     ratelimit:
       # This is the full image name including the hub, repo, and tag.
-      image: "docker.io/envoyproxy/ratelimit:bb4dae24"
+      image: "docker.io/envoyproxy/ratelimit:8fe6ea42"
       # Specify image pull policy if default behavior isn't desired.
       # Default behavior: latest images will be Always else IfNotPresent.
       pullPolicy: IfNotPresent
@@ -69,7 +69,7 @@ deployment:
       port: 19001
       targetPort: 19001
   priorityClassName: null
-  replicas: 3
+  replicas: 2
   pod:
     affinity: {}
     annotations:
@@ -96,30 +96,30 @@ config:
         redis:
           url: redis.envoy-gateway-system.svc.cluster.local:6379
     # Enable Gateway API Inference Extension support for Envoy Gateway
-    extensionManager:
-      backendResources:
-        - group: inference.networking.x-k8s.io
-          kind: InferencePool
-          version: v1alpha2
-      hooks:
-        xdsTranslator:
-          translation:
-            listener:
-              includeAll: true
-            route:
-              includeAll: true
-            cluster:
-              includeAll: true
-            secret:
-              includeAll: true
-          post:
-            - Translation
-            - Cluster
-            - Route
-      service:
-        fqdn:
-          hostname: ai-gateway-controller.envoy-ai-gateway-system.svc.cluster.local
-          port: 1063
+    # extensionManager:
+    #   backendResources:
+    #     - group: inference.networking.x-k8s.io
+    #       kind: InferencePool
+    #       version: v1alpha2
+    #   hooks:
+    #     xdsTranslator:
+    #       translation:
+    #         listener:
+    #           includeAll: true
+    #         route:
+    #           includeAll: true
+    #         cluster:
+    #           includeAll: true
+    #         secret:
+    #           includeAll: true
+    #       post:
+    #         - Translation
+    #         - Cluster
+    #         - Route
+    #   service:
+    #     fqdn:
+    #       hostname: ai-gateway-controller.envoy-ai-gateway-system.svc.cluster.local
+    #       port: 1063
     extensionApis:
       enableEnvoyPatchPolicy: true
       enableBackend: true
@@ -156,8 +156,4 @@ topologyInjector:
   annotations: {}
 
 crds:
-  gatewayAPI:
-    enabled: true
-    channel: experimental
-  envoyGateway: 
-    enabled: true
+  enabled: true

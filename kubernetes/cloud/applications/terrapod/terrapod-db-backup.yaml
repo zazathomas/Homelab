@@ -1,0 +1,16 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: terrapod-db-backup
+  namespace: databases
+spec:
+  schedule: "0 15 2 * * *" # Every day at 02:15 UTC
+  backupOwnerReference: self
+  cluster:
+    name: terrapod-db
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
+    parameters:
+      barmanObjectName: r2-store-backups
+      serverName: terrapod-db

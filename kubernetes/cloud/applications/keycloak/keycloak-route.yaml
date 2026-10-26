@@ -6,7 +6,7 @@ metadata:
   namespace: keycloak
 spec:
   parentRefs:
-  - name: nlb-envoy-gw # gateway name
+  - name: cf-envoy-gw # gateway name
     namespace: gateway
     group: gateway.networking.k8s.io	
     kind: Gateway

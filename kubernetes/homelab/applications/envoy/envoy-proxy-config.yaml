@@ -1,0 +1,45 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: envoy-proxy-config
+  namespace: envoy-gateway-system
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyDaemonSet:
+        pod:
+          volumes:
+            - name: geoip-db
+              configMap:
+                name: geoip-anonymous-ip-db
+                items:
+                  - key: GeoIP2-Anonymous-IP-Test.mmdb
+                    path: GeoIP2-Anonymous-IP-Test.mmdb
+        container:
+          volumeMounts:
+            - name: geoip-db
+              mountPath: /etc/envoy/geoip
+              readOnly: true
+      envoyService:
+        type: LoadBalancer
+  geoIP:
+    provider:
+      type: MaxMind
+      maxMind:
+        anonymousIpDbSource:
+          local:
+            path: /etc/envoy/geoip/GeoIP2-Anonymous-IP-Test.mmdb
+  telemetry:
+    accessLog:
+      settings:
+        - format:
+            type: JSON
+            json:
+              status: "%RESPONSE_CODE%"
+              message: "%LOCAL_REPLY_BODY%"
+          sinks:
+            - type: File
+              file:
+                path: /dev/stdout

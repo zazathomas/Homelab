@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: stirling-pdf
-        image: stirlingtools/stirling-pdf:latest-fat
+        image: stirlingtools/stirling-pdf:2.14.3-fat
         resources:
           requests:
             cpu: 50m

@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: qwen
+  namespace: ai-inference
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: qwen-gguf
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+      scrapeTimeout: 10s

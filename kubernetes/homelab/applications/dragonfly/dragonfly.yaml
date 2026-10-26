@@ -14,7 +14,7 @@ spec:
       passwordFromSecret:
         name: dragonfly-auth
         key: password
-  replicas: 3
+  replicas: 2
   snapshot:
     cron: "*/5 * * * *"
     persistentVolumeClaimSpec:

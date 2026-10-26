@@ -17,3 +17,7 @@ spec:
       path: /metrics
       interval: 15s
       scheme: http
+      metricRelabelings:
+        - action: replace
+          targetLabel: job
+          replacement: cloudflared-metrics

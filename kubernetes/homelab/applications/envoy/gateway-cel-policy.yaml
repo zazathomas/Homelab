@@ -1,0 +1,17 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: gateway-cel-policy
+  namespace: envoy-gateway-system
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy-gw
+  authorization:
+    defaultAction: Allow
+    rules:
+      - name: deny-trace-method
+        action: Deny
+        cel: "request.method == 'TRACE'"

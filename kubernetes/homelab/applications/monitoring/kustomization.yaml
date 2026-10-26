@@ -1,10 +1,33 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: monitoring
+
+configMapGenerator:
+  - name: cloudflare-tunnel-dashboard
+    namespace: monitoring
+    files:
+      - cloudflare-tunnel.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+  - name: llama-cpp-dashboard
+    namespace: monitoring
+    files:
+      - llama-cpp-dashboard.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+  - name: victorialogs-dashboard
+    namespace: monitoring
+    files:
+      - victorialogs-dashboard.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+
 resources:
   - namespace.yaml
   - httproutes.yaml
-  - minio-credentials.yml
   - servicemonitor.yaml
   - monitoring-secrets.yaml
 
@@ -13,12 +36,113 @@ helmCharts:
 - name: kube-prometheus-stack
   namespace: monitoring
   repo: https://prometheus-community.github.io/helm-charts
-  version: 82.3.0
+  version: 90.0.0
   releaseName: kube-prometheus-stack
+  includeCRDs: true
   valuesFile: prom-values.yaml
 - name: victoria-logs-single 
   namespace: monitoring
   repo: https://victoriametrics.github.io/helm-charts 
-  version: 0.11.28
+  version: 0.13.9
   releaseName: victorialogs
   valuesFile: victoria-values.yaml
+
+patches:
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: kube-prometheus-stack-alertmanager-overview
+    patch: |-
+      - op: remove
+        path: /metadata/annotations/grafana_folder
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: kube-prometheus-stack-grafana-overview
+    patch: |-
+      - op: remove
+        path: /metadata/annotations/grafana_folder
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: kube-prometheus-stack-prometheus
+    patch: |-
+      - op: remove
+        path: /metadata/annotations/grafana_folder
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: kube-prometheus-stack-nodes
+    patch: |-
+      - op: remove
+        path: /metadata/annotations/grafana_folder
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: kube-prometheus-stack-k8s-coredns
+    patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: kube-prometheus-stack-k8s-coredns
+      $patch: delete
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: kube-prometheus-stack-k8s-resources-multicluster
+    patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: kube-prometheus-stack-k8s-resources-multicluster
+      $patch: delete
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: kube-prometheus-stack-node-cluster-rsrc-use
+    patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: kube-prometheus-stack-node-cluster-rsrc-use
+      $patch: delete
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: kube-prometheus-stack-node-rsrc-use
+    patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: kube-prometheus-stack-node-rsrc-use
+      $patch: delete
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: kube-prometheus-stack-nodes-aix
+    patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: kube-prometheus-stack-nodes-aix
+      $patch: delete
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: kube-prometheus-stack-nodes-darwin
+    patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: kube-prometheus-stack-nodes-darwin
+      $patch: delete

@@ -1,0 +1,30 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: cf-envoy-gw
+  namespace: envoy-gateway-system
+spec:
+  gatewayClassName: envoy
+  addresses:
+  - type: IPAddress
+    value: 192.168.20.210
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+    - protocol: HTTPS
+      port: 443
+      name: https
+      hostname: "*.z3cyber.tech"
+      tls:
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: z3cyber-tech-cert-tls
+            namespace: envoy-gateway-system
+      allowedRoutes:
+        namespaces:
+          from: All

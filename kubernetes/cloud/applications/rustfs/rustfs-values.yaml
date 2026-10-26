@@ -1,0 +1,30 @@
+mode:
+  standalone:
+    enabled: true
+  distributed:
+    enabled: false
+
+storageclass:
+  name: nfs-csi
+  dataStorageSize: 10Gi
+  logStorageSize: 1Gi
+
+ingress:
+  enabled: false
+
+podSecurityContext:
+  runAsUser: 65534
+  runAsGroup: 65534
+  fsGroup: 65534
+
+image:
+  rustfs:
+    repository: docker.io/rustfs/rustfs
+
+secret:
+  existingSecret: "rustfs-creds"
+
+config:
+  rustfs:
+    log_level: "warn" 
+    obs_environment: "production"

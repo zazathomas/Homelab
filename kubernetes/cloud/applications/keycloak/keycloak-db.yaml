@@ -5,7 +5,7 @@ metadata:
   namespace: databases
 spec:
   description: "Keycloak DB"
-  instances: 2
+  instances: 1
   primaryUpdateStrategy: unsupervised
   enablePDB: true
   postgresUID: 65534
@@ -18,14 +18,15 @@ spec:
 
   storage:
     storageClass: nfs-csi
-    size: 1Gi
+    size: 2Gi
 
   plugins:
   - name: barman-cloud.cloudnative-pg.io
     enabled: true
     isWALArchiver: true
     parameters:
-      barmanObjectName: r2-store
+      barmanObjectName: r2-store-backups
+      serverName: keycloak-db
 
   resources:
     requests:

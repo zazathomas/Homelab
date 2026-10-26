@@ -3,8 +3,8 @@
 # https://gethomepage.dev/latest/configs/services
 - Main:
     - Management:
-        - Proxmox-PVE1:
-            href: https://pve-1.local.z3cyber.tech
+        - Jessie-pve:
+            href: https://jessie-pve.local.z3cyber.tech
             description: Hypervisor
             icon: proxmox.png
             widget:
@@ -12,8 +12,8 @@
                 url: https://192.168.0.190:8006
                 username: {{HOMEPAGE_VAR_PROXMOX_USERNAME}}
                 password: {{HOMEPAGE_VAR_PROXMOX_PASSWORD}}
-        - Proxmox-PVE2:
-            href: https://pve-2.local.z3cyber.tech
+        - Kyle-pve:
+            href: https://kyle-pve.local.z3cyber.tech
             description: Hypervisor
             icon: proxmox.png
             widget:
@@ -27,7 +27,7 @@
             icon: portainer.png
             widget:
                 type: portainer
-                url: http://192.168.0.8:9000
+                url: http://192.168.20.11:9000
                 env: 2
                 key: {{HOMEPAGE_VAR_PORTAINER_KEY}}
         - Teleport:
@@ -38,10 +38,6 @@
             href: https://termix.local.z3cyber.tech
             description: Server Management
             icon: termix.png
-        - Kamaji-Console:
-            href: https://console.z3cyber.tech/ui
-            description: Hosted Control Plane
-            icon: https://kamaji.clastix.io/images/logo.png
     - Automation:
         - Workflows:
             href: https://workflows.z3cyber.tech
@@ -82,7 +78,7 @@
             icon: pi-hole
             widget:
             type: pihole
-            url: http://192.168.0.3
+            url: http://192.168.20.3
             username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
             password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
         - Pihole-02:
@@ -91,12 +87,12 @@
             icon: pi-hole
             widget:
             type: pihole
-            url: http://192.168.0.4
+            url: http://192.168.20.4
             username: {{HOMEPAGE_VAR_ADGUARD_USERNAME}}
             password: {{HOMEPAGE_VAR_ADGUARD_PASSWORD}}
         - Wireguard:
             href: https://wg.z3cyber.tech
-            description: Home VPN
+            description: OCI VPN
             icon: wireguard.png
             widget:
             type: wgeasy
@@ -127,10 +123,9 @@
             href: https://hubble.k8s.z3cyber.tech
             description: Network Observability
             icon: https://cdn.jsdelivr.net/gh/cilium/hubble@main/Documentation/images/hubble_logo.png
-        - TPLink:
-            href: https://tplink.local.z3cyber.tech
-            description: Router
-            icon: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQEbyJymhxFmY_oPOmHOu3LW7dcCqhzmjVIQ&s
+        - GateScope:
+            href: https://gatescope.k8s.z3cyber.tech
+            description: Gateway API Observability
     - Utility:
         - Paperless Ngx:
             href: https://paperless.local.z3cyber.tech
@@ -156,10 +151,6 @@
             href: https://tools.local.z3cyber.tech
             description: Multi purpose
             icon: https://raw.githubusercontent.com/CorentinTh/it-tools/main/.github/logo-white.png
-        - Firefox:
-            href: https://ff.local.z3cyber.tech
-            description: Local browser
-            icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/firefox.png
         - Json Crack:
             href: https://json.local.z3cyber.tech
             description: JSON Visualizer
@@ -168,15 +159,6 @@
             href: https://search.local.z3cyber.tech
             description: Search engine
             icon: searxng.png
-        - Vikunja:
-            href: https://vikunja.local.z3cyber.tech
-            description: Project Management
-            icon: vikunja.png
-            widget:
-                type: vikunja
-                url: http://192.168.0.8:3456
-                key: {{HOMEPAGE_VAR_VIKUNJA_KEY}}
-                enableTaskList: false # optional, defaults to false
         - Karakeep:
             href: https://karakeep.local.z3cyber.tech
             description: Link Repository
@@ -220,29 +202,17 @@
             icon: uptime-kuma.png
             widget:
                 type: uptimekuma
-                url: http://192.168.0.8:3010
+                url: http://192.168.20.11:3010
                 slug: statuspageslug
-        - Speedtest01:
-            href: https://speedtest01.local.z3cyber.tech
-            description: Latency tests
-            icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/speedtest-tracker.png
-            widget:  
-                type: speedtest  
-                url: http://192.168.0.8:8045
-                bitratePrecision: 3 #%20optional,%20default%20is%200
-        - Speedtest02:
-            href: https://speedtest02.local.z3cyber.tech
-            description: Latency tests
-            icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/speedtest-tracker.png
-            widget:  
-                type: speedtest  
-                url: http://192.168.0.7:8045
-                bitratePrecision: 3 #%20optional,%20default%20is%200
     - Security:
         - Keycloak:
             href: https://sso.z3cyber.tech
             description: Identity Provider
             icon: keycloak.png
+        - Tpot:
+            href: https://tpot.local.z3cyber.tech
+            description: Honeypot
+            icon: https://avatars.githubusercontent.com/u/30164233?s=60&v=4
         - Akto:
             href: https://akto.local.z3cyber.tech
             description: API Security
@@ -253,40 +223,30 @@
             icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/web-check.png
         - JuiceShop:
             href: https://juiceshop.k8s.z3cyber.tech
-            description: Security Testing
+            description: Security Testingone
             icon: https://juice-shop.herokuapp.com/assets/public/images/JuiceShop_Logo.png
     - Data & AI:
         - OpenWebUI:
             href: https://webui.local.z3cyber.tech
             description: AI Inference
             icon: https://avatars.githubusercontent.com/u/158137808?s=48&v=4
-        
-        - Kopia:
-            href: https://kopia.local.z3cyber.tech
-            description: Disaster Recovery
-            icon: kopia.png
-            widget:
-                type: kopia
-                url: http://192.168.0.8:51515
-                username: {{HOMEPAGE_VAR_KOPIA_USER}}
-                password: {{HOMEPAGE_VAR_KOPIA_PASSWORD}}
+        - Hermes:
+            href: https://hermes.local.z3cyber.tech
+            description: Hermes Dashboard
+            icon: https://raw.githubusercontent.com/lobehub/lobe-icons/refs/heads/master/packages/static-avatar/avatars/hermesagent.webp
         - Cockpit:
             href: https://cockpit.local.z3cyber.tech
             description: Network Attached Storage
-            icon: cockpit.png
-        - Kafka:
-            href: https://kafka.local.z3cyber.tech
-            description: Kafka UI
-            icon: https://avatars.githubusercontent.com/u/60062294?s=200&v=4    
+            icon: cockpit.png  
         - Ghost:
             href: https://blog.z3cyber.tech
             description: Personal Blog
             icon: ghost.png
-        - Minio:
-            href: https://minio.z3cyber.tech
+        - Rustfs:
+            href: https://s3.z3cyber.tech
             description: Object Storage
             icon: minio.png
-        - Minio Local:
+        - Rustfs Local:
             href: https://s3.local.z3cyber.tech
             description: Object Storage
             icon: minio.png
@@ -314,7 +274,7 @@
             icon: jellyfin.png
             widget:
                 type: jellyfin
-                url: http://192.168.0.7:8096
+                url: http://192.168.20.12:8096
                 key: {{HOMEPAGE_VAR_JELLYFIN_APIKEY}}
                 enableBlocks: true # optional, defaults to false
                 enableNowPlaying: true # optional, defaults to true
@@ -328,7 +288,7 @@
             icon: seerr.png
             widget:
                 type: seerr
-                url: http://192.168.0.7:5055
+                url: http://192.168.20.12:5055
                 key: {{HOMEPAGE_VAR_JELLYSEERR_APIKEY}}
         - Radarr:
             href: https://radarr.local.z3cyber.tech
@@ -336,7 +296,7 @@
             icon: radarr.png
             widget:
                 type: radarr
-                url: http://192.168.0.7:7878
+                url: http://192.168.20.12:7878
                 key:  {{HOMEPAGE_VAR_RADARR_APIKEY}}
                 enableQueue: true # optional, defaults to false
         - Sonarr:
@@ -345,7 +305,7 @@
             icon: sonarr.png
             widget:
                 type: sonarr
-                url: http://192.168.0.7:8989
+                url: http://192.168.20.12:8989
                 key: {{HOMEPAGE_VAR_SONARR_APIKEY}}
                 enableQueue: true # optional, defaults to false
         - Audiobookshelf:
@@ -354,8 +314,12 @@
             icon: audiobookshelf.png
             widget:
                 type: audiobookshelf
-                url: http://192.168.0.7:13378
+                url: http://192.168.20.12:13378
                 key: {{HOMEPAGE_VAR_AUDIOBOOKSHELF_APIKEY}}
+        - JellyStat:
+            href: https://jellystat.local.z3cyber.tech
+            description: Media Server Stats
+            icon: https://avatars.githubusercontent.com/u/24864904?s=48&v=4
         - Readerr:
             href: https://readarr.local.z3cyber.tech
             description: Books

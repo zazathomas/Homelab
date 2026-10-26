@@ -3,13 +3,13 @@ kind: Kustomization
 
 resources:
   - rbac.yml
-  - secret.yml
+  - argocd-external-secret.yaml
   - argocd-route.yaml
 
 helmCharts:
 - name: argo-cd
   namespace: argocd
   repo: https://argoproj.github.io/argo-helm
-  version: 9.4.1
+  version: 10.11.1
   releaseName: argocd
   valuesFile: argocd-values.yml

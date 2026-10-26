@@ -1,0 +1,73 @@
+api:
+  replicas: 1
+  ephemeralStorage:
+    size: 5Gi
+  extraEnv:
+    - name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: terrapod-r2-credentials
+          key: ACCESS_KEY_ID
+    - name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: terrapod-r2-credentials
+          key: ACCESS_SECRET_KEY
+  config:
+    external_url: https://terrapod.z3cyber.tech
+    public_webhook_url: https://terrapod.z3cyber.tech/webhooks/
+    auth:
+      callback_base_url: https://terrapod.z3cyber.tech
+    vcs:
+      github:
+        existingSecret: terrapod-credentials
+        existingSecretKey: webhook_secret
+      gitlab:
+        existingSecret: terrapod-credentials
+        existingSecretKey: webhook_secret
+    storage:
+      backend: s3
+      s3:
+        bucket: oci-terrapod
+        region: auto
+        endpoint_url: https://d4f626e53977981652bb18a0948b046c.r2.cloudflarestorage.com
+        presigned_url_expiry_seconds: 3600
+
+web:
+  replicas: 1
+
+listener:
+  enabled: true
+  replicas: 1
+  name: listener
+  existingSecret: terrapod-listener-token
+  joinTokenKey: join_token
+  runnerNamespace: terrapod
+  maxConcurrent: 1
+
+ingress:
+  enabled: false
+
+postgresql:
+  existingSecret: terrapod-credentials
+  existingSecretKey: url
+
+redis:
+  url: redis://terrapod-dragonfly.terrapod.svc.cluster.local:6379
+
+storage:
+  filesystem:
+    persistence:
+      storageClass: nfs-csi
+
+bootstrap:
+  enabled: true
+  hook: "pre-install,pre-upgrade"
+  hookWeight: "-3"
+  existingSecret: terrapod-credentials
+  emailKey: admin_email
+  passwordKey: admin_password
+  pools:
+    - name: default
+      existingSecret: terrapod-listener-token
+      tokenKey: join_token

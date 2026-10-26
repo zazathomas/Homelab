@@ -3,11 +3,10 @@ kind: Kustomization
 
 resources:
   - storageClass.yaml
-  - minio-service.yaml
 
 helmCharts:
 - name: csi-driver-nfs
   namespace: kube-system
   repo: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
-  version: 4.13.0
+  version: 4.13.6
   releaseName: csi-driver-nfs

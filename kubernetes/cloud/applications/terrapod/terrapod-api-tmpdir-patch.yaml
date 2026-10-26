@@ -1,0 +1,6 @@
+- op: remove
+  path: /spec/template/spec/volumes/3/ephemeral
+- op: add
+  path: /spec/template/spec/volumes/3/emptyDir
+  value:
+    sizeLimit: 5Gi

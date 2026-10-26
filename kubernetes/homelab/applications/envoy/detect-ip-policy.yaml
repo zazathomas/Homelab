@@ -2,16 +2,12 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
-  name: client-traffic-policy
-  namespace: gateway
+  name: detect-ip-policy
+  namespace: envoy-gateway-system
 spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
-      name: cf-envoy-gw
+      name: envoy-gw
   clientIPDetection:
-    # xForwardedFor:
-    #   trustedCIDRs:
-    #   - "10.244.2.78/32"
-    customHeader:
-      name: "cf-connecting-ip"
+    directSourceIP: {}

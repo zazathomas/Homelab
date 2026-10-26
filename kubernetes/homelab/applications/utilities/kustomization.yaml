@@ -6,6 +6,4 @@ resources:
   - stirling-pdf-deployment.yaml
   - stirling-pdf-svc.yaml
   - stirling-pdf-httproute.yaml
-  # - semaphoreUI
-  # - homepage
 

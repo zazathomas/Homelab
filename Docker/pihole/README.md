@@ -1,7 +1,7 @@
 
 # Pi-hole + Unbound Deployment Guide (Docker Compose + Keepalived HA)
 
-This guide explains how to deploy **Pi-hole with Unbound** using Docker Compose, with optional **Keepalived** for high availability (HA).  
+This guide explains how to deploy **Pi-hole with Unbound** using Docker Compose, with optional **Keepalived** for high availability (HA).
 The setup provides:
 
 - Network-wide ad blocking (Pi-hole)

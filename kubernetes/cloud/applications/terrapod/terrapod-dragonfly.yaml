@@ -1,0 +1,29 @@
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  name: terrapod-dragonfly
+  namespace: terrapod
+  labels:
+    app.kubernetes.io/name: dragonfly
+    app.kubernetes.io/instance: terrapod-dragonfly
+    app.kubernetes.io/part-of: terrapod
+spec:
+  replicas: 1
+  snapshot:
+    cron: "0 * * * *"
+    persistentVolumeClaimSpec:
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: nfs-csi
+      resources:
+        requests:
+          storage: 1Gi
+  args:
+    - "--dbfilename=dragonfly"
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi

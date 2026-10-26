@@ -49,6 +49,7 @@ controller:
   - workflows
   - learning
   - default
+  - work-experience
   workflowDefaults:
     spec:
       serviceAccountName: wf-runner

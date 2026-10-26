@@ -1,0 +1,4 @@
+providerRegex: "^talos-(master|worker)-[0-9]+$"
+providerIpPrefixes:
+  - 192.168.20.0/24
+bypassDnsResolution: true

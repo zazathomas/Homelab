@@ -17,7 +17,3 @@ spec:
           group: ''	
           kind: Service
           weight: 1
-      matches:	
-        - path:	
-            type: PathPrefix	
-            value: /

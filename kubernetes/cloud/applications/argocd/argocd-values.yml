@@ -42,7 +42,7 @@ configs:
       name: Keycloak
       issuer: https://sso.z3cyber.tech/realms/homelab
       clientID: argocd
-      clientSecret: $extra-secret:oidc.keycloak.clientSecret
+      clientSecret: $oidc.keycloak.clientSecret
       requestedIDTokenClaims:
         groups:
           essential: true
@@ -70,7 +70,7 @@ configs:
   # Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/#sensitive-data-and-sso-client-secrets
   secret:
     # -- Create the argocd-secret
-    createSecret: true
+    createSecret: false
     # -- Labels to be added to argocd-secret
     labels: {}
     # -- Annotations to be added to argocd-secret

@@ -1,52 +1,39 @@
+# cert-manager
 
-# **Cert-Manager Deployment**  
+cert-manager runs in the `cert-manager` namespace. It issues the cluster's ACME certificates through the Cloudflare DNS-01 solver. The Cloudflare token is supplied by the `cloudflare-token-external-secret.yaml` ExternalSecret.
 
-This guide provides a structured approach to deploying **Cert-Manager** within a **Kubernetes Homelab environment**, ensuring **secure communication** across the cluster.  
+Current chart/app version: `1.21.3`.
 
----
+## Install
 
-## **1. Deploying Cert-Manager**  
-
-### **Step 1: Install Cert-Manager Using Helm**  
-
-Leverage Helm to simplify the deployment and configuration:  
+From the repository root:
 
 ```bash
-helm repo add jetstack https://charts.jetstack.io
-helm install cert-manager jetstack/cert-manager \
-  --namespace cert-manager \
-  --values=values.yaml \
-  --create--namespace \
-  --set installCRDs=true
+export K=zaza-oke-cluster
+kubectl --context "$K" kustomize --enable-helm kubernetes/cloud/applications/cert-manager \
+  | kubectl --context "$K" apply --server-side -f -
 ```
 
----
-
-## **2. Configuring Secret Propagation with Reflector Operator**  
-
-By default, **certificates** issued by Cert-Manager are stored as **secrets** in the namespace where they are created. To enable **automatic propagation** of these secrets across multiple namespaces, install the **Reflector Operator**.
-
-### **Step 1: Install Reflector Operator**  
-
-Add the **EmberStack Helm repository** and deploy the **Reflector Operator** in the `kube-system` namespace:  
+Verify the controller and issuers:
 
 ```bash
-helm repo add emberstack https://emberstack.github.io/helm-charts
-helm repo update
-helm upgrade --install reflector emberstack/reflector --namespace kube-system
+kubectl --context "$K" -n cert-manager rollout status deploy/cert-manager
+kubectl --context "$K" -n cert-manager rollout status deploy/cert-manager-webhook
+kubectl --context "$K" get clusterissuer,certificate -A
 ```
 
-### **Step 2: Configure the Certificate Manifest for Reflection**  
+## Upgrade
 
-Modify the **certificate manifest** by adding the following **annotations** under `secretTemplate`. This ensures the certificate is automatically replicated across the required namespaces:  
+1. Back up the cert-manager CRDs, Issuers, Certificates, and ACME resources.
+2. Review the release notes and update the chart version in `kustomization.yaml`.
+3. Render and apply the directory with the install command above.
+4. Confirm the controller, webhook, and cainjector are ready and the CRDs serve `v1`.
+5. Check ClusterIssuer readiness and wait for any certificate renewals to complete.
 
-```yaml
-secretTemplate:
-  annotations:
-    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
-    reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "dev,staging,prod" # Customize as needed
-    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
-    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "dev,staging,prod" # Customize as needed
+To refresh the Cloudflare token after changing OCI Vault:
+
+```bash
+kubectl --context "$K" -n cert-manager annotate externalsecret cloudflare-token-secret force-sync="$(date +%s)" --overwrite
 ```
 
----
+Keep the `oidc` and DNS credentials outside Helm values. Do not print secret data while troubleshooting.

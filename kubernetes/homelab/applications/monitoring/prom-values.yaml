@@ -7,7 +7,7 @@ crds:
       busybox:
         registry: docker.io
         repository: busybox
-        tag: "latest"
+        tag: "1.37.0"
         sha: ""
         pullPolicy: IfNotPresent
       kubectl:
@@ -34,7 +34,7 @@ prometheus:
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 10Gi
+              storage: 20Gi
     retention: 7d
     retentionSize: "8GiB"
     additionalScrapeConfigs:
@@ -53,7 +53,7 @@ prometheus:
         - source_labels: [__param_target]
           target_label: instance
         - target_label: __address__
-          replacement: 192.168.0.7:9221  # PVE exporter.
+          replacement: 192.168.20.12:9221  # PVE exporter.
     - job_name: 'pve-2'
       static_configs:
         - targets:
@@ -69,11 +69,54 @@ prometheus:
         - source_labels: [__param_target]
           target_label: instance
         - target_label: __address__
-          replacement: 192.168.0.7:9222  # PVE exporter.
+          replacement: 192.168.20.12:9222  # PVE exporter.
+    - job_name: 'traefik'
+      metrics_path: /metrics
+      static_configs:
+        - targets:
+          - 192.168.20.11:8082
+          labels:
+            instance: kyle
+        - targets:
+          - 192.168.20.12:8082
+          labels:
+            instance: jessie
 
 grafana:
   enabled: true
   defaultDashboardsTimezone: Europe/Dublin
+  plugins:
+    - victoriametrics-logs-datasource
+  additionalDataSources:
+    - name: VictoriaLogs
+      uid: victorialogs
+      type: victoriametrics-logs-datasource
+      access: proxy
+      url: http://victorialogs-victoria-logs-single-server.monitoring.svc:9428
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: default
+          orgId: 1
+          folder: ''
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
+  dashboards:
+    default:
+      traefik-official-standalone:
+        gnetId: 17346
+        revision: 9
+        datasource: Prometheus
+      proxmox-ve-pve-exporter:
+        gnetId: 10347
+        revision: 5
+        datasource:
+          - name: DS_PROMETHEUS
+            value: Prometheus
   persistence:
     enabled: true
     type: pvc
@@ -84,7 +127,11 @@ grafana:
   sidecar:
     dashboards:
       enabled: true
+      folderAnnotation: grafana_folder
+      annotations:
+        grafana_folder: Kubernetes
       provider:
+        foldersFromFilesStructure: true
         allowUiUpdates: true 
     datasources:
       enabled: true

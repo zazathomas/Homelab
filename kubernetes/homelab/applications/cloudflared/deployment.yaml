@@ -6,7 +6,7 @@ metadata:
   name: cloudflared
   namespace: cloudflared
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: cloudflared
@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: cloudflared
-          image: cloudflare/cloudflared:2025.7.0
+          image: cloudflare/cloudflared:2026.8.3
           imagePullPolicy: Always
           args:
             - tunnel

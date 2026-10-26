@@ -9,7 +9,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   revisionHistoryLimit: 3
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
   selector:
@@ -25,7 +25,7 @@ spec:
       enableServiceLinks: true
       containers:
         - name: homepage
-          image: "gethomepage/homepage:v1.12.3"
+          image: "gethomepage/homepage:v2.2.0"
           imagePullPolicy: Always
           envFrom:
           - secretRef:

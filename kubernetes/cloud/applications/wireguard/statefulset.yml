@@ -32,7 +32,9 @@ spec:
               value: "51821"
             - name: INSECURE
               value: "true"
-          image: ghcr.io/wg-easy/wg-easy:15
+            - name: DISABLE_IPV6
+              value: "true"
+          image: ghcr.io/wg-easy/wg-easy:15.4.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 51820

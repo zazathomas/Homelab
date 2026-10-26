@@ -4,7 +4,7 @@ metadata:
   name: example-db
   namespace: databases
 spec:
-  imageName: ghcr.io/cloudnative-pg/postgresql:15.3
+  # imageName: ghcr.io/cloudnative-pg/postgresql:<version> # defaults to the operator's supported PostgreSQL version
   description: "Example DB"
   instances: 2
   primaryUpdateStrategy: unsupervised

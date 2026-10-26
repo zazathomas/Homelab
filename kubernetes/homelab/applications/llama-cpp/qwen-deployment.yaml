@@ -1,0 +1,209 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qwen
+  namespace: ai-inference
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qwen-gguf
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: qwen-gguf
+    spec:
+      runtimeClassName: nvidia
+      nodeSelector:
+        nvidia.com/gpu.present: "true"
+
+      volumes:
+        - name: model-cache
+          persistentVolumeClaim:
+            claimName: qwen-model-cache
+
+      initContainers:
+        - name: fetch-model
+          image: amazon/aws-cli:2.35.3
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: rustfs-creds
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: rustfs-creds
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_DEFAULT_REGION
+              value: us-east-1
+            - name: AWS_EC2_METADATA_DISABLED
+              value: "true"
+            - name: AWS_MAX_ATTEMPTS
+              value: "10"
+            - name: AWS_RETRY_MODE
+              value: standard
+            - name: MODEL_PATH
+              value: /models/Qwen3.5-9B-UD-Q6_K_XL.gguf
+          command:
+            - sh
+            - -ec
+            - |
+              MODEL_S3="s3://ai-models/unsloth/Qwen3.5-9B-GGUF/Qwen3.5-9B-UD-Q6_K_XL.gguf"
+              ENDPOINT="https://api-s3.local.z3cyber.tech"
+
+              echo "AWS CLI version:"
+              aws --version
+
+              echo "Checking RustFS object..."
+              aws --endpoint-url "${ENDPOINT}" s3 ls "${MODEL_S3}"
+
+              echo "Disk before download:"
+              df -h /models
+              df -ih /models
+              ls -lah /models || true
+
+              if [ -s "${MODEL_PATH}" ]; then
+                echo "Model already exists at ${MODEL_PATH}; skipping download."
+                ls -lh "${MODEL_PATH}"
+                stat "${MODEL_PATH}"
+                exit 0
+              fi
+
+              echo "Writing AWS transfer config..."
+              mkdir -p /root/.aws
+              cat > /root/.aws/config <<'EOF'
+              [default]
+              s3 =
+                max_concurrent_requests = 1
+                multipart_threshold = 64MB
+                multipart_chunksize = 64MB
+                addressing_style = path
+              EOF
+
+              echo "Downloading model..."
+              rm -f "${MODEL_PATH}" "${MODEL_PATH}.tmp"
+
+              aws --endpoint-url "${ENDPOINT}" \
+                s3 cp \
+                "${MODEL_S3}" \
+                "${MODEL_PATH}.tmp" \
+                --only-show-errors \
+                --no-progress
+
+              echo "Disk after download:"
+              df -h /models
+
+              echo "Verifying model file..."
+              test -s "${MODEL_PATH}.tmp"
+              ls -lh "${MODEL_PATH}.tmp"
+
+              mv "${MODEL_PATH}.tmp" "${MODEL_PATH}"
+              chmod 0444 "${MODEL_PATH}"
+
+              echo "Final /models:"
+              ls -lah /models
+              stat "${MODEL_PATH}"
+          resources:
+            requests:
+              cpu: "1"
+              memory: "512Mi"
+              ephemeral-storage: "10Gi"
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+              ephemeral-storage: "14Gi"
+          volumeMounts:
+            - name: model-cache
+              mountPath: /models
+
+      containers:
+        - name: llama-server
+          image: ghcr.io/ggml-org/llama.cpp:server-cuda12
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+          command:
+            - sh
+            - -ec
+          args:
+            - |
+              MODEL_PATH="/models/Qwen3.5-9B-UD-Q6_K_XL.gguf"
+
+              echo "Checking model before server start..."
+              ls -lah /models
+              stat "${MODEL_PATH}"
+
+              exec /app/llama-server \
+                --model "${MODEL_PATH}" \
+                --host 0.0.0.0 \
+                --port 8080 \
+                --ctx-size 65536 \
+                --parallel 1 \
+                --n-gpu-layers 999 \
+                --flash-attn on \
+                --cache-type-k q8_0 \
+                --cache-type-v q8_0 \
+                --batch-size 512 \
+                --ubatch-size 128 \
+                --jinja \
+                --ui \
+                --metrics
+          resources:
+            requests:
+              nvidia.com/gpu: "1"
+              cpu: "1"
+              memory: 5Gi
+              ephemeral-storage: "2Gi"
+            limits:
+              nvidia.com/gpu: "1"
+              cpu: "6"
+              memory: 18Gi
+              ephemeral-storage: "4Gi"
+          volumeMounts:
+            - name: model-cache
+              mountPath: /models
+              readOnly: true
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 90
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 6
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 30
+            failureThreshold: 6
+            timeoutSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qwen
+  namespace: ai-inference
+  labels:
+    app: qwen-gguf
+spec:
+  type: ClusterIP
+  selector:
+    app: qwen-gguf
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http

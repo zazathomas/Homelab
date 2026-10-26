@@ -9,5 +9,5 @@ configMapGenerator:
 
 resources:
   - ns.yaml
-  - tunnel-credentials.yaml
+  - tunnel-credentials-external-secret.yaml
   - deployment.yaml

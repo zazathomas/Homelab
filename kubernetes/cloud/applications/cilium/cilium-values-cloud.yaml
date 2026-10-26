@@ -9,12 +9,10 @@ ipam:
 k8sServiceHost: "10.0.0.13" # This IP should be the IP of the control plane node
 k8sServicePort: "6443"
 
-# Enable Gateway API
+# Gateway API is handled by Envoy Gateway.
 gatewayAPI:
-  enabled: true
-  externalTrafficPolicy: Local
-  #xffNumTrustedHops: 1
-  
+  enabled: false
+
 # Enable envoy
 envoy:
   enabled: true

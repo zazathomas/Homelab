@@ -6,12 +6,11 @@ resources:
   - cloudflare-token.yaml
   - cloudflare-issuer.yaml
   - production-certificate.yaml
-  - referencegrant.yaml
 
 helmCharts:
 - name: cert-manager
   namespace: cert-manager
   repo: https://charts.jetstack.io
-  version: 1.19.3
+  version: 1.21.1
   releaseName: cert-manager
   valuesFile: values.yaml

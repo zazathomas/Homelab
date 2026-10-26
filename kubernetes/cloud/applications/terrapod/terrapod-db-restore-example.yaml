@@ -1,0 +1,53 @@
+# Manual restore template. Do not add this file to the kustomization.
+# Create it only when restoring into a temporary or replacement cluster.
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: terrapod-db-restore
+  namespace: databases
+spec:
+  description: "Terrapod DB restore"
+  instances: 2
+  primaryUpdateStrategy: unsupervised
+  enablePDB: true
+  postgresUID: 65534
+  postgresGID: 65534
+
+  bootstrap:
+    recovery:
+      source: terrapod-db-backups
+      # Uncomment for point-in-time recovery:
+      # recoveryTarget:
+      #   targetTime: "2026-03-20T14:30:00Z"
+
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        # Writable destination for the restored cluster.
+        barmanObjectName: r2-store-restores
+        serverName: terrapod-db-restore
+
+  externalClusters:
+    - name: terrapod-db-backups
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          # Original backup and WAL source.
+          barmanObjectName: r2-store-backups
+          serverName: terrapod-db
+
+  storage:
+    storageClass: nfs-csi
+    size: 2Gi
+
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 100m
+    limits:
+      memory: 1Gi
+      cpu: 500m
+
+  affinity:
+    enablePodAntiAffinity: true

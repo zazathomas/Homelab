@@ -2,12 +2,12 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: envoy-gw
-  namespace: gateway
+  namespace: envoy-gateway-system
 spec:
   gatewayClassName: envoy
   addresses:
   - type: IPAddress
-    value: 192.168.0.210
+    value: 192.168.20.201
   listeners:
     - name: http
       protocol: HTTP
@@ -24,7 +24,7 @@ spec:
           - kind: Secret
             group: ""
             name: z3cyber-tech-cert-tls
-            namespace: gateway
+            namespace: envoy-gateway-system
       allowedRoutes:
         namespaces:
           from: All
