@@ -1,0 +1,148 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ghost-backup
+  namespace: ghost
+spec:
+  schedule: "0 2 * * *"
+  timeZone: Etc/UTC
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 3600
+  successfulJobsHistoryLimit: 7
+  failedJobsHistoryLimit: 7
+  jobTemplate:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ghost-backup
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 3600
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: ghost-backup
+        spec:
+          serviceAccountName: ghost-backup
+          restartPolicy: Never
+          terminationGracePeriodSeconds: 30
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
+          initContainers:
+            - name: kubectl
+              image: docker.io/bitnami/kubectl:latest@sha256:eaf442416e6f6b37ea76cc03dbdacc1d85f4c061670df7974dd1387288a11e50
+              command:
+                - /bin/bash
+                - -ec
+                - cp /opt/bitnami/kubectl/bin/kubectl /tools/kubectl
+              volumeMounts:
+                - name: tools
+                  mountPath: /tools
+          containers:
+            - name: backup
+              image: docker.io/restic/restic:0.17.3
+              command:
+                - /bin/sh
+                - -ec
+                - exec /scripts/backup.sh
+              env:
+                - name: RESTIC_REPOSITORY
+                  value: s3:https://d4f626e53977981652bb18a0948b046c.r2.cloudflarestorage.com/ghost-backups
+                - name: RESTIC_PASSWORD_FILE
+                  value: /run/secrets/restic/ghost-restic-password
+                - name: RESTIC_CACHE_DIR
+                  value: /cache
+                - name: AWS_DEFAULT_REGION
+                  value: auto
+                - name: AWS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: ghost-r2-creds
+                      key: ACCESS_KEY_ID
+                - name: AWS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: ghost-r2-creds
+                      key: ACCESS_SECRET_KEY
+              volumeMounts:
+                - name: ghost-content
+                  mountPath: /source
+                  readOnly: true
+                - name: restic-password
+                  mountPath: /run/secrets/restic
+                  readOnly: true
+                - name: scripts
+                  mountPath: /scripts
+                  readOnly: true
+                - name: tools
+                  mountPath: /tools
+                  readOnly: true
+                - name: cache
+                  mountPath: /cache
+          volumes:
+            - name: ghost-content
+              persistentVolumeClaim:
+                claimName: ghost-pvc
+            - name: restic-password
+              secret:
+                secretName: ghost-secret
+                items:
+                  - key: ghost-restic-password
+                    path: ghost-restic-password
+                defaultMode: 0400
+            - name: scripts
+              configMap:
+                name: ghost-backup-scripts
+                defaultMode: 0555
+            - name: tools
+              emptyDir: {}
+            - name: cache
+              emptyDir: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ghost-backup-recovery
+  namespace: ghost
+spec:
+  schedule: "*/10 * * * *"
+  timeZone: Etc/UTC
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ghost-backup-recovery
+    spec:
+      backoffLimit: 0
+      activeDeadlineSeconds: 300
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: ghost-backup-recovery
+        spec:
+          serviceAccountName: ghost-backup
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+          containers:
+            - name: recovery
+              image: docker.io/bitnami/kubectl:latest@sha256:eaf442416e6f6b37ea76cc03dbdacc1d85f4c061670df7974dd1387288a11e50
+              command:
+                - /bin/sh
+                - -ec
+                - exec /scripts/recovery.sh
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+                  readOnly: true
+          volumes:
+            - name: scripts
+              configMap:
+                name: ghost-backup-scripts
+                defaultMode: 0555

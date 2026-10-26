@@ -1,5 +1,9 @@
 singleNamespace: false
 
+# Kustomize applies rendered manifests directly; keep the CRD installer Job disabled.
+crds:
+  full: false
+
 server:
   replicas: 1
   secure: false
@@ -120,7 +124,8 @@ executor:
   image:
     registry: quay.io
     repository: argoproj/argoexec
-    tag: "v3.6.11-nonroot"
+    tag: ""
+    nonroot: true
   securityContext:
     runAsNonRoot: true
     runAsUser: 8737

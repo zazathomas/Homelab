@@ -4,15 +4,15 @@ operator:
     enabled: true
     port: 9963
 
-# Enable cilium agent(& Envoy) metrics
+# Enable Cilium agent metrics
 prometheus:
   enabled: true
   port: 9965
 
-# Configure envoy metrics port
-envoy:
-  prometheus:
-    port: "9964"
+# Cilium Envoy metrics configuration (disabled; kept for reference):
+# envoy:
+#   prometheus:
+#     port: "9964"
 
 # Enable Hubble metrics
 hubble:

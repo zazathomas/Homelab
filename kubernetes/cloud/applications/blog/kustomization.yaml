@@ -10,3 +10,7 @@ resources:
   - ghost-service.yaml
   - ghost-external-secret.yaml
   - gateway-client-external-secret.yaml
+  - ghost-backup-secrets.yaml
+  - ghost-backup-rbac.yaml
+  - ghost-backup-scripts.yaml
+  - ghost-backup.yaml

@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ghost-backup-scripts
+  namespace: ghost
+data:
+  backup.sh: |
+    #!/bin/sh
+    set -eu
+
+    KUBECTL=/tools/kubectl
+    NAMESPACE=ghost
+    DEPLOYMENT=ghost
+    BACKUP_MARKER=backup.homelab/active
+    original_replicas=1
+    restore_needed=0
+
+    cleanup() {
+      status=$?
+
+      if [ "$restore_needed" -eq 1 ]; then
+        echo "Restoring Ghost to ${original_replicas} replica(s)"
+        if ! "$KUBECTL" -n "$NAMESPACE" scale deployment "$DEPLOYMENT" --replicas="$original_replicas"; then
+          status=1
+        fi
+        if [ "$original_replicas" -gt 0 ] && ! "$KUBECTL" -n "$NAMESPACE" rollout status deployment "$DEPLOYMENT" --timeout=5m; then
+          status=1
+        fi
+        if ! "$KUBECTL" -n "$NAMESPACE" annotate deployment "$DEPLOYMENT" "${BACKUP_MARKER}-"; then
+          status=1
+        fi
+      fi
+
+      exit "$status"
+    }
+    trap cleanup EXIT
+
+    original_replicas=$("$KUBECTL" -n "$NAMESPACE" get deployment "$DEPLOYMENT" -o jsonpath='{.spec.replicas}')
+    [ -n "$original_replicas" ] || original_replicas=1
+
+    if [ "$original_replicas" -gt 0 ]; then
+      restore_needed=1
+      "$KUBECTL" -n "$NAMESPACE" annotate deployment "$DEPLOYMENT" "$BACKUP_MARKER=true" --overwrite
+      "$KUBECTL" -n "$NAMESPACE" scale deployment "$DEPLOYMENT" --replicas=0
+
+      deadline=$(($(date +%s) + 300))
+      while :; do
+        pods=$("$KUBECTL" -n "$NAMESPACE" get pods -l app=ghost -o name)
+        [ -z "$pods" ] && break
+        [ "$(date +%s)" -lt "$deadline" ] || {
+          echo "Timed out waiting for Ghost pods to terminate" >&2
+          exit 1
+        }
+        sleep 2
+      done
+    fi
+
+    if ! restic snapshots >/dev/null 2>&1; then
+      echo "Restic repository is not initialized; initializing it"
+      restic init
+    fi
+
+    restic backup /source --host ghost --tag ghost
+    restic forget --keep-daily 7 --prune
+    restic check
+  recovery.sh: |
+    #!/bin/sh
+    set -eu
+
+    KUBECTL=/opt/bitnami/kubectl/bin/kubectl
+    NAMESPACE=ghost
+    DEPLOYMENT=ghost
+
+    replicas=$("$KUBECTL" -n "$NAMESPACE" get deployment "$DEPLOYMENT" -o jsonpath='{.spec.replicas}')
+    [ -n "$replicas" ] || replicas=1
+    [ "$replicas" -eq 0 ] || exit 0
+
+    marker=$("$KUBECTL" -n "$NAMESPACE" get deployment "$DEPLOYMENT" -o jsonpath='{.metadata.annotations.backup\.homelab/active}')
+    [ "$marker" = "true" ] || exit 0
+
+    active_jobs=$("$KUBECTL" -n "$NAMESPACE" get jobs -l app.kubernetes.io/name=ghost-backup -o jsonpath='{range .items[*]}{.status.active}{" "}{end}')
+    case " $active_jobs " in
+      *" 1 "*) exit 0 ;;
+    esac
+
+    echo "Ghost backup is no longer active, restoring Ghost"
+    "$KUBECTL" -n "$NAMESPACE" scale deployment "$DEPLOYMENT" --replicas=1
+    "$KUBECTL" -n "$NAMESPACE" rollout status deployment "$DEPLOYMENT" --timeout=5m
+    "$KUBECTL" -n "$NAMESPACE" annotate deployment "$DEPLOYMENT" backup.homelab/active-

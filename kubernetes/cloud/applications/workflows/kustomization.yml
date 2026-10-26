@@ -16,12 +16,12 @@ helmCharts:
 - name: argo-workflows
   namespace: argo
   repo: https://argoproj.github.io/argo-helm
-  version: 0.47.3
+  version: 2.0.14
   releaseName: workflows
   valuesFile: workflows-values.yml
 - name: argo-events
   namespace: argo
   repo: https://argoproj.github.io/argo-helm
-  version: 2.4.20
+  version: 2.4.27
   releaseName: events
   valuesFile: events-values.yml
