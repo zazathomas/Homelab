@@ -53,7 +53,8 @@ hubble:
   tls:
     auto:
       enabled: true
-      method: cronJob 
-      certValidityDuration: 1095  
+      method: cronJob
+      # Leave a small margin for certgen's CA validity calculation.
+      certValidityDuration: 1090
       schedule: "0 0 1 */4 *"
  
