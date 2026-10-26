@@ -2,6 +2,13 @@ api:
   replicas: 1
   ephemeralStorage:
     size: 5Gi
+  resources:
+    requests:
+      cpu: 150m
+      memory: 2Gi
+    limits:
+      cpu: 300m
+      memory: 2Gi
   extraEnv:
     - name: AWS_ACCESS_KEY_ID
       valueFrom:
@@ -35,6 +42,13 @@ api:
 
 web:
   replicas: 1
+  resources:
+    requests:
+      cpu: 20m
+      memory: 256Mi
+    limits:
+      cpu: 70m
+      memory: 512Mi
 
 listener:
   enabled: true
@@ -42,6 +56,13 @@ listener:
   name: listener
   existingSecret: terrapod-listener-token
   joinTokenKey: join_token
+  resources:
+    requests:
+      cpu: 20m
+      memory: 256Mi
+    limits:
+      cpu: 70m
+      memory: 512Mi
   runnerNamespace: terrapod
   maxConcurrent: 1
 

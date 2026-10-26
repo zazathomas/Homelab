@@ -40,9 +40,10 @@ deployment:
     imagePullSecrets: []
     resources:
       limits:
+        cpu: 70m
         memory: 1024Mi
       requests:
-        cpu: 100m
+        cpu: 20m
         memory: 256Mi
     securityContext:
       allowPrivilegeEscalation: false
