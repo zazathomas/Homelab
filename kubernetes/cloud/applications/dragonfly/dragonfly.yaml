@@ -9,6 +9,14 @@ metadata:
     app.kubernetes.io/part-of: dragonfly-operator
 spec:
   replicas: 2
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: dragonfly
+          app.kubernetes.io/part-of: dragonfly
   snapshot:
     cron: "0 * * * *"
     persistentVolumeClaimSpec:

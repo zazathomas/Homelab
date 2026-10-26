@@ -41,10 +41,10 @@ deployment:
     resources:
       limits:
         cpu: 70m
-        memory: 1024Mi
+        memory: 512Mi
       requests:
         cpu: 20m
-        memory: 256Mi
+        memory: 128Mi
     securityContext:
       allowPrivilegeEscalation: false
       capabilities:
@@ -100,6 +100,16 @@ config:
       controllerName: gateway.envoyproxy.io/gatewayclass-controller
     provider:
       type: Kubernetes
+      kubernetes:
+        rateLimitDeployment:
+          container:
+            resources:
+              requests:
+                cpu: 20m
+                memory: 128Mi
+              limits:
+                cpu: 100m
+                memory: 256Mi
     logging:
       level:
         default: info

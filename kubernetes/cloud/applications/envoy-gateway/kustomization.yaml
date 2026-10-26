@@ -8,12 +8,13 @@ resources:
   - cf-ratelimit-policy.yaml
   # - cf-gw-auth-policy.yaml
   - gatewayclass.yaml
+  - envoy-proxy.yaml
   - gateway-client-external-secret.yaml
   - nlb-envoy-gateway.yaml
   - nlb-http-redirects.yaml
   - nlb-ratelimit-policy.yaml
   - redis.yaml
-  
+
 helmCharts:
 - name: gateway-helm
   namespace: envoy-gateway-system
