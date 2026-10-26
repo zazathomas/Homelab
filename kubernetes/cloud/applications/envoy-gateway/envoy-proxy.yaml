@@ -16,3 +16,12 @@ spec:
             limits:
               cpu: 300m
               memory: 256Mi
+        pod:
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: ScheduleAnyway
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/component: proxy
+                  app.kubernetes.io/name: envoy

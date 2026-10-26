@@ -70,7 +70,7 @@ deployment:
       port: 19001
       targetPort: 19001
   priorityClassName: null
-  replicas: 3
+  replicas: 2
   pod:
     affinity: {}
     annotations:
